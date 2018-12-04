@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<configuraciones>
+  <general>
+    <soloRegistro>N+vHEU14oFA=</soloRegistro>
+  </general>
+  <sonidos>
+    <activar>N+vHEU14oFA=</activar>
+    <bien>8ZSxTvWEsmnjw9O6MgwIDg==</bien>
+    <mal>8ZSxTvWEsmnjw9O6MgwIDg==</mal>
+  </sonidos>
+  <puerto>
+    <activar>u0f/8tw9dgA=</activar>
+    <nombre>nl/bNSfIfMk=</nombre>
+  </puerto>
+  <huella>
+    <usar>N+vHEU14oFA=</usar>
+  </huella>
+  <tema>
+    <imagenFondo>3XknFQo7QDA=</imagenFondo>
+  </tema>
+  <promociones>
+    <promo01>GzR2ldQ65M8=</promo01>
+    <promo02>GzR2ldQ65M8=</promo02>
+    <promo03>GzR2ldQ65M8=</promo03>
+    <promo04>GzR2ldQ65M8=</promo04>
+    <promo05>GzR2ldQ65M8=</promo05>
+    <promo06>GzR2ldQ65M8=</promo06>
+  </promociones>
+  <baseDatos>
+    <servidor>zvTeDRrHY/uBjw53VYdUTA==</servidor>
+    <base>RfWw4tJUXr/jw9O6MgwIDg==</base>
+    <usuario>W6dleDll19E=</usuario>
+    <pass>48PTujIMCA4=</pass>
+  </baseDatos>
+</configuraciones>

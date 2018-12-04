@@ -1,0 +1,30 @@
+MySql.Data.MySqlClient.MySqlException (0x80004005): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '' at line 1
+   en GYM.Clases.ConexionBD.EjecutarConsultaSelect(String consulta) en C:\Users\Luis Vazquez\Documents\GitHub\GymCSY\GYM\Clases\ConexionBD.cs:línea 137
+   en GYM.Formularios.Socio.frmSocios.BuscarMiembros(String busqueda) en C:\Users\Luis Vazquez\Documents\GitHub\GymCSY\GYM\Formularios\Socio\frmSocios.cs:línea 53|
+MySql.Data.MySqlClient.MySqlException (0x80004005): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '' at line 1
+   en GYM.Clases.ConexionBD.EjecutarConsultaSelect(String consulta) en C:\Users\Luis Vazquez\Documents\GitHub\GymCSY\GYM\Clases\ConexionBD.cs:línea 137
+   en GYM.Formularios.Socio.frmSocios.BuscarMiembros(String busqueda) en C:\Users\Luis Vazquez\Documents\GitHub\GymCSY\GYM\Formularios\Socio\frmSocios.cs:línea 53|
+System.FormatException: La cadena de entrada no tiene el formato correcto.
+   en System.Number.StringToNumber(String str, NumberStyles options, NumberBuffer& number, NumberFormatInfo info, Boolean parseDecimal)
+   en System.Number.ParseDecimal(String value, NumberStyles options, NumberFormatInfo numfmt)
+   en System.Decimal.Parse(String s)
+   en GYM.Formularios.Membresia.frmEditarMembresia.ValidarDatos() en C:\Users\Luis Vazquez\Documents\GitHub\GymCSY\GYM\Formularios\Membresia\frmEditarMembresia.cs:línea 240
+   en GYM.Formularios.Membresia.frmEditarMembresia.btnAceptar_Click(Object sender, EventArgs e) en C:\Users\Luis Vazquez\Documents\GitHub\GymCSY\GYM\Formularios\Membresia\frmEditarMembresia.cs:línea 434|
+MySql.Data.MySqlClient.MySqlException (0x80004005): Authentication to host '' for user '' using method 'mysql_native_password' failed with message: Access denied for user ''@'Equipo-Luis' (using password: NO) ---> MySql.Data.MySqlClient.MySqlException (0x80004005): Access denied for user ''@'Equipo-Luis' (using password: NO)
+   en MySql.Data.MySqlClient.MySqlStream.ReadPacket()
+   en MySql.Data.MySqlClient.Authentication.MySqlAuthenticationPlugin.ReadPacket()
+   en GYM.Clases.ConexionBD.EjecutarConsultaSelect(String consulta) en C:\Users\Luis Vazquez\Documents\GitHub\GymCSY\GYM\Clases\ConexionBD.cs:línea 137
+   en GYM.Formularios.frmLogin.btnIngresar_Click(Object sender, EventArgs e) en C:\Users\Luis Vazquez\Documents\GitHub\GymCSY\GYM\Formularios\frmLogin.cs:línea 93|
+MySql.Data.MySqlClient.MySqlException (0x80004005): Authentication to host '' for user '' using method 'mysql_native_password' failed with message: Access denied for user ''@'Equipo-Luis' (using password: NO) ---> MySql.Data.MySqlClient.MySqlException (0x80004005): Access denied for user ''@'Equipo-Luis' (using password: NO)
+   en MySql.Data.MySqlClient.MySqlStream.ReadPacket()
+   en MySql.Data.MySqlClient.Authentication.MySqlAuthenticationPlugin.ReadPacket()
+   en GYM.Clases.ConexionBD.EjecutarConsultaSelect(String consulta) en C:\Users\Luis Vazquez\Documents\GitHub\GymCSY\GYM\Clases\ConexionBD.cs:línea 137
+   en GYM.Formularios.frmLogin.btnIngresar_Click(Object sender, EventArgs e) en C:\Users\Luis Vazquez\Documents\GitHub\GymCSY\GYM\Formularios\frmLogin.cs:línea 93|
+MySql.Data.MySqlClient.MySqlException (0x80004005): Authentication to host '' for user '' using method 'mysql_native_password' failed with message: Access denied for user ''@'Equipo-Luis' (using password: NO) ---> MySql.Data.MySqlClient.MySqlException (0x80004005): Access denied for user ''@'Equipo-Luis' (using password: NO)
+   en MySql.Data.MySqlClient.MySqlStream.ReadPacket()
+   en MySql.Data.MySqlClient.Authentication.MySqlAuthenticationPlugin.ReadPacket()
+   en GYM.Clases.ConexionBD.EjecutarConsultaSelect(String consulta) en C:\Users\Luis Vazquez\Documents\GitHub\GymCSY\GYM\Clases\ConexionBD.cs:línea 137
+   en GYM.Formularios.frmLogin.btnIngresar_Click(Object sender, EventArgs e) en C:\Users\Luis Vazquez\Documents\GitHub\GymCSY\GYM\Formularios\frmLogin.cs:línea 93|
+MySql.Data.MySqlClient.MySqlException (0x80004005): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ' estado=1, abierta=0, tipo_pago=0, folio_ticket=NULL, terminacion=NULL WHERE id=' at line 1
+   en GYM.Clases.ConexionBD.EjecutarConsulta(MySqlCommand comando) en C:\Users\Luis Vazquez\Documents\GitHub\GymCSY\GYM\Clases\ConexionBD.cs:línea 100
+   en GYM.Formularios.POS.frmCobrar.CerrarCuenta() en C:\Users\Luis Vazquez\Documents\GitHub\GymCSY\GYM\Formularios\POS\frmCobrar.cs:línea 71|
