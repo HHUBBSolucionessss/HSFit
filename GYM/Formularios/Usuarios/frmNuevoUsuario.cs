@@ -95,10 +95,10 @@ namespace GYM.Formularios
             sql.CommandText = "INSERT INTO usuarios (userName, password, nivel, imagen, huella,eliminado) " +
                 "VALUES (?userName, ?password, ?nivel, ?imagen, ?huella,?eliminado)";
             sql.Parameters.AddWithValue("?userName", txtNombreUsu.Text);
-            sql.Parameters.AddWithValue("?password", Clases.CFuncionesGenerales.GetHashString(txtContra.Text));
+            sql.Parameters.AddWithValue("?password", Clases.FuncionesGenerales.GetHashString(txtContra.Text));
             sql.Parameters.AddWithValue("?nivel", nivel);
             if (pcbImagenUsuario.Image != null)
-                sql.Parameters.AddWithValue("?imagen", CFuncionesGenerales.ImagenBytes(pcbImagenUsuario.Image));
+                sql.Parameters.AddWithValue("?imagen", FuncionesGenerales.ImagenBytes(pcbImagenUsuario.Image));
             else
                 sql.Parameters.AddWithValue("?imagen", DBNull.Value);
             if (huella != null)
@@ -111,21 +111,7 @@ namespace GYM.Formularios
 
         private void CargarNiveles()
         {
-            switch (frmMain.nivelUsuario)
-            {
-                case 3:
-                    cboNivel.Items.AddRange(new object[] { "Asistente", "Encargado", "Administrador" });
-                    break;
-                case 2:
-                    cboNivel.Items.AddRange(new object[] { "Asistente", "Encargado" });
-                    break;
-                case 1:
-                    cboNivel.Items.AddRange(new object[] { "Asistente" });
-                    break;
-                default:
-                    cboNivel.Items.AddRange(new object[] { "Administrador" });
-                    break;
-            }
+
         }
 
         private bool ValidarCampos()
@@ -153,19 +139,12 @@ namespace GYM.Formularios
 
         private void frmNuevoUsuario_Load(object sender, EventArgs e)
         {
-            CFuncionesGenerales.CerrarHuellas();
-            CargarNiveles();
-            cboNivel.SelectedIndex = 0;
+            FuncionesGenerales.CerrarHuellas();
         }
 
         private void cboNivel_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cboNivel.Items[cboNivel.SelectedIndex].ToString() == "Administrador")
-                nivel = 3;
-            else if (cboNivel.Items[cboNivel.SelectedIndex].ToString() == "Encargado")
-                nivel = 2;
-            else
-                nivel = 1;
+
         }
 
         private void btnAceptar_Click(object sender, EventArgs e)
@@ -196,7 +175,7 @@ namespace GYM.Formularios
             }
             catch (Exception ex)
             {
-                CFuncionesGenerales.MensajeError("Ocurrió un error al seleccionar la imagen. Hubo un error genérico.", ex);
+                FuncionesGenerales.MensajeError("Ocurrió un error al seleccionar la imagen. Hubo un error genérico.", ex);
             }
         }
 
@@ -207,12 +186,12 @@ namespace GYM.Formularios
 
         private void frmNuevoUsuario_FormClosed(object sender, FormClosedEventArgs e)
         {
-            CFuncionesGenerales.AbrirHuellas();
+            FuncionesGenerales.AbrirHuellas();
         }
 
         private void btnHuella_Click(object sender, EventArgs e)
         {
-            if (!Clases.CConfiguracionXML.ExisteConfiguracion("huella", "lector"))
+            if (!Clases.ConfiguracionXML.ExisteConfiguracion("huella", "lector"))
                 MessageBox.Show("No se ha configurado un lector de huella digital", "Gym CSY", MessageBoxButtons.OK, MessageBoxIcon.Information);
             else
                 (new Formularios.Socio.frmCapturarHuella(this)).ShowDialog();

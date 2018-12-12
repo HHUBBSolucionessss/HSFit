@@ -1,6 +1,6 @@
 ﻿namespace GYM
 {
-    partial class frmMensaje
+    partial class frmMensajeIngreso
     {
         /// <summary>
         /// Required designer variable.
@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMensaje));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMensajeIngreso));
             this.btnAceptar = new System.Windows.Forms.Button();
             this.lblMensaje = new System.Windows.Forms.Label();
             this.tmrConteo = new System.Windows.Forms.Timer(this.components);

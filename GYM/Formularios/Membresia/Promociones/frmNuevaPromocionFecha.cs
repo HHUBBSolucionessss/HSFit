@@ -19,7 +19,7 @@ namespace GYM.Formularios.Membresia
             InitializeComponent();
             cboTipo.SelectedIndex = 0;
             cboGenero.SelectedIndex = 0;
-            CFuncionesGenerales.CargarInterfaz(this);
+            FuncionesGenerales.CargarInterfaz(this);
         }
 
         private void InsertarPromocion()
@@ -78,7 +78,7 @@ namespace GYM.Formularios.Membresia
 
         private void txtPrecio_KeyPress(object sender, KeyPressEventArgs e)
         {
-            CFuncionesGenerales.VerificarEsNumero(ref sender, ref e, false);
+            FuncionesGenerales.VerificarEsNumero(ref sender, ref e, false);
         }
 
         private void btnAceptar_Click(object sender, EventArgs e)
@@ -94,11 +94,11 @@ namespace GYM.Formularios.Membresia
             }
             catch (MySqlException ex)
             {
-                CFuncionesGenerales.MensajeError("Ha ocurrido un error al guardar la promoción. No se ha podido conectar con la base de datos.", ex);
+                FuncionesGenerales.MensajeError("Ha ocurrido un error al guardar la promoción. No se ha podido conectar con la base de datos.", ex);
             }
             catch (Exception ex)
             {
-                CFuncionesGenerales.MensajeError("Ha ocurrido un error al guardar la promoción. Ocurrió un error genérico.", ex);
+                FuncionesGenerales.MensajeError("Ha ocurrido un error al guardar la promoción. Ocurrió un error genérico.", ex);
             }
         }
 

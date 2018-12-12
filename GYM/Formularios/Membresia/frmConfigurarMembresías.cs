@@ -38,7 +38,7 @@ namespace GYM.Formularios
         public frmConfigurarMembresías()
         {
             InitializeComponent();
-            CFuncionesGenerales.CargarInterfaz(this);
+            FuncionesGenerales.CargarInterfaz(this);
         }
 
         private void PreciosHombres()
@@ -95,11 +95,11 @@ namespace GYM.Formularios
             }
             catch (MySqlException ex)
             {
-                CFuncionesGenerales.MensajeError("Ha ocurrido un error al tratar de obtener los precios. No se pudo conectar con la base de datos.", ex);
+                FuncionesGenerales.MensajeError("Ha ocurrido un error al tratar de obtener los precios. No se pudo conectar con la base de datos.", ex);
             }
             catch (Exception ex)
             {
-                CFuncionesGenerales.MensajeError("Ha ocurrido un error al tratar de obtener los precios. Ocurrió un error genérico.", ex);
+                FuncionesGenerales.MensajeError("Ha ocurrido un error al tratar de obtener los precios. Ocurrió un error genérico.", ex);
             }
         }
 
@@ -158,11 +158,11 @@ namespace GYM.Formularios
             }
             catch (MySqlException ex)
             {
-                CFuncionesGenerales.MensajeError("Ha ocurrido un error al tratar de obtener los precios. No se pudo conectar con la base de datos.", ex);
+                FuncionesGenerales.MensajeError("Ha ocurrido un error al tratar de obtener los precios. No se pudo conectar con la base de datos.", ex);
             }
             catch (Exception ex)
             {
-                CFuncionesGenerales.MensajeError("Ha ocurrido un error al tratar de obtener los precios. Ocurrió un error genérico.", ex);
+                FuncionesGenerales.MensajeError("Ha ocurrido un error al tratar de obtener los precios. Ocurrió un error genérico.", ex);
             }
         }
 
@@ -170,9 +170,9 @@ namespace GYM.Formularios
         {
             PreciosHombres();
             PreciosMujeres();
-            if (CConfiguracionXML.ExisteConfiguracion("membresia", "folio"))
+            if (ConfiguracionXML.ExisteConfiguracion("membresia", "folio"))
             {
-                chbFolio.Checked = bool.Parse(CConfiguracionXML.LeerConfiguración("membresia", "folio"));
+                chbFolio.Checked = bool.Parse(ConfiguracionXML.LeerConfiguración("membresia", "folio"));
             }
         }
 
@@ -194,7 +194,7 @@ namespace GYM.Formularios
 
         private void chbFolio_CheckedChanged(object sender, EventArgs e)
         {
-            CConfiguracionXML.GuardarConfiguracion("membresia", "folio", chbFolio.Checked.ToString());
+            ConfiguracionXML.GuardarConfiguracion("membresia", "folio", chbFolio.Checked.ToString());
         }
     }
 }

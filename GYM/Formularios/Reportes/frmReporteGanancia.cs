@@ -61,7 +61,7 @@ namespace GYM.Formularios.Reportes
 
         private void ObtenerTotalesMembresias()
         {
-            men = new MensajeError(CFuncionesGenerales.MensajeError);
+            men = new MensajeError(FuncionesGenerales.MensajeError);
             try
             {
                 MySqlCommand sql = new MySqlCommand();
@@ -82,7 +82,7 @@ namespace GYM.Formularios.Reportes
 
         private void ObtenerTotalesVentas()
         {
-            men = new MensajeError(CFuncionesGenerales.MensajeError);
+            men = new MensajeError(FuncionesGenerales.MensajeError);
             try
             {
                 MySqlCommand sql = new MySqlCommand();
@@ -103,7 +103,7 @@ namespace GYM.Formularios.Reportes
 
         private void ObtenerTotalesIngresosDiversos()
         {
-            men = new MensajeError(CFuncionesGenerales.MensajeError);
+            men = new MensajeError(FuncionesGenerales.MensajeError);
             try
             {
                 MySqlCommand sql = new MySqlCommand();
@@ -126,7 +126,7 @@ namespace GYM.Formularios.Reportes
 
         private void ObtenerTotalesCompras()
         {
-            men = new MensajeError(CFuncionesGenerales.MensajeError);
+            men = new MensajeError(FuncionesGenerales.MensajeError);
             try
             {
                 MySqlCommand sql = new MySqlCommand();
@@ -147,7 +147,7 @@ namespace GYM.Formularios.Reportes
 
         private void ObtenerTotalesEgresosDiversos()
         {
-            men = new MensajeError(CFuncionesGenerales.MensajeError);
+            men = new MensajeError(FuncionesGenerales.MensajeError);
             try
             {
                 MySqlCommand sql = new MySqlCommand();
@@ -222,11 +222,11 @@ namespace GYM.Formularios.Reportes
             }
             catch (InvalidCastException ex)
             {
-                CFuncionesGenerales.MensajeError("Ha ocurrido un error al realizar las operaciones de cálculo de ganancias.", ex);
+                FuncionesGenerales.MensajeError("Ha ocurrido un error al realizar las operaciones de cálculo de ganancias.", ex);
             }
             catch (Exception ex)
             {
-                CFuncionesGenerales.MensajeError("Ha ocurrido un error al realizar las operaciones de cálculo de ganancias.", ex);
+                FuncionesGenerales.MensajeError("Ha ocurrido un error al realizar las operaciones de cálculo de ganancias.", ex);
             }
         }
 
@@ -757,7 +757,7 @@ namespace GYM.Formularios.Reportes
             if (!bgwReporte.IsBusy)
             {
                 tmrEspera.Enabled = true;
-                CFuncionesGenerales.DeshabilitarBotonCerrar(this);
+                FuncionesGenerales.DeshabilitarBotonCerrar(this);
                 grbFechas.Enabled = false;
                 bgwReporte.RunWorkerAsync();
             }
@@ -775,8 +775,8 @@ namespace GYM.Formularios.Reportes
         private void bgwReporte_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             tmrEspera.Enabled = false;
-            CFuncionesGenerales.frmEsperaClose();
-            CFuncionesGenerales.HabilitarBotonCerrar(this);
+            FuncionesGenerales.frmEsperaClose();
+            FuncionesGenerales.HabilitarBotonCerrar(this);
             grbFechas.Enabled = true;
             CalcularTotales();
             AsignarValoresLabels();
@@ -786,7 +786,7 @@ namespace GYM.Formularios.Reportes
         private void tmrEspera_Tick(object sender, EventArgs e)
         {
             tmrEspera.Enabled = false;
-            CFuncionesGenerales.frmEspera("Espere, obteniendo datos para calcular ganancias", this);
+            FuncionesGenerales.frmEspera("Espere, obteniendo datos para calcular ganancias", this);
         }
     }
 }

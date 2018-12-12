@@ -1,20 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace GYM
 {
-    public partial class frmMensaje : Form
+    public partial class frmMensajeIngreso : Form
     {
         int cont = 0;
 
-        public frmMensaje(string mensaje, string titulo)
+        public frmMensajeIngreso(string mensaje, string titulo)
         {
             InitializeComponent();
 

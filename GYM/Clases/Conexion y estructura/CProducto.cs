@@ -4,7 +4,7 @@ using MySql.Data.MySqlClient;
 
 namespace GYM.Clases
 {
-    class CProducto
+    class Producto
     {
         #region propiedades
         private string id;
@@ -116,7 +116,7 @@ namespace GYM.Clases
         /// Inicializa una nueva instancia de la clase CProducto
         /// </summary>
         /// <param name="id">ID del producto</param>
-        public CProducto(string id)
+        public Producto(string id)
         {
             ID = id;
             //Cargar datos por ID
@@ -126,7 +126,7 @@ namespace GYM.Clases
         /// <summary>
         /// Inicializa una nueva instancia de la clase CProducto
         /// </summary>
-        public CProducto()
+        public Producto()
         {
         }
 
@@ -139,12 +139,12 @@ namespace GYM.Clases
         /// <exception cref="Systen.OverflowException">Excepción que se produce cuando una operación aritmética, de conversión de tipo o de conversión de otra naturaleza en un contexto comprobado, da como resultado una sobrecarga.</exception>
         /// <exception cref="System.Exception">Representa los errores que se producen durante la ejecución de una aplicación.</exception>
         /// <returns>Objeto de la clase CProducto con la información del producto.</returns>
-        public static CProducto ObtenerProductoPorID(string ID)
+        public static Producto ObtenerProductoPorID(string ID)
         {
-            CProducto t = null;
+            Producto t = null;
             try
             {
-                t = new CProducto();
+                t = new Producto();
                 string sql = "SELECT * FROM producto WHERE id='" + ID + "'";
                 DataTable dt = ConexionBD.EjecutarConsultaSelect(sql);
                 foreach (DataRow dr in dt.Rows)

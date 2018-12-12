@@ -62,23 +62,23 @@ namespace GYM.Formularios.Caja
             }
             catch (MySql.Data.MySqlClient.MySqlException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error al tratar conectar con la base de datos.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ha ocurrido un error al tratar conectar con la base de datos.", ex);
             }
             catch (FormatException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("El formato ingresado en efectivo no es correcto, verifíquelo.", ex);
+                Clases.FuncionesGenerales.MensajeError("El formato ingresado en efectivo no es correcto, verifíquelo.", ex);
             }
             catch (OverflowException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido una sobrecarga al querer convertir en decimal.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ha ocurrido una sobrecarga al querer convertir en decimal.", ex);
             }
             catch (ArgumentNullException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("El argumento ingresado es nulo.", ex);
+                Clases.FuncionesGenerales.MensajeError("El argumento ingresado es nulo.", ex);
             }
             catch (Exception ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error genérico.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ha ocurrido un error genérico.", ex);
             }
         }
 
@@ -86,7 +86,7 @@ namespace GYM.Formularios.Caja
         {
             try
             {
-                Clases.CConfiguracionXML.GuardarConfiguracion("caja", "estado", true.ToString());
+                Clases.ConfiguracionXML.GuardarConfiguracion("caja", "estado", true.ToString());
             }
             catch (System.Xml.XmlException ex)
             {
@@ -95,47 +95,47 @@ namespace GYM.Formularios.Caja
             }
             catch (System.IO.PathTooLongException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("La ruta del directorio es muy larga.", ex);
+                Clases.FuncionesGenerales.MensajeError("La ruta del directorio es muy larga.", ex);
             }
             catch (System.IO.DirectoryNotFoundException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("El directorio del archivo de configuración no se encontró.", ex);
+                Clases.FuncionesGenerales.MensajeError("El directorio del archivo de configuración no se encontró.", ex);
             }
             catch (System.IO.FileNotFoundException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("No se encontro el archivo de configuración.", ex);
+                Clases.FuncionesGenerales.MensajeError("No se encontro el archivo de configuración.", ex);
             }
             catch (System.IO.IOException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error de E/S.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ha ocurrido un error de E/S.", ex);
             }
             catch (InvalidOperationException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("La llamada al método no se pudo efectuar porque el estado actual del objeto no lo permite.", ex);
+                Clases.FuncionesGenerales.MensajeError("La llamada al método no se pudo efectuar porque el estado actual del objeto no lo permite.", ex);
             }
             catch (NotSupportedException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("No se pudo leer o modificar la secuencia de datos.", ex);
+                Clases.FuncionesGenerales.MensajeError("No se pudo leer o modificar la secuencia de datos.", ex);
             }
             catch (UnauthorizedAccessException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("El sistema ha negado el acceso al archivo de configuración.\nPuede deberse a un error de E/S o a un error de seguridad.", ex);
+                Clases.FuncionesGenerales.MensajeError("El sistema ha negado el acceso al archivo de configuración.\nPuede deberse a un error de E/S o a un error de seguridad.", ex);
             }
             catch (System.Security.SecurityException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error de seguridad.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ha ocurrido un error de seguridad.", ex);
             }
             catch (ArgumentNullException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("El método no acepta referencias nulas.", ex);
+                Clases.FuncionesGenerales.MensajeError("El método no acepta referencias nulas.", ex);
             }
             catch (ArgumentException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("El argumento que se pasó al método no es aceptado por este.", ex);
+                Clases.FuncionesGenerales.MensajeError("El argumento que se pasó al método no es aceptado por este.", ex);
             }
             catch (Exception ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error genérico.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ha ocurrido un error genérico.", ex);
             }
         }
 
@@ -154,23 +154,23 @@ namespace GYM.Formularios.Caja
             }
             catch (MySql.Data.MySqlClient.MySqlException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error al tratar conectar con la base de datos.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ha ocurrido un error al tratar conectar con la base de datos.", ex);
             }
             catch (FormatException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("El formato ingresado en efectivo no es correcto, verifíquelo.", ex);
+                Clases.FuncionesGenerales.MensajeError("El formato ingresado en efectivo no es correcto, verifíquelo.", ex);
             }
             catch (OverflowException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido una sobrecarga al querer convertir en decimal.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ha ocurrido una sobrecarga al querer convertir en decimal.", ex);
             }
             catch (ArgumentNullException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("El argumento ingresado es nulo.", ex);
+                Clases.FuncionesGenerales.MensajeError("El argumento ingresado es nulo.", ex);
             }
             catch (Exception ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error genérico.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ha ocurrido un error genérico.", ex);
             }
         }
 
@@ -188,19 +188,19 @@ namespace GYM.Formularios.Caja
             }
             catch (FormatException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("El formato ingresado en efectivo no es correcto, verifíquelo.", ex);
+                Clases.FuncionesGenerales.MensajeError("El formato ingresado en efectivo no es correcto, verifíquelo.", ex);
             }
             catch (OverflowException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido una sobrecarga al querer convertir en decimal.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ha ocurrido una sobrecarga al querer convertir en decimal.", ex);
             }
             catch (ArgumentNullException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("El argumento ingresado es nulo.", ex);
+                Clases.FuncionesGenerales.MensajeError("El argumento ingresado es nulo.", ex);
             }
             catch (Exception ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error genérico.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ha ocurrido un error genérico.", ex);
             }
         }
 
@@ -215,11 +215,11 @@ namespace GYM.Formularios.Caja
             }
             catch (MySql.Data.MySqlClient.MySqlException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error al tratar conectar con la base de datos.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ha ocurrido un error al tratar conectar con la base de datos.", ex);
             }
             catch (Exception ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error genérico.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ha ocurrido un error genérico.", ex);
             }
         }
 
@@ -227,14 +227,14 @@ namespace GYM.Formularios.Caja
         {
             try
             {
-                Clases.CFuncionesGenerales.CargarInterfaz(this);
+                Clases.FuncionesGenerales.CargarInterfaz(this);
                 ObtenerNombreUsuario();
                 CargarEfectivoCaja();
                 CalcularTotal();
             }
             catch (Exception ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error genérico.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ha ocurrido un error genérico.", ex);
             }
         }
 
@@ -278,19 +278,19 @@ namespace GYM.Formularios.Caja
             }
             catch (FormatException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("El formato ingresado en efectivo no es correcto, verifíquelo.", ex);
+                Clases.FuncionesGenerales.MensajeError("El formato ingresado en efectivo no es correcto, verifíquelo.", ex);
             }
             catch (OverflowException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido una sobrecarga al querer convertir en decimal.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ha ocurrido una sobrecarga al querer convertir en decimal.", ex);
             }
             catch (ArgumentNullException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("El argumento ingresado es nulo.", ex);
+                Clases.FuncionesGenerales.MensajeError("El argumento ingresado es nulo.", ex);
             }
             catch (Exception ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error genérico.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ha ocurrido un error genérico.", ex);
             }
         }
 
@@ -298,11 +298,11 @@ namespace GYM.Formularios.Caja
         {
             try
             {
-                Clases.CFuncionesGenerales.VerificarEsNumero(ref sender, ref e, false);
+                Clases.FuncionesGenerales.VerificarEsNumero(ref sender, ref e, false);
             }
             catch (Exception ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error genérico.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ha ocurrido un error genérico.", ex);
             }
         }
 

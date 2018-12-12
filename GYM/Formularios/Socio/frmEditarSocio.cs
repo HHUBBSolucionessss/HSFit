@@ -72,7 +72,7 @@ namespace GYM.Formularios.Socio
         public frmEditarSocio(int numSocio)
         {
             InitializeComponent();
-            CFuncionesGenerales.CargarInterfaz(this);
+            FuncionesGenerales.CargarInterfaz(this);
             cbxEstado.SelectedIndex = 0;
             cbxSexo.SelectedIndex = 0;
             BuscarDispositivos();
@@ -82,26 +82,31 @@ namespace GYM.Formularios.Socio
 
         private bool validarCampos()
         {
+            bool res = true;
             if (txtNumSocio.Text == "")
             {
-                MessageBox.Show("Debes haber ingresado un número de socio", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                FuncionesGenerales.ColoresError(txtNumSocio);
+                res = false;
                 return false;
             }
             if (txtNombre.Text.Trim() == "")
             {
-                MessageBox.Show("Debes ingresar el nombre del socio", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                FuncionesGenerales.ColoresError(txtNombre);
+                res = false;
                 return false;
             }
             if (txtApellidos.Text.Trim() == "")
             {
-                MessageBox.Show("Debes ingresar los apellidos del socio", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                FuncionesGenerales.ColoresError(txtApellidos);
+                res = false;
                 return false;
             }
             if (txtTel.Text == "")
             {
                 if (txtCelular.Text == "")
                 {
-                    MessageBox.Show("Debes ingresar al menos un número teléfonico", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    FuncionesGenerales.ColoresError(txtCelular);
+                    res = false;
                     return false;
                 }
             }
@@ -109,11 +114,12 @@ namespace GYM.Formularios.Socio
             {
                 if (txtTel.Text == "")
                 {
-                    MessageBox.Show("Debes ingresar al menos un número teléfonico", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    FuncionesGenerales.ColoresError(txtTel);
+                    res = false;
                     return false;
                 }
             }
-            return true;
+            return res;
         }
 
         private void MostrarDatosMiembro()
@@ -140,26 +146,26 @@ namespace GYM.Formularios.Socio
 
         private void frmEditarMiembro_Load(object sender, EventArgs e)
         {
-            CFuncionesGenerales.CerrarHuellas();
+            FuncionesGenerales.CerrarHuellas();
             if (HuellaDigital.reader == null)
                 btnHuella.Enabled = false;
-            CFuncionesGenerales.CargarInterfaz(this);
+            FuncionesGenerales.CargarInterfaz(this);
             MostrarDatosMiembro();
         }
 
         private void txtNumSocio_KeyPress(object sender, KeyPressEventArgs e)
         {
-            CFuncionesGenerales.VerificarEsNumero(ref sender, ref e, true);
+            FuncionesGenerales.VerificarEsNumero(ref sender, ref e, true);
         }
 
         private void txtCelular_KeyPress(object sender, KeyPressEventArgs e)
         {
-            CFuncionesGenerales.VerificarEsNumero(ref sender, ref e, true);
+            FuncionesGenerales.VerificarEsNumero(ref sender, ref e, true);
         }
 
         private void txtTel_KeyPress(object sender, KeyPressEventArgs e)
         {
-            CFuncionesGenerales.VerificarEsNumero(ref sender, ref e, true);
+            FuncionesGenerales.VerificarEsNumero(ref sender, ref e, true);
         }
 
         private void btnAceptar_Click(object sender, EventArgs e)
@@ -184,12 +190,18 @@ namespace GYM.Formularios.Socio
                         miembro.Estado = cbxEstado.Text;
                         miembro.FechaNacimiento = dtpFechaNac.Value;
                         miembro.Genero = cbxSexo.SelectedIndex;
+                        if (tbxCredito.Text == "")
+                        {
+                            miembro.LimiteCredito = 0;
+                        }
+                        else
+                            miembro.LimiteCredito = decimal.Parse(tbxCredito.Text);
                         miembro.Huella = huella;
                         miembro.ImagenMiembro = pbxImagenPerfil.Image;
                         miembro.EditarMiembro();
-                        MessageBox.Show("Socio actualizado Satisfactoriamente", "Actualizacion Socio", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show("Socio modificado Satisfactoriamente", "Actualización Socio", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         global::Socio.ObtenerHuellas();
-                        this.Close();
+                        Close();
                     }
                     else
                         return;
@@ -246,7 +258,7 @@ namespace GYM.Formularios.Socio
 
         private void frmEditarMiembro_FormClosed(object sender, FormClosedEventArgs e)
         {
-            CFuncionesGenerales.AbrirHuellas();
+            FuncionesGenerales.AbrirHuellas();
         }
 
         private void frmEditarSocio_KeyDown(object sender, KeyEventArgs e)

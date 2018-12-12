@@ -107,7 +107,7 @@ namespace GYM.Formularios
                     switch (action)
                     {
                         case Action.SendMessage:
-                            (new frmMensaje((string)payload, "Error")).ShowDialog(this);
+                            (new frmMensajeIngreso((string)payload, "Error")).ShowDialog(this);
                             break;
                         case Action.SendOK:
                             string numSocio = (string)payload;
@@ -151,7 +151,7 @@ namespace GYM.Formularios
             this.ID = id;
 
             tmrTiempo.Enabled = true;
-            if (!Clases.CFuncionesGenerales.soloRegistro)
+            if (!Clases.FuncionesGenerales.soloRegistro)
                 this.WindowState = FormWindowState.Normal;
             else
                 this.WindowState = FormWindowState.Maximized;
@@ -164,7 +164,7 @@ namespace GYM.Formularios
 
         private void frmRegistroEntradas_Load(object sender, EventArgs e)
         {
-            if (Clases.CFuncionesGenerales.soloRegistro)
+            if (Clases.FuncionesGenerales.soloRegistro)
             {
                 btnConfiguración.Visible = true;
             }
@@ -174,7 +174,7 @@ namespace GYM.Formularios
                 btnConfiguración.Visible = false;
             }
             CerrarForms();
-            Clases.CFuncionesGenerales.CargarInterfaz(this);
+            Clases.FuncionesGenerales.CargarInterfaz(this);
             lblFecha.Text = DateTime.Now.ToLongDateString().ToUpper();
             lblHora.Text = "La Hora es "+DateTime.Now.ToString("hh:mm:ss tt");
             tbxNumSocio.Select();
@@ -193,7 +193,7 @@ namespace GYM.Formularios
         {
             for (int i = 1; i < 7; i++)
             {
-                string promo = Clases.CConfiguracionXML.LeerConfiguración("promociones", "promo" + i.ToString("00"));
+                string promo = Clases.ConfiguracionXML.LeerConfiguración("promociones", "promo" + i.ToString("00"));
                 if (promo != "null")
                     imgs.Add(imgs.Count, Image.FromFile(promo));
             }
@@ -235,7 +235,7 @@ namespace GYM.Formularios
                 }
                 else
                 {
-                    (new frmMensaje("El número ingresado es incorrecto o no existe", "Socio No Encontrado")).ShowDialog(this);
+                    (new frmMensajeIngreso("El número ingresado es incorrecto o no existe", "Socio No Encontrado")).ShowDialog(this);
                     tbxNumSocio.Text = "";
                     tbxNumSocio.Select();
                 }
@@ -252,13 +252,13 @@ namespace GYM.Formularios
         private void frmRegistroEntradas_FormClosed(object sender, FormClosedEventArgs e)
         {
             Clases.HuellaDigital.CancelCaptureAndCloseReader(this.OnCaptured);
-            if (Clases.CFuncionesGenerales.soloRegistro)
+            if (Clases.FuncionesGenerales.soloRegistro)
                 Application.Exit();
         }
 
         private void tbxNumSocio_KeyPress(object sender, KeyPressEventArgs e)
         {
-            Clases.CFuncionesGenerales.VerificarEsNumero(ref sender, ref e, true);
+            Clases.FuncionesGenerales.VerificarEsNumero(ref sender, ref e, true);
         }
 
         private void lblNumSocio_Click(object sender, EventArgs e)

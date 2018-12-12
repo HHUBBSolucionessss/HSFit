@@ -40,8 +40,6 @@
             this.sonidosToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.correoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dispositivoAccesoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSesion = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSalir = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSocios = new System.Windows.Forms.ToolStripMenuItem();
             this.sociosToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.membresiasToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
@@ -113,6 +111,7 @@
             this.acercaDeGymCSYToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tmrCumpleaños = new System.Windows.Forms.Timer(this.components);
             this.pnlAccesosDirectos = new System.Windows.Forms.Panel();
+            this.lblNombre = new System.Windows.Forms.Label();
             this.pnlLogoMenu = new System.Windows.Forms.Panel();
             this.btnMovCaja = new System.Windows.Forms.Button();
             this.btnExistencias = new System.Windows.Forms.Button();
@@ -154,9 +153,7 @@
             // 
             this.toolStripConfiguracion.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
             this.toolStripConfiguracion.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.configuraciónToolStripMenuItem1,
-            this.toolStripSesion,
-            this.toolStripSalir});
+            this.configuraciónToolStripMenuItem1});
             this.toolStripConfiguracion.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.toolStripConfiguracion.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(11)))), ((int)(((byte)(21)))), ((int)(((byte)(32)))));
             this.toolStripConfiguracion.Name = "toolStripConfiguracion";
@@ -242,24 +239,6 @@
             this.dispositivoAccesoToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
             this.dispositivoAccesoToolStripMenuItem.Text = "Dispositivo Acceso";
             this.dispositivoAccesoToolStripMenuItem.Click += new System.EventHandler(this.dispositivoAccesoToolStripMenuItem_Click);
-            // 
-            // toolStripSesion
-            // 
-            this.toolStripSesion.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
-            this.toolStripSesion.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(11)))), ((int)(((byte)(21)))), ((int)(((byte)(31)))));
-            this.toolStripSesion.Name = "toolStripSesion";
-            this.toolStripSesion.Size = new System.Drawing.Size(157, 22);
-            this.toolStripSesion.Text = "&Cerrar sesión";
-            this.toolStripSesion.Click += new System.EventHandler(this.toolStripSesion_Click);
-            // 
-            // toolStripSalir
-            // 
-            this.toolStripSalir.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
-            this.toolStripSalir.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(11)))), ((int)(((byte)(21)))), ((int)(((byte)(31)))));
-            this.toolStripSalir.Name = "toolStripSalir";
-            this.toolStripSalir.Size = new System.Drawing.Size(157, 22);
-            this.toolStripSalir.Text = "&Salir";
-            this.toolStripSalir.Click += new System.EventHandler(this.toolStripSalir_Click);
             // 
             // toolStripSocios
             // 
@@ -889,6 +868,7 @@
             this.pnlAccesosDirectos.AutoSize = true;
             this.pnlAccesosDirectos.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(11)))), ((int)(((byte)(21)))), ((int)(((byte)(32)))));
             this.pnlAccesosDirectos.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.pnlAccesosDirectos.Controls.Add(this.lblNombre);
             this.pnlAccesosDirectos.Controls.Add(this.pnlLogoMenu);
             this.pnlAccesosDirectos.Controls.Add(this.btnMovCaja);
             this.pnlAccesosDirectos.Controls.Add(this.btnExistencias);
@@ -906,6 +886,16 @@
             this.pnlAccesosDirectos.Size = new System.Drawing.Size(213, 632);
             this.pnlAccesosDirectos.TabIndex = 8;
             this.pnlAccesosDirectos.Paint += new System.Windows.Forms.PaintEventHandler(this.pnlAccesosDirectos_Paint);
+            // 
+            // lblNombre
+            // 
+            this.lblNombre.AutoSize = true;
+            this.lblNombre.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblNombre.Location = new System.Drawing.Point(12, 12);
+            this.lblNombre.Name = "lblNombre";
+            this.lblNombre.Size = new System.Drawing.Size(57, 19);
+            this.lblNombre.TabIndex = 11;
+            this.lblNombre.Text = "Usuario";
             // 
             // pnlLogoMenu
             // 
@@ -928,7 +918,7 @@
             this.btnMovCaja.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnMovCaja.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnMovCaja.ForeColor = System.Drawing.Color.White;
-            this.btnMovCaja.Location = new System.Drawing.Point(9, 292);
+            this.btnMovCaja.Location = new System.Drawing.Point(9, 336);
             this.btnMovCaja.Margin = new System.Windows.Forms.Padding(4);
             this.btnMovCaja.Name = "btnMovCaja";
             this.btnMovCaja.Size = new System.Drawing.Size(200, 60);
@@ -948,7 +938,7 @@
             this.btnExistencias.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnExistencias.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnExistencias.ForeColor = System.Drawing.Color.White;
-            this.btnExistencias.Location = new System.Drawing.Point(9, 360);
+            this.btnExistencias.Location = new System.Drawing.Point(9, 404);
             this.btnExistencias.Margin = new System.Windows.Forms.Padding(4);
             this.btnExistencias.Name = "btnExistencias";
             this.btnExistencias.Size = new System.Drawing.Size(200, 60);
@@ -968,7 +958,7 @@
             this.btnVentas.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnVentas.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnVentas.ForeColor = System.Drawing.Color.White;
-            this.btnVentas.Location = new System.Drawing.Point(9, 156);
+            this.btnVentas.Location = new System.Drawing.Point(9, 200);
             this.btnVentas.Margin = new System.Windows.Forms.Padding(4);
             this.btnVentas.Name = "btnVentas";
             this.btnVentas.Size = new System.Drawing.Size(200, 60);
@@ -988,7 +978,7 @@
             this.btnCompras.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCompras.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnCompras.ForeColor = System.Drawing.Color.White;
-            this.btnCompras.Location = new System.Drawing.Point(9, 224);
+            this.btnCompras.Location = new System.Drawing.Point(9, 268);
             this.btnCompras.Margin = new System.Windows.Forms.Padding(4);
             this.btnCompras.Name = "btnCompras";
             this.btnCompras.Size = new System.Drawing.Size(200, 60);
@@ -1008,7 +998,7 @@
             this.btnMembresias.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnMembresias.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnMembresias.ForeColor = System.Drawing.Color.White;
-            this.btnMembresias.Location = new System.Drawing.Point(9, 88);
+            this.btnMembresias.Location = new System.Drawing.Point(9, 132);
             this.btnMembresias.Margin = new System.Windows.Forms.Padding(4);
             this.btnMembresias.Name = "btnMembresias";
             this.btnMembresias.Size = new System.Drawing.Size(200, 60);
@@ -1028,12 +1018,12 @@
             this.btnNuevoSocio.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnNuevoSocio.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnNuevoSocio.ForeColor = System.Drawing.Color.White;
-            this.btnNuevoSocio.Location = new System.Drawing.Point(9, 20);
+            this.btnNuevoSocio.Location = new System.Drawing.Point(9, 64);
             this.btnNuevoSocio.Margin = new System.Windows.Forms.Padding(4);
             this.btnNuevoSocio.Name = "btnNuevoSocio";
             this.btnNuevoSocio.Size = new System.Drawing.Size(200, 60);
             this.btnNuevoSocio.TabIndex = 7;
-            this.btnNuevoSocio.Text = "Socios";
+            this.btnNuevoSocio.Text = "Nuevo Socio";
             this.btnNuevoSocio.UseVisualStyleBackColor = false;
             this.btnNuevoSocio.Click += new System.EventHandler(this.btnNuevoSocio_Click);
             // 
@@ -1073,7 +1063,7 @@
             this.btnCerrarSesion.Name = "btnCerrarSesion";
             this.btnCerrarSesion.Size = new System.Drawing.Size(130, 50);
             this.btnCerrarSesion.TabIndex = 10;
-            this.btnCerrarSesion.Text = "Salir";
+            this.btnCerrarSesion.Text = "Cerrar Sesion";
             this.btnCerrarSesion.UseVisualStyleBackColor = false;
             this.btnCerrarSesion.Click += new System.EventHandler(this.btnCerrarSesion_Click);
             // 
@@ -1116,8 +1106,6 @@
 
         private System.Windows.Forms.MenuStrip menuStripMain;
         private System.Windows.Forms.ToolStripMenuItem toolStripConfiguracion;
-        private System.Windows.Forms.ToolStripMenuItem toolStripSesion;
-        private System.Windows.Forms.ToolStripMenuItem toolStripSalir;
         private System.Windows.Forms.ToolStripMenuItem toolStripSocios;
         private System.Windows.Forms.ToolStripMenuItem ayudaToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem acercaDeGymCSYToolStripMenuItem;
@@ -1207,5 +1195,6 @@
         private System.Windows.Forms.ToolStripMenuItem promocionesToolStripMenuItem;
         private System.Windows.Forms.Panel pnlLogoMenu;
         private System.Windows.Forms.Button btnCerrarSesion;
+        private System.Windows.Forms.Label lblNombre;
     }
 }

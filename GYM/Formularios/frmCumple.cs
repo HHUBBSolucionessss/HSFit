@@ -35,7 +35,7 @@ namespace GYM.Formularios
             Label lblNom;
             Label lblNumSocio;
             Label lblAños;
-            Clases.CCorreos c;
+            Clases.Correos c;
             for (int i = 0; i < dt.Rows.Count; i++)
             {
                 try
@@ -103,9 +103,9 @@ namespace GYM.Formularios
                     else
                         pos += salto + 9;
 
-                    if (Clases.CFuncionesGenerales.EsCorreoValido(dr["email"].ToString()))
+                    if (Clases.FuncionesGenerales.EsCorreoValido(dr["email"].ToString()))
                     {
-                        c = new Clases.CCorreos();
+                        c = new Clases.Correos();
                         c.CorreosDestino = dr["email"].ToString();
                         c.Asunto = "¡Feliz cumpleaños " + dr["nombre"].ToString() + " " + dr["apellidos"] + "!";
                         c.Adjuntos = new string[] { Application.StartupPath + "\\Img\\imagencorreo.jpeg" };

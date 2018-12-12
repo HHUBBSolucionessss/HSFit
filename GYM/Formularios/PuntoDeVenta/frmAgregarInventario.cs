@@ -26,7 +26,7 @@ namespace GYM.Formularios.PuntoDeVenta
 
         private void txtCantidad_KeyPress(object sender, KeyPressEventArgs e)
         {
-            Clases.CFuncionesGenerales.VerificarEsNumero(ref sender, ref e, true);
+            Clases.FuncionesGenerales.VerificarEsNumero(ref sender, ref e, true);
         }
 
         private void btnAceptar_Click(object sender, EventArgs e)
@@ -36,7 +36,7 @@ namespace GYM.Formularios.PuntoDeVenta
                 if (!txtCantidad.Text.Equals(""))
                     if (decimal.Parse(txtCantidad.Text) > 0)
                     {
-                        Clases.CProducto.AgregarInventario(idProd, int.Parse(txtCantidad.Text));
+                        Clases.Producto.AgregarInventario(idProd, int.Parse(txtCantidad.Text));
                         frm.dgvProducto[3, frm.dgvProducto.CurrentRow.Index].Value = decimal.Parse(frm.dgvProducto[3, frm.dgvProducto.CurrentRow.Index].Value.ToString()) + decimal.Parse(txtCantidad.Text);
                         if (decimal.Parse(frm.dgvProducto[3, frm.dgvProducto.CurrentRow.Index].Value.ToString()) <= 3)
                         {
@@ -61,23 +61,23 @@ namespace GYM.Formularios.PuntoDeVenta
             }
             catch (MySql.Data.MySqlClient.MySqlException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ocurrio un error al tratar de agregar productos al inventario. No se pudo conectar con la base de datos.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ocurrio un error al tratar de agregar productos al inventario. No se pudo conectar con la base de datos.", ex);
             }
             catch (FormatException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ocurrio un error al tratar de agregar productos al inventario. Hubo un error al tratar de dar formato a una variable", ex);
+                Clases.FuncionesGenerales.MensajeError("Ocurrio un error al tratar de agregar productos al inventario. Hubo un error al tratar de dar formato a una variable", ex);
             }
             catch (OverflowException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ocurrio un error al tratar de agregar productos al inventario. Hubo un desbordamiento.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ocurrio un error al tratar de agregar productos al inventario. Hubo un desbordamiento.", ex);
             }
             catch (ArgumentNullException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ocurrio un error al tratar de agregar productos al inventario. El método obtuvo un argumento nulo y éste lo no acepto.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ocurrio un error al tratar de agregar productos al inventario. El método obtuvo un argumento nulo y éste lo no acepto.", ex);
             }
             catch (Exception ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ocurrio un error al tratar de agregar productos al inventario. Ocurrio un error genérico.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ocurrio un error al tratar de agregar productos al inventario. Ocurrio un error genérico.", ex);
             }
         }
     }

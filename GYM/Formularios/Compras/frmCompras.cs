@@ -44,7 +44,7 @@ namespace GYM.Formularios.Compras
 
         private void BuscarCompra(DateTime fechaIni, DateTime fechaFin)
         {
-            MensajeError m = new MensajeError(CFuncionesGenerales.MensajeError);
+            MensajeError m = new MensajeError(FuncionesGenerales.MensajeError);
             try
             {
                 MySqlCommand sql = new MySqlCommand();
@@ -83,11 +83,11 @@ namespace GYM.Formularios.Compras
             }
             catch (InvalidOperationException ex)
             {
-                CFuncionesGenerales.MensajeError("No se ha podido mostrar la información. La operación no pudo ser completada ya que el estado actual del objeto no lo permite.", ex);
+                FuncionesGenerales.MensajeError("No se ha podido mostrar la información. La operación no pudo ser completada ya que el estado actual del objeto no lo permite.", ex);
             }
             catch (Exception ex)
             {
-                CFuncionesGenerales.MensajeError("No se ha podido mostrar la información. Ha ocurrido un error genérico.", ex);
+                FuncionesGenerales.MensajeError("No se ha podido mostrar la información. Ha ocurrido un error genérico.", ex);
             }
         }
 
@@ -106,7 +106,7 @@ namespace GYM.Formularios.Compras
                 bgwBusqueda.RunWorkerAsync(new object[] { dtpFechaInicio.Value, dtpFechaFin.Value });
                 tmrEspera.Enabled = true;
                 btnBuscar.Enabled = false;
-                CFuncionesGenerales.DeshabilitarBotonCerrar(this);
+                FuncionesGenerales.DeshabilitarBotonCerrar(this);
             }
         }
 
@@ -119,17 +119,17 @@ namespace GYM.Formularios.Compras
         private void bgwBusqueda_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             tmrEspera.Enabled = false;
-            CFuncionesGenerales.frmEsperaClose();
+            FuncionesGenerales.frmEsperaClose();
             System.Threading.Thread.Sleep(300);
             LlenarDataGrid();
             btnBuscar.Enabled = true;
-            CFuncionesGenerales.HabilitarBotonCerrar(this);
+            FuncionesGenerales.HabilitarBotonCerrar(this);
         }
 
         private void tmrEspera_Tick(object sender, EventArgs e)
         {
             tmrEspera.Enabled = false;
-            CFuncionesGenerales.frmEspera("Espere mientras se efectua la búsqueda", this);
+            FuncionesGenerales.frmEspera("Espere mientras se efectua la búsqueda", this);
         }
 
         private void btnNuevaCompra_Click(object sender, EventArgs e)

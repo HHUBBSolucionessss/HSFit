@@ -54,11 +54,11 @@ namespace GYM.Formularios
         {
             try
             {
-                if (bool.Parse(Clases.CConfiguracionXML.LeerConfiguración("sonidos", "activar")))
+                if (bool.Parse(Clases.ConfiguracionXML.LeerConfiguración("sonidos", "activar")))
                 {
                     grbSonidosMembresia.Enabled = chbSonidosMembresias.Checked = true;
                 }
-                string sonidobien = Clases.CConfiguracionXML.LeerConfiguración("sonidos", "bien"), sonidomal = Clases.CConfiguracionXML.LeerConfiguración("sonidos", "bien");
+                string sonidobien = Clases.ConfiguracionXML.LeerConfiguración("sonidos", "bien"), sonidomal = Clases.ConfiguracionXML.LeerConfiguración("sonidos", "bien");
 
                 if (sonidobien != "Personalizado")
                     cboSonidosBien.SelectedIndex = int.Parse(sonidobien.Substring(sonidobien.Length - 2, 2)) - 1;
@@ -79,51 +79,51 @@ namespace GYM.Formularios
             }
             catch (System.IO.PathTooLongException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("La ruta del directorio es muy larga.", ex);
+                Clases.FuncionesGenerales.MensajeError("La ruta del directorio es muy larga.", ex);
             }
             catch (System.IO.DirectoryNotFoundException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("El directorio del archivo de configuración no se encontró.", ex);
+                Clases.FuncionesGenerales.MensajeError("El directorio del archivo de configuración no se encontró.", ex);
             }
             catch (System.IO.FileNotFoundException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("No se encontro el archivo de configuración.", ex);
+                Clases.FuncionesGenerales.MensajeError("No se encontro el archivo de configuración.", ex);
             }
             catch (System.IO.IOException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error de E/S.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ha ocurrido un error de E/S.", ex);
             }
             catch (InvalidOperationException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("La llamada al método no se pudo efectuar porque el estado actual del objeto no lo permite.", ex);
+                Clases.FuncionesGenerales.MensajeError("La llamada al método no se pudo efectuar porque el estado actual del objeto no lo permite.", ex);
             }
             catch (NotSupportedException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("No se pudo leer o modificar la secuencia de datos.", ex);
+                Clases.FuncionesGenerales.MensajeError("No se pudo leer o modificar la secuencia de datos.", ex);
             }
             catch (UnauthorizedAccessException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("El sistema ha negado el acceso al archivo de configuración.\nPuede deberse a un error de E/S o a un error de seguridad.", ex);
+                Clases.FuncionesGenerales.MensajeError("El sistema ha negado el acceso al archivo de configuración.\nPuede deberse a un error de E/S o a un error de seguridad.", ex);
             }
             catch (System.Security.SecurityException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error de seguridad.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ha ocurrido un error de seguridad.", ex);
             }
             catch (FormatException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error al dar formato a una variable.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ha ocurrido un error al dar formato a una variable.", ex);
             }
             catch (ArgumentNullException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("El método no acepta referencias nulas.", ex);
+                Clases.FuncionesGenerales.MensajeError("El método no acepta referencias nulas.", ex);
             }
             catch (ArgumentException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("El argumento que se pasó al método no es aceptado por este.", ex);
+                Clases.FuncionesGenerales.MensajeError("El argumento que se pasó al método no es aceptado por este.", ex);
             }
             catch (Exception ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error genérico.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ha ocurrido un error genérico.", ex);
             }
         }
 
@@ -187,7 +187,7 @@ namespace GYM.Formularios
             }
             catch (InvalidOperationException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("No se puede reproducir el sonido. El estado actual del objeto no lo permite.", ex);
+                Clases.FuncionesGenerales.MensajeError("No se puede reproducir el sonido. El estado actual del objeto no lo permite.", ex);
             }
         }
 
@@ -210,7 +210,7 @@ namespace GYM.Formularios
             }
             catch (InvalidOperationException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("No se puede reproducir el sonido. El estado actual del objeto no lo permite.", ex);
+                Clases.FuncionesGenerales.MensajeError("No se puede reproducir el sonido. El estado actual del objeto no lo permite.", ex);
             }
         }
 
@@ -223,14 +223,14 @@ namespace GYM.Formularios
         {
             try
             {
-                Clases.CConfiguracionXML.GuardarConfiguracion("sonidos", "activar", chbSonidosMembresias.Checked.ToString());
+                Clases.ConfiguracionXML.GuardarConfiguracion("sonidos", "activar", chbSonidosMembresias.Checked.ToString());
                 if (chbSonidosMembresias.Checked)
                 {
-                    Clases.CConfiguracionXML.GuardarConfiguracion("sonidos", "bien", cboSonidosBien.Items[cboSonidosBien.SelectedIndex].ToString());
-                    Clases.CConfiguracionXML.GuardarConfiguracion("sonidos", "mal", cboSonidosError.Items[cboSonidosError.SelectedIndex].ToString());
-                    Clases.CFuncionesGenerales.usarSonidos = chbSonidosMembresias.Checked;
-                    Clases.CFuncionesGenerales.sonidoRegBien = cboSonidosBien.Items[cboSonidosBien.SelectedIndex].ToString();
-                    Clases.CFuncionesGenerales.sonidoRegMal = cboSonidosError.Items[cboSonidosError.SelectedIndex].ToString();
+                    Clases.ConfiguracionXML.GuardarConfiguracion("sonidos", "bien", cboSonidosBien.Items[cboSonidosBien.SelectedIndex].ToString());
+                    Clases.ConfiguracionXML.GuardarConfiguracion("sonidos", "mal", cboSonidosError.Items[cboSonidosError.SelectedIndex].ToString());
+                    Clases.FuncionesGenerales.usarSonidos = chbSonidosMembresias.Checked;
+                    Clases.FuncionesGenerales.sonidoRegBien = cboSonidosBien.Items[cboSonidosBien.SelectedIndex].ToString();
+                    Clases.FuncionesGenerales.sonidoRegMal = cboSonidosError.Items[cboSonidosError.SelectedIndex].ToString();
                 }
                 this.Close();
             }
@@ -241,51 +241,51 @@ namespace GYM.Formularios
             }
             catch (System.IO.PathTooLongException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("La ruta del directorio es muy larga.", ex);
+                Clases.FuncionesGenerales.MensajeError("La ruta del directorio es muy larga.", ex);
             }
             catch (System.IO.DirectoryNotFoundException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("El directorio del archivo de configuración no se encontró.", ex);
+                Clases.FuncionesGenerales.MensajeError("El directorio del archivo de configuración no se encontró.", ex);
             }
             catch (System.IO.FileNotFoundException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("No se encontro el archivo de configuración.", ex);
+                Clases.FuncionesGenerales.MensajeError("No se encontro el archivo de configuración.", ex);
             }
             catch (System.IO.IOException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error de E/S.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ha ocurrido un error de E/S.", ex);
             }
             catch (ObjectDisposedException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("No se pudo llamar al método porque el objeto ha sido desechado.", ex);
+                Clases.FuncionesGenerales.MensajeError("No se pudo llamar al método porque el objeto ha sido desechado.", ex);
             }
             catch (InvalidOperationException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("La llamada al método no se pudo efectuar porque el estado actual del objeto no lo permite.", ex);
+                Clases.FuncionesGenerales.MensajeError("La llamada al método no se pudo efectuar porque el estado actual del objeto no lo permite.", ex);
             }
             catch (NotSupportedException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("No se pudo leer o modificar la secuencia de datos.", ex);
+                Clases.FuncionesGenerales.MensajeError("No se pudo leer o modificar la secuencia de datos.", ex);
             }
             catch (UnauthorizedAccessException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("El sistema ha negado el acceso al archivo de configuración.\nPuede deberse a un error de E/S o a un error de seguridad.", ex);
+                Clases.FuncionesGenerales.MensajeError("El sistema ha negado el acceso al archivo de configuración.\nPuede deberse a un error de E/S o a un error de seguridad.", ex);
             }
             catch (System.Security.SecurityException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error de seguridad.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ha ocurrido un error de seguridad.", ex);
             }
             catch (ArgumentNullException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("El método no acepta referencias nulas.", ex);
+                Clases.FuncionesGenerales.MensajeError("El método no acepta referencias nulas.", ex);
             }
             catch (ArgumentException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("El argumento que se pasó al método no es aceptado por este.", ex);
+                Clases.FuncionesGenerales.MensajeError("El argumento que se pasó al método no es aceptado por este.", ex);
             }
             catch (Exception ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error genérico.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ha ocurrido un error genérico.", ex);
             }
         }
 

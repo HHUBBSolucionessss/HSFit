@@ -35,8 +35,8 @@ namespace GYM.Formularios.Reportes
         #endregion
 
         DataTable dtV = new DataTable(), dtVD = new DataTable(), dtM = new DataTable(), dtP = new DataTable();
-        DateTime horaIni = DateTime.Parse(DateTime.Now.ToString("dd-MM-yyyy") + " " + CConfiguracionXML.LeerConfiguración("ticket", "turnoMat")),
-            horaFin = DateTime.Parse(DateTime.Now.ToString("dd-MM-yyyy") + " " + CConfiguracionXML.LeerConfiguración("ticket", "turnoVes")),
+        DateTime horaIni = DateTime.Parse(DateTime.Now.ToString("dd-MM-yyyy") + " " + ConfiguracionXML.LeerConfiguración("ticket", "turnoMat")),
+            horaFin = DateTime.Parse(DateTime.Now.ToString("dd-MM-yyyy") + " " + ConfiguracionXML.LeerConfiguración("ticket", "turnoVes")),
             fecha;
 
         public frmReporteVentaDia()
@@ -103,11 +103,11 @@ namespace GYM.Formularios.Reportes
             }
             catch (MySqlException ex)
             {
-                CFuncionesGenerales.MensajeError("Ha ocurrido un error al obtener el total de las membresías. No se pudo realizar la conexión con la base de datos.", ex);
+                FuncionesGenerales.MensajeError("Ha ocurrido un error al obtener el total de las membresías. No se pudo realizar la conexión con la base de datos.", ex);
             }
             catch (Exception ex)
             {
-                CFuncionesGenerales.MensajeError("Ha ocurrido un error al obtener el total de las membresías. Ocurrió un error genérico.", ex);
+                FuncionesGenerales.MensajeError("Ha ocurrido un error al obtener el total de las membresías. Ocurrió un error genérico.", ex);
             }
         }
 
@@ -168,11 +168,11 @@ namespace GYM.Formularios.Reportes
             }
             catch (MySqlException ex)
             {
-                CFuncionesGenerales.MensajeError("Ha ocurrido un error al obtener el total de las ventas. No se pudo realizar la conexión con la base de datos.", ex);
+                FuncionesGenerales.MensajeError("Ha ocurrido un error al obtener el total de las ventas. No se pudo realizar la conexión con la base de datos.", ex);
             }
             catch (Exception ex)
             {
-                CFuncionesGenerales.MensajeError("Ha ocurrido un error al obtener el total de las ventas. Ocurrió un error genérico.", ex);
+                FuncionesGenerales.MensajeError("Ha ocurrido un error al obtener el total de las ventas. Ocurrió un error genérico.", ex);
             }
         }
 
@@ -196,11 +196,11 @@ namespace GYM.Formularios.Reportes
             }
             catch (MySqlException ex)
             {
-                CFuncionesGenerales.MensajeError("Ha ocurrido un error al obtener los datos de las ventas. No se pudo realizar la conexión con la base de datos.", ex);
+                FuncionesGenerales.MensajeError("Ha ocurrido un error al obtener los datos de las ventas. No se pudo realizar la conexión con la base de datos.", ex);
             }
             catch (Exception ex)
             {
-                CFuncionesGenerales.MensajeError("Ha ocurrido un error al obtener los datos de las ventas. Ocurrió un error genérico.", ex);
+                FuncionesGenerales.MensajeError("Ha ocurrido un error al obtener los datos de las ventas. Ocurrió un error genérico.", ex);
             }
         }
 
@@ -215,11 +215,11 @@ namespace GYM.Formularios.Reportes
             }
             catch (MySqlException ex)
             {
-                CFuncionesGenerales.MensajeError("Ha ocurrido un error al obtener el detallado de las ventas. No se pudo realizar la conexión con la base de datos.", ex);
+                FuncionesGenerales.MensajeError("Ha ocurrido un error al obtener el detallado de las ventas. No se pudo realizar la conexión con la base de datos.", ex);
             }
             catch (Exception ex)
             {
-                CFuncionesGenerales.MensajeError("Ha ocurrido un error al obtener el detallado de las ventas. Ocurrió un error genérico.", ex);
+                FuncionesGenerales.MensajeError("Ha ocurrido un error al obtener el detallado de las ventas. Ocurrió un error genérico.", ex);
             }
         }
 
@@ -244,11 +244,11 @@ namespace GYM.Formularios.Reportes
             }
             catch (MySqlException ex)
             {
-                CFuncionesGenerales.MensajeError("Ha ocurrido un error al obtener el total de productos de ventas. No se pudo realizar la conexión con la base de datos.", ex);
+                FuncionesGenerales.MensajeError("Ha ocurrido un error al obtener el total de productos de ventas. No se pudo realizar la conexión con la base de datos.", ex);
             }
             catch (Exception ex)
             {
-                CFuncionesGenerales.MensajeError("Ha ocurrido un error al obtener el total de productos de ventas. Ocurrió un error genérico.", ex);
+                FuncionesGenerales.MensajeError("Ha ocurrido un error al obtener el total de productos de ventas. Ocurrió un error genérico.", ex);
             }
         }
 
@@ -276,11 +276,11 @@ namespace GYM.Formularios.Reportes
             }
             catch (MySqlException ex)
             {
-                CFuncionesGenerales.MensajeError("Ha ocurrido un error al obtener los datos de las membresías. No se pudo realizar la conexión con la base de datos.", ex);
+                FuncionesGenerales.MensajeError("Ha ocurrido un error al obtener los datos de las membresías. No se pudo realizar la conexión con la base de datos.", ex);
             }
             catch (Exception ex)
             {
-                CFuncionesGenerales.MensajeError("Ha ocurrido un error al obtener los datos de las membresías. Ocurrió un error genérico.", ex);
+                FuncionesGenerales.MensajeError("Ha ocurrido un error al obtener los datos de las membresías. Ocurrió un error genérico.", ex);
             }
         }
 
@@ -309,7 +309,7 @@ namespace GYM.Formularios.Reportes
 	        }
 	        catch (Exception ex)
 	        {
-                CFuncionesGenerales.MensajeError("Ocurrió un error genérico al mostrar la información.", ex);
+                FuncionesGenerales.MensajeError("Ocurrió un error genérico al mostrar la información.", ex);
 	        }
         }
 
@@ -404,7 +404,7 @@ namespace GYM.Formularios.Reportes
             }
             catch (Exception ex)
             {
-                CFuncionesGenerales.MensajeError("Ocurrió un error genérico al mostrar la información de los productos.", ex);
+                FuncionesGenerales.MensajeError("Ocurrió un error genérico al mostrar la información de los productos.", ex);
             }
         }
 
@@ -477,7 +477,7 @@ namespace GYM.Formularios.Reportes
             }
             catch (Exception ex)
             {
-                CFuncionesGenerales.MensajeError("Ocurrió un error genérico al mostrar la información de los totales de productos.", ex);
+                FuncionesGenerales.MensajeError("Ocurrió un error genérico al mostrar la información de los totales de productos.", ex);
             }
         }
 
@@ -521,10 +521,10 @@ namespace GYM.Formularios.Reportes
         private void bgwMembresia_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             tmrEspera.Enabled = false;
-            CFuncionesGenerales.frmEsperaClose();
+            FuncionesGenerales.frmEsperaClose();
             LlenarDataGrid();
             btnBuscar.Enabled = true;
-            CFuncionesGenerales.HabilitarBotonCerrar(this);
+            FuncionesGenerales.HabilitarBotonCerrar(this);
         }
 
         private void bgwVentas_DoWork(object sender, DoWorkEventArgs e)
@@ -535,10 +535,10 @@ namespace GYM.Formularios.Reportes
         private void bgwVentas_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             tmrEspera.Enabled = false;
-            CFuncionesGenerales.frmEsperaClose();
+            FuncionesGenerales.frmEsperaClose();
             LlenarDataGrid();
             btnBuscar.Enabled = true;
-            CFuncionesGenerales.HabilitarBotonCerrar(this);
+            FuncionesGenerales.HabilitarBotonCerrar(this);
         }
 
         private void btnBuscar_Click(object sender, EventArgs e)
@@ -546,7 +546,7 @@ namespace GYM.Formularios.Reportes
             pnlProductos.Controls.Clear();
             pnlTotalProds.Controls.Clear();
             tmrEspera.Enabled = true;
-            CFuncionesGenerales.DeshabilitarBotonCerrar(this);
+            FuncionesGenerales.DeshabilitarBotonCerrar(this);
             btnBuscar.Enabled = false;
             switch (cboReporte.SelectedIndex)
             {
@@ -579,7 +579,7 @@ namespace GYM.Formularios.Reportes
         private void tmrEspera_Tick(object sender, EventArgs e)
         {
             tmrEspera.Enabled = false;
-            CFuncionesGenerales.frmEspera("Espere, buscando las ventas", this);
+            FuncionesGenerales.frmEspera("Espere, buscando las ventas", this);
         }
 
         private void dgvVentas_RowEnter(object sender, DataGridViewCellEventArgs e)

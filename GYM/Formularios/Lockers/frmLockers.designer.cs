@@ -1,6 +1,6 @@
 ﻿namespace GYM.Formularios
 {
-    partial class frmLockers
+    partial class FrmLockers
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmLockers));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmLockers));
             this.dgvLockers = new System.Windows.Forms.DataGridView();
             this.IDL = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.CNumLocker = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -74,7 +74,7 @@
             this.dgvLockers.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvLockers.Size = new System.Drawing.Size(873, 348);
             this.dgvLockers.TabIndex = 0;
-            this.dgvLockers.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvLockers_RowEnter);
+            this.dgvLockers.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.DgvLockers_RowEnter);
             // 
             // IDL
             // 
@@ -141,7 +141,7 @@
             this.btnNuevo.Text = "Nuevo";
             this.btnNuevo.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnNuevo.UseVisualStyleBackColor = false;
-            this.btnNuevo.Click += new System.EventHandler(this.btnNuevo_Click);
+            this.btnNuevo.Click += new System.EventHandler(this.BtnNuevo_Click);
             // 
             // btnAsignar
             // 
@@ -159,7 +159,7 @@
             this.btnAsignar.Text = "Asignar";
             this.btnAsignar.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnAsignar.UseVisualStyleBackColor = false;
-            this.btnAsignar.Click += new System.EventHandler(this.btnAsignar_Click);
+            this.btnAsignar.Click += new System.EventHandler(this.BtnAsignar_Click);
             // 
             // btnEliminar
             // 
@@ -177,7 +177,7 @@
             this.btnEliminar.Text = "Eliminar";
             this.btnEliminar.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnEliminar.UseVisualStyleBackColor = false;
-            this.btnEliminar.Click += new System.EventHandler(this.btnEliminar_Click);
+            this.btnEliminar.Click += new System.EventHandler(this.BtnEliminar_Click);
             // 
             // btnEditar
             // 
@@ -195,7 +195,7 @@
             this.btnEditar.Text = "Editar";
             this.btnEditar.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnEditar.UseVisualStyleBackColor = false;
-            this.btnEditar.Click += new System.EventHandler(this.btnEditar_Click);
+            this.btnEditar.Click += new System.EventHandler(this.BtnEditar_Click);
             // 
             // frmLockers
             // 
@@ -214,7 +214,7 @@
             this.Name = "frmLockers";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Lockers";
-            this.Load += new System.EventHandler(this.frmLockers_Load);
+            this.Load += new System.EventHandler(this.FrmLockers_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvLockers)).EndInit();
             this.ResumeLayout(false);
 

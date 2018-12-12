@@ -29,7 +29,7 @@ namespace GYM.Formularios.Compras
 
         private void txtDescuento_KeyPress(object sender, KeyPressEventArgs e)
         {
-            CFuncionesGenerales.VerificarEsNumero(ref sender, ref e, false);
+            FuncionesGenerales.VerificarEsNumero(ref sender, ref e, false);
         }
 
         private void btnAceptar_Click(object sender, EventArgs e)

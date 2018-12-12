@@ -58,15 +58,15 @@ namespace GYM.Formularios
         #region Metodos
         private void CargarConfiguracion()
         {
-            img = CFuncionesGenerales.img;
-            promo01 = CFuncionesGenerales.promo01;
-            promo02 = CFuncionesGenerales.promo02;
-            promo03 = CFuncionesGenerales.promo03;
-            promo04 = CFuncionesGenerales.promo04;
-            promo05 = CFuncionesGenerales.promo05;
-            promo06 = CFuncionesGenerales.promo06;
-            chbLectorHuella.Checked = CFuncionesGenerales.usarHuella;
-            solo = chbRegistro.Checked = CFuncionesGenerales.soloRegistro;
+            img = FuncionesGenerales.img;
+            promo01 = FuncionesGenerales.promo01;
+            promo02 = FuncionesGenerales.promo02;
+            promo03 = FuncionesGenerales.promo03;
+            promo04 = FuncionesGenerales.promo04;
+            promo05 = FuncionesGenerales.promo05;
+            promo06 = FuncionesGenerales.promo06;
+            chbLectorHuella.Checked = FuncionesGenerales.usarHuella;
+            solo = chbRegistro.Checked = FuncionesGenerales.soloRegistro;
         }
 
         private void CargarInterfaz()
@@ -86,29 +86,29 @@ namespace GYM.Formularios
 
         private void GuardarVariables()
         {
-            CFuncionesGenerales.img = img;
-            CFuncionesGenerales.promo01 = promo01;
-            CFuncionesGenerales.promo02 = promo02;
-            CFuncionesGenerales.promo03 = promo03;
-            CFuncionesGenerales.promo04 = promo04;
-            CFuncionesGenerales.promo05 = promo05;
-            CFuncionesGenerales.promo06 = promo06;
-            CFuncionesGenerales.usarHuella = chbLectorHuella.Checked;
-            CFuncionesGenerales.soloRegistro = chbRegistro.Checked;
+            FuncionesGenerales.img = img;
+            FuncionesGenerales.promo01 = promo01;
+            FuncionesGenerales.promo02 = promo02;
+            FuncionesGenerales.promo03 = promo03;
+            FuncionesGenerales.promo04 = promo04;
+            FuncionesGenerales.promo05 = promo05;
+            FuncionesGenerales.promo06 = promo06;
+            FuncionesGenerales.usarHuella = chbLectorHuella.Checked;
+            FuncionesGenerales.soloRegistro = chbRegistro.Checked;
         }
 
         private void GuardarConfiguracion()
         {
             try
             {
-                CConfiguracionXML.GuardarConfiguracion("huella", "usar", chbLectorHuella.Checked.ToString());
-                CConfiguracionXML.GuardarConfiguracion("general", "soloRegistro", chbRegistro.Checked.ToString());
-                if (CFuncionesGenerales.CompararImagenes(img,Properties.Resources.Fondo))
-                    CConfiguracionXML.GuardarConfiguracion("tema", "imagenFondo", "Fondo");
+                ConfiguracionXML.GuardarConfiguracion("huella", "usar", chbLectorHuella.Checked.ToString());
+                ConfiguracionXML.GuardarConfiguracion("general", "soloRegistro", chbRegistro.Checked.ToString());
+                if (FuncionesGenerales.CompararImagenes(img,Properties.Resources.Fondo))
+                    ConfiguracionXML.GuardarConfiguracion("tema", "imagenFondo", "Fondo");
                 else if (img != null)
                 {
                     string ruta = Application.StartupPath + "\\Img\\fondo.png";
-                    CConfiguracionXML.GuardarConfiguracion("tema", "imagenFondo", ruta);
+                    ConfiguracionXML.GuardarConfiguracion("tema", "imagenFondo", ruta);
                     Bitmap b = new Bitmap(img);
                     try
                     {
@@ -119,77 +119,77 @@ namespace GYM.Formularios
                     }
                 }
                 else
-                    CConfiguracionXML.GuardarConfiguracion("tema", "imagenFondo", "null");
+                    ConfiguracionXML.GuardarConfiguracion("tema", "imagenFondo", "null");
 
                 if (pcbPromocion01.Image == null)
                 {
-                    CConfiguracionXML.GuardarConfiguracion("promociones", "promo01", "null");
-                    CFuncionesGenerales.promo01 = null;
+                    ConfiguracionXML.GuardarConfiguracion("promociones", "promo01", "null");
+                    FuncionesGenerales.promo01 = null;
                 }
                 else
                 {
                     string ruta = Application.StartupPath + "\\Img\\promo01.jpeg";
-                    CConfiguracionXML.GuardarConfiguracion("promociones", "promo01", ruta);
+                    ConfiguracionXML.GuardarConfiguracion("promociones", "promo01", ruta);
                     Bitmap b = new Bitmap(pcbPromocion01.Image);
                     b.Save(ruta, System.Drawing.Imaging.ImageFormat.Jpeg);
                 }
                 if (pcbPromocion02.Image == null)
                 {
-                    CConfiguracionXML.GuardarConfiguracion("promociones", "promo02", "null");
-                    CFuncionesGenerales.promo02 = null;
+                    ConfiguracionXML.GuardarConfiguracion("promociones", "promo02", "null");
+                    FuncionesGenerales.promo02 = null;
                 }
                 else
                 {
                     string ruta = Application.StartupPath + "\\Img\\promo02.jpeg";
-                    CConfiguracionXML.GuardarConfiguracion("promociones", "promo02", ruta);
+                    ConfiguracionXML.GuardarConfiguracion("promociones", "promo02", ruta);
                     Bitmap b = new Bitmap(pcbPromocion02.Image);
                     b.Save(ruta, System.Drawing.Imaging.ImageFormat.Jpeg);
                 }
                 if (pcbPromocion03.Image == null)
                 {
-                    CConfiguracionXML.GuardarConfiguracion("promociones", "promo03", "null");
-                    CFuncionesGenerales.promo03 = null;
+                    ConfiguracionXML.GuardarConfiguracion("promociones", "promo03", "null");
+                    FuncionesGenerales.promo03 = null;
                 }
                 else
                 {
                     string ruta = Application.StartupPath + "\\Img\\promo03.jpeg";
-                    CConfiguracionXML.GuardarConfiguracion("promociones", "promo03", ruta);
+                    ConfiguracionXML.GuardarConfiguracion("promociones", "promo03", ruta);
                     Bitmap b = new Bitmap(pcbPromocion03.Image);
                     b.Save(ruta, System.Drawing.Imaging.ImageFormat.Jpeg);
                 }
                 if (pcbPromocion04.Image == null)
                 {
-                    CConfiguracionXML.GuardarConfiguracion("promociones", "promo04", "null");
-                    CFuncionesGenerales.promo04 = null;
+                    ConfiguracionXML.GuardarConfiguracion("promociones", "promo04", "null");
+                    FuncionesGenerales.promo04 = null;
                 }
                 else
                 {
                     string ruta = Application.StartupPath + "\\Img\\promo04.jpeg";
-                    CConfiguracionXML.GuardarConfiguracion("promociones", "promo04", ruta);
+                    ConfiguracionXML.GuardarConfiguracion("promociones", "promo04", ruta);
                     Bitmap b = new Bitmap(pcbPromocion04.Image);
                     b.Save(ruta, System.Drawing.Imaging.ImageFormat.Jpeg);
                 }
                 if (pcbPromocion05.Image == null)
                 {
-                    CConfiguracionXML.GuardarConfiguracion("promociones", "promo05", "null");
-                    CFuncionesGenerales.promo05 = null;
+                    ConfiguracionXML.GuardarConfiguracion("promociones", "promo05", "null");
+                    FuncionesGenerales.promo05 = null;
                 }
                 else
                 {
                     string ruta = Application.StartupPath + "\\Img\\promo05.jpeg";
-                    CConfiguracionXML.GuardarConfiguracion("promociones", "promo05", ruta);
+                    ConfiguracionXML.GuardarConfiguracion("promociones", "promo05", ruta);
                     Bitmap b = new Bitmap(pcbPromocion05.Image);
                     b.Save(ruta, System.Drawing.Imaging.ImageFormat.Jpeg);
                 }
                 if (pcbPromocion06.Image == null)
                 {
-                    CConfiguracionXML.GuardarConfiguracion("promociones", "promo06", "null");
-                    CFuncionesGenerales.promo06 = null;
+                    ConfiguracionXML.GuardarConfiguracion("promociones", "promo06", "null");
+                    FuncionesGenerales.promo06 = null;
                 }
                 else
                 {
                     string ruta = Application.StartupPath + "\\Img\\promo06.jpeg";
-                    CConfiguracionXML.GuardarConfiguracion("promociones", "promo06", ruta);
+                    ConfiguracionXML.GuardarConfiguracion("promociones", "promo06", ruta);
                     Bitmap b = new Bitmap(pcbPromocion06.Image);
                     b.Save(ruta, System.Drawing.Imaging.ImageFormat.Jpeg);
                 }
@@ -201,47 +201,47 @@ namespace GYM.Formularios
             }
             catch (System.IO.PathTooLongException ex)
             {
-                CFuncionesGenerales.MensajeError("La ruta del directorio es muy larga.", ex);
+                FuncionesGenerales.MensajeError("La ruta del directorio es muy larga.", ex);
             }
             catch (System.IO.DirectoryNotFoundException ex)
             {
-                CFuncionesGenerales.MensajeError("El directorio del archivo de configuración no se encontró.", ex);
+                FuncionesGenerales.MensajeError("El directorio del archivo de configuración no se encontró.", ex);
             }
             catch (System.IO.FileNotFoundException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("No se encontro el archivo de configuración.", ex);
+                Clases.FuncionesGenerales.MensajeError("No se encontro el archivo de configuración.", ex);
             }
             catch (System.IO.IOException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error de E/S.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ha ocurrido un error de E/S.", ex);
             }
             catch (InvalidOperationException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("La llamada al método no se pudo efectuar porque el estado actual del objeto no lo permite.", ex);
+                Clases.FuncionesGenerales.MensajeError("La llamada al método no se pudo efectuar porque el estado actual del objeto no lo permite.", ex);
             }
             catch (NotSupportedException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("No se pudo leer o modificar la secuencia de datos.", ex);
+                Clases.FuncionesGenerales.MensajeError("No se pudo leer o modificar la secuencia de datos.", ex);
             }
             catch (UnauthorizedAccessException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("El sistema ha negado el acceso al archivo de configuración.\nPuede deberse a un error de E/S o a un error de seguridad.", ex);
+                Clases.FuncionesGenerales.MensajeError("El sistema ha negado el acceso al archivo de configuración.\nPuede deberse a un error de E/S o a un error de seguridad.", ex);
             }
             catch (System.Security.SecurityException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error de seguridad.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ha ocurrido un error de seguridad.", ex);
             }
             catch (ArgumentNullException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("El método no acepta referencias nulas.", ex);
+                Clases.FuncionesGenerales.MensajeError("El método no acepta referencias nulas.", ex);
             }
             catch (ArgumentException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("El argumento que se pasó al método no es aceptado por este.", ex);
+                Clases.FuncionesGenerales.MensajeError("El argumento que se pasó al método no es aceptado por este.", ex);
             }
             catch (Exception ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error genérico.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ha ocurrido un error genérico.", ex);
             }
         }
         #endregion
@@ -273,15 +273,15 @@ namespace GYM.Formularios
             }
             catch (System.IO.FileNotFoundException ex)
             {
-                CFuncionesGenerales.MensajeError("El archivo no se encontró. Verífique que no se haya borrado.", ex);
+                FuncionesGenerales.MensajeError("El archivo no se encontró. Verífique que no se haya borrado.", ex);
             }
             catch (ArgumentException ex)
             {
-                CFuncionesGenerales.MensajeError("Ha ocurrido un error al asignar una propiedad.", ex);
+                FuncionesGenerales.MensajeError("Ha ocurrido un error al asignar una propiedad.", ex);
             }
             catch (Exception ex)
             {
-               CFuncionesGenerales.MensajeError("Ha ocurrido un error genérico.", ex);
+               FuncionesGenerales.MensajeError("Ha ocurrido un error genérico.", ex);
             }
         }
 
@@ -331,31 +331,31 @@ namespace GYM.Formularios
             }
             catch (System.IO.FileNotFoundException ex)
             {
-                CFuncionesGenerales.MensajeError("El archivo no se encontró. Verífique que no se haya borrado.", ex);
+                FuncionesGenerales.MensajeError("El archivo no se encontró. Verífique que no se haya borrado.", ex);
             }
             catch (FormatException ex)
             {
-                CFuncionesGenerales.MensajeError("Ha ocurrido un error al dar formato a una variable.", ex);
+                FuncionesGenerales.MensajeError("Ha ocurrido un error al dar formato a una variable.", ex);
             }
             catch (OverflowException ex)
             {
-                CFuncionesGenerales.MensajeError("Ha ocurrido un desbordamiento.", ex);
+                FuncionesGenerales.MensajeError("Ha ocurrido un desbordamiento.", ex);
             }
             catch (ArgumentOutOfRangeException ex)
             {
-                CFuncionesGenerales.MensajeError("El argumento dado se sale de rango.", ex);
+                FuncionesGenerales.MensajeError("El argumento dado se sale de rango.", ex);
             }
             catch (ArgumentNullException ex)
             {
-                CFuncionesGenerales.MensajeError("El método llamado no admite argumentos nulos.", ex);
+                FuncionesGenerales.MensajeError("El método llamado no admite argumentos nulos.", ex);
             }
             catch (ArgumentException ex)
             {
-                CFuncionesGenerales.MensajeError("Ha ocurrido un error al asignar una propiedad.", ex);
+                FuncionesGenerales.MensajeError("Ha ocurrido un error al asignar una propiedad.", ex);
             }
             catch (Exception ex)
             {
-                CFuncionesGenerales.MensajeError("Ha ocurrido un error genérico.", ex);
+                FuncionesGenerales.MensajeError("Ha ocurrido un error genérico.", ex);
             }
         }
 
@@ -378,19 +378,19 @@ namespace GYM.Formularios
             }
             catch (InvalidEnumArgumentException ex)
             {
-                CFuncionesGenerales.MensajeError("La enumeración pasada no es válida para el método llamado.", ex);
+                FuncionesGenerales.MensajeError("La enumeración pasada no es válida para el método llamado.", ex);
             }
             catch (InvalidOperationException ex)
             {
-                CFuncionesGenerales.MensajeError("La llamada al método no es válida para el estado actual del objeto.", ex);
+                FuncionesGenerales.MensajeError("La llamada al método no es válida para el estado actual del objeto.", ex);
             }
             catch (NotSupportedException ex)
             {
-                CFuncionesGenerales.MensajeError("No se admite el método invocado o una secuencia no admite ningún tipo de operación.", ex);
+                FuncionesGenerales.MensajeError("No se admite el método invocado o una secuencia no admite ningún tipo de operación.", ex);
             }
             catch (Exception ex)
             {
-                CFuncionesGenerales.MensajeError("Ha ocurrido un error genérico.", ex);
+                FuncionesGenerales.MensajeError("Ha ocurrido un error genérico.", ex);
             }
         }
 

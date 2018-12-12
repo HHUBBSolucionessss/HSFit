@@ -91,11 +91,11 @@ namespace GYM.Formularios.Membresia
             }
             catch (MySqlException ex)
             {
-                CFuncionesGenerales.MensajeError("Ha ocurrido un error al tratar de conectar con la base de datos.", ex);
+                FuncionesGenerales.MensajeError("Ha ocurrido un error al tratar de conectar con la base de datos.", ex);
             }
             catch (Exception ex)
             {
-                CFuncionesGenerales.MensajeError("Ha ocurrido un error genérico.", ex);
+                FuncionesGenerales.MensajeError("Ha ocurrido un error genérico.", ex);
             }
         }
 
@@ -165,19 +165,19 @@ namespace GYM.Formularios.Membresia
             }
             catch (FormatException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error al tratar de dar formato a una variable.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ha ocurrido un error al tratar de dar formato a una variable.", ex);
             }
             catch (ArgumentOutOfRangeException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("El argumento dado en algún método se ha salido del rango.", ex);
+                Clases.FuncionesGenerales.MensajeError("El argumento dado en algún método se ha salido del rango.", ex);
             }
             catch (ArgumentNullException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Algún método llamado en buscar miembros no admite argumentos nulos.", ex);
+                Clases.FuncionesGenerales.MensajeError("Algún método llamado en buscar miembros no admite argumentos nulos.", ex);
             }
             catch (Exception ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error genérico.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ha ocurrido un error genérico.", ex);
             }
         }
 
@@ -193,11 +193,11 @@ namespace GYM.Formularios.Membresia
             }
             catch (MySqlException ex)
             {
-                CFuncionesGenerales.MensajeError("No se ha podido cambiar el estado de la membresía. Ocurrió un error al conectar con la base de datos.", ex);
+                FuncionesGenerales.MensajeError("No se ha podido cambiar el estado de la membresía. Ocurrió un error al conectar con la base de datos.", ex);
             }
             catch (Exception ex)
             {
-                CFuncionesGenerales.MensajeError("No se ha podido cambiar el estado de la membresía. Ha ocurrido un error genérico.", ex);
+                FuncionesGenerales.MensajeError("No se ha podido cambiar el estado de la membresía. Ha ocurrido un error genérico.", ex);
             }
         }
         #endregion
@@ -245,11 +245,11 @@ namespace GYM.Formularios.Membresia
             }
             catch (MySqlException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error al tratar de conectar con la base de datos.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ha ocurrido un error al tratar de conectar con la base de datos.", ex);
             }
             catch (Exception ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error genérico.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ha ocurrido un error genérico.", ex);
             }
         }
 
@@ -290,11 +290,11 @@ namespace GYM.Formularios.Membresia
             }
             catch (MySqlException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error al tratar de conectar con la base de datos.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ha ocurrido un error al tratar de conectar con la base de datos.", ex);
             }
             catch (Exception ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error genérico.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ha ocurrido un error genérico.", ex);
             }
         }
 
@@ -306,10 +306,7 @@ namespace GYM.Formularios.Membresia
 
         private void frmMembresia_Load(object sender, EventArgs e)
         {
-            if (frmMain.nivelUsuario == 3)
-                btnPendiente.Visible = true;
-            else
-                btnPendiente.Visible = false;
+
         }
 
         private void dgvPersonas_RowEnter(object sender, DataGridViewCellEventArgs e)
@@ -352,17 +349,17 @@ namespace GYM.Formularios.Membresia
         private void bgwBusqueda_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             tmrEspera.Enabled = false;
-            CFuncionesGenerales.frmEsperaClose();
+            FuncionesGenerales.frmEsperaClose();
             System.Threading.Thread.Sleep(300);
             LlenarDataGrid();
             txtBusqueda.Enabled = true;
-            CFuncionesGenerales.HabilitarBotonCerrar(this);
+            FuncionesGenerales.HabilitarBotonCerrar(this);
         }
 
         private void tmrEspera_Tick(object sender, EventArgs e)
         {
             tmrEspera.Enabled = false;
-            CFuncionesGenerales.frmEspera("Espere, buscando socios", this);
+            FuncionesGenerales.frmEspera("Espere, buscando socios", this);
         }
 
         private void btnReimprimir_Click(object sender, EventArgs e)
@@ -380,13 +377,13 @@ namespace GYM.Formularios.Membresia
         {
             try
             {
-                if (Clases.CConfiguracionXML.ExisteConfiguracion("ticket", "imprimir"))
+                if (Clases.ConfiguracionXML.ExisteConfiguracion("ticket", "imprimir"))
                 {
-                    if (bool.Parse(Clases.CConfiguracionXML.LeerConfiguración("ticket", "imprimir")))
+                    if (bool.Parse(Clases.ConfiguracionXML.LeerConfiguración("ticket", "imprimir")))
                     {
-                        if (Clases.CConfiguracionXML.ExisteConfiguracion("ticket", "preguntar"))
+                        if (Clases.ConfiguracionXML.ExisteConfiguracion("ticket", "preguntar"))
                         {
-                            if (bool.Parse(Clases.CConfiguracionXML.LeerConfiguración("ticket", "preguntar")))
+                            if (bool.Parse(Clases.ConfiguracionXML.LeerConfiguración("ticket", "preguntar")))
                             {
                                 if (MessageBox.Show("¿Deseas imprimir el ticket de la membresía del socio: " + numeroSocio + "?", "HS FIT", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == System.Windows.Forms.DialogResult.Yes)
                                 {
@@ -415,47 +412,47 @@ namespace GYM.Formularios.Membresia
             }
             catch (System.IO.PathTooLongException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("La ruta del directorio es muy larga.", ex);
+                Clases.FuncionesGenerales.MensajeError("La ruta del directorio es muy larga.", ex);
             }
             catch (System.IO.DirectoryNotFoundException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("El directorio del archivo de configuración no se encontró.", ex);
+                Clases.FuncionesGenerales.MensajeError("El directorio del archivo de configuración no se encontró.", ex);
             }
             catch (System.IO.FileNotFoundException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("No se encontro el archivo de configuración.", ex);
+                Clases.FuncionesGenerales.MensajeError("No se encontro el archivo de configuración.", ex);
             }
             catch (System.IO.IOException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error de E/S.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ha ocurrido un error de E/S.", ex);
             }
             catch (InvalidOperationException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("La llamada al método no se pudo efectuar porque el estado actual del objeto no lo permite.", ex);
+                Clases.FuncionesGenerales.MensajeError("La llamada al método no se pudo efectuar porque el estado actual del objeto no lo permite.", ex);
             }
             catch (NotSupportedException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("No se pudo leer o modificar la secuencia de datos.", ex);
+                Clases.FuncionesGenerales.MensajeError("No se pudo leer o modificar la secuencia de datos.", ex);
             }
             catch (UnauthorizedAccessException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("El sistema ha negado el acceso al archivo de configuración.\nPuede deberse a un error de E/S o a un error de seguridad.", ex);
+                Clases.FuncionesGenerales.MensajeError("El sistema ha negado el acceso al archivo de configuración.\nPuede deberse a un error de E/S o a un error de seguridad.", ex);
             }
             catch (System.Security.SecurityException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error de seguridad.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ha ocurrido un error de seguridad.", ex);
             }
             catch (ArgumentNullException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("El método no acepta referencias nulas.", ex);
+                Clases.FuncionesGenerales.MensajeError("El método no acepta referencias nulas.", ex);
             }
             catch (ArgumentException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("El argumento que se pasó al método no es aceptado por este.", ex);
+                Clases.FuncionesGenerales.MensajeError("El argumento que se pasó al método no es aceptado por este.", ex);
             }
             catch (Exception ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error genérico.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ha ocurrido un error genérico.", ex);
             }
         }
 
@@ -467,7 +464,7 @@ namespace GYM.Formularios.Membresia
                 if (!bgwBusqueda.IsBusy)
                 {
                     txtBusqueda.Enabled = false;
-                    CFuncionesGenerales.DeshabilitarBotonCerrar(this);
+                    FuncionesGenerales.DeshabilitarBotonCerrar(this);
                     tmrEspera.Enabled = true;
                     bgwBusqueda.RunWorkerAsync(txtBusqueda.Text);
                 }

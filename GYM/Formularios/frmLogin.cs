@@ -1,13 +1,9 @@
 ﻿using GYM.Clases;
 using MySql.Data.MySqlClient;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace GYM.Formularios
@@ -58,7 +54,7 @@ namespace GYM.Formularios
                 DataTable dt = ConexionBD.EjecutarConsultaSelect(sql);
                 foreach (DataRow dr in dt.Rows)
                 {
-                    img = CFuncionesGenerales.BytesImagen((byte[])dr["imagen"]);
+                    img = FuncionesGenerales.BytesImagen((byte[])dr["imagen"]);
                     this.Invoke(i, img);
                     return;
                 }
@@ -89,18 +85,17 @@ namespace GYM.Formularios
             {
                 try
                 {
-                    string sql = "SELECT * FROM usuarios WHERE userName='" + tbxUsuario.Text + "' AND password='" + CFuncionesGenerales.GetHashString(tbxPassword.Text) + "' AND eliminado=0";
+                    string sql = "SELECT * FROM usuarios WHERE userName='" + tbxUsuario.Text + "' AND password='" + FuncionesGenerales.GetHashString(tbxPassword.Text) + "' AND eliminado=0";
                     DataTable dt = ConexionBD.EjecutarConsultaSelect(sql);
                     foreach (DataRow dr in dt.Rows)
                     {
-                        if (tbxUsuario.Text.Equals(dr["userName"]) && Clases.CFuncionesGenerales.GetHashString(tbxPassword.Text.Trim()).Equals(dr["password"]))
+                        if (tbxUsuario.Text.Equals(dr["userName"]) && Clases.FuncionesGenerales.GetHashString(tbxPassword.Text.Trim()).Equals(dr["password"]))
                         {
                             Image img = null;
                             if (dr["imagen"] != DBNull.Value)
-                                img = CFuncionesGenerales.BytesImagen((byte[])dr["imagen"]);
+                                img = FuncionesGenerales.BytesImagen((byte[])dr["imagen"]);
                             else
                                 img = pbxUsuario.Image;
-                            frmMain.Instancia.InformacionInicio(Convert.ToInt32(dr["nivel"]), Convert.ToInt32(dr["id"]), tbxUsuario.Text, img);
                             frmMain.Instancia.Show();
                             this.Close();
                             return;
@@ -117,12 +112,12 @@ namespace GYM.Formularios
                 }
                 catch (MySqlException ex)
                 {
-                    CFuncionesGenerales.MensajeError("Ocurrió un error al verificar los datos del usuario. No se ha podido conectar con la base de datos.", ex);
+                    FuncionesGenerales.MensajeError("Ocurrió un error al verificar los datos del usuario. No se ha podido conectar con la base de datos.", ex);
                     tbxPassword.Text = "";
                 }
                 catch (Exception ex)
                 {
-                    CFuncionesGenerales.MensajeError("Ocurrió un error al verificar los datos del usuario. Ocurrió un error genérico.", ex);
+                    FuncionesGenerales.MensajeError("Ocurrió un error al verificar los datos del usuario. Ocurrió un error genérico.", ex);
                     tbxPassword.Text = "";
                 }
             }
@@ -131,7 +126,7 @@ namespace GYM.Formularios
         private void frmLogin_Load(object sender, EventArgs e)
         {
             Application.DoEvents();
-            Clases.CFuncionesGenerales.CargarInterfaz(this);
+            Clases.FuncionesGenerales.CargarInterfaz(this);
             tbxUsuario.Select();
         }
 

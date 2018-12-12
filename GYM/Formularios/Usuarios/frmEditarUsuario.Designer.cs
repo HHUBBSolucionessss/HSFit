@@ -29,8 +29,6 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmEditarUsuario));
-            this.lblNivel = new System.Windows.Forms.Label();
-            this.cboNivel = new System.Windows.Forms.ComboBox();
             this.lblUsuario = new System.Windows.Forms.Label();
             this.chbContrasena = new System.Windows.Forms.CheckBox();
             this.btnAceptar = new System.Windows.Forms.Button();
@@ -51,28 +49,6 @@
             this.pnlContra.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pcbImagenUsuario)).BeginInit();
             this.SuspendLayout();
-            // 
-            // lblNivel
-            // 
-            this.lblNivel.AutoSize = true;
-            this.lblNivel.Font = new System.Drawing.Font("Segoe UI", 11F);
-            this.lblNivel.Location = new System.Drawing.Point(229, 9);
-            this.lblNivel.Name = "lblNivel";
-            this.lblNivel.Size = new System.Drawing.Size(46, 20);
-            this.lblNivel.TabIndex = 2;
-            this.lblNivel.Text = "Nivel:";
-            // 
-            // cboNivel
-            // 
-            this.cboNivel.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cboNivel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cboNivel.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this.cboNivel.FormattingEnabled = true;
-            this.cboNivel.Location = new System.Drawing.Point(233, 32);
-            this.cboNivel.Name = "cboNivel";
-            this.cboNivel.Size = new System.Drawing.Size(215, 29);
-            this.cboNivel.TabIndex = 3;
-            this.cboNivel.SelectedIndexChanged += new System.EventHandler(this.cboNivel_SelectedIndexChanged);
             // 
             // lblUsuario
             // 
@@ -105,7 +81,6 @@
             this.btnAceptar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnAceptar.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnAceptar.ForeColor = System.Drawing.Color.White;
-            
             this.btnAceptar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnAceptar.Location = new System.Drawing.Point(341, 351);
             this.btnAceptar.Name = "btnAceptar";
@@ -218,7 +193,6 @@
             // 
             this.btnQuitar.FlatAppearance.BorderSize = 0;
             this.btnQuitar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            
             this.btnQuitar.Location = new System.Drawing.Point(154, 279);
             this.btnQuitar.Name = "btnQuitar";
             this.btnQuitar.Size = new System.Drawing.Size(50, 30);
@@ -282,8 +256,6 @@
             this.Controls.Add(this.pnlContra);
             this.Controls.Add(this.btnAceptar);
             this.Controls.Add(this.chbContrasena);
-            this.Controls.Add(this.lblNivel);
-            this.Controls.Add(this.cboNivel);
             this.Controls.Add(this.lblUsuario);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -302,9 +274,6 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.Label lblNivel;
-        private System.Windows.Forms.ComboBox cboNivel;
         private System.Windows.Forms.Label lblUsuario;
         private System.Windows.Forms.CheckBox chbContrasena;
         private System.Windows.Forms.Button btnAceptar;

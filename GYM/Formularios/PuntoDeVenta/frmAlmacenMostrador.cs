@@ -38,12 +38,12 @@ namespace GYM.Formularios.PuntoDeVenta
             }
             catch (MySqlException ex)
             {
-                CFuncionesGenerales.MensajeError("No se han podido cargar las cantidades. No se ha podido conectar a la base de datos.\nLa ventana se cerrará.", ex);
+                FuncionesGenerales.MensajeError("No se han podido cargar las cantidades. No se ha podido conectar a la base de datos.\nLa ventana se cerrará.", ex);
                 this.Close();
             }
             catch (Exception ex)
             {
-                CFuncionesGenerales.MensajeError("No se han podido cargar las cantidades. Ha ocurrido un error genérico.\nLa ventana se cerrará.", ex);
+                FuncionesGenerales.MensajeError("No se han podido cargar las cantidades. Ha ocurrido un error genérico.\nLa ventana se cerrará.", ex);
                 this.Close();
             }
         }
@@ -99,11 +99,11 @@ namespace GYM.Formularios.PuntoDeVenta
             }
             catch (MySqlException ex)
             {
-                CFuncionesGenerales.MensajeError("No se ha podido actualizar las cantidades. No se ha podido conectar con la base de datos.", ex);
+                FuncionesGenerales.MensajeError("No se ha podido actualizar las cantidades. No se ha podido conectar con la base de datos.", ex);
             }
             catch (Exception ex)
             {
-                CFuncionesGenerales.MensajeError("No se ha podido actualizar las cantidades. Ha ocurrido un error genérico.", ex);
+                FuncionesGenerales.MensajeError("No se ha podido actualizar las cantidades. Ha ocurrido un error genérico.", ex);
             }
         }
     }

@@ -56,11 +56,11 @@ namespace GYM.Formularios.Socio
             }
             catch (MySqlException ex)
             {
-                CFuncionesGenerales.MensajeError("Ha ocurrido un error al buscar los socios. No se ha podido conectar a la base de datos.", ex);
+                FuncionesGenerales.MensajeError("Ha ocurrido un error al buscar los socios. No se ha podido conectar a la base de datos.", ex);
             }
             catch (Exception ex)
             {
-                CFuncionesGenerales.MensajeError("Ha ocurrido un error genérico al buscar los socios. ", ex);
+                FuncionesGenerales.MensajeError("Ha ocurrido un error genérico al buscar los socios. ", ex);
             }
         }
 
@@ -112,7 +112,7 @@ namespace GYM.Formularios.Socio
                 tmrEspera.Enabled = true;
                 bgwBusqueda.RunWorkerAsync(txtBusqueda.Text);
                 txtBusqueda.Enabled = false;
-                CFuncionesGenerales.DeshabilitarBotonCerrar(this);
+                FuncionesGenerales.DeshabilitarBotonCerrar(this);
             }
         }
         #endregion
@@ -121,7 +121,7 @@ namespace GYM.Formularios.Socio
         private void frmMiembros_Load(object sender, EventArgs e)
         {
 
-            CFuncionesGenerales.CargarInterfaz(this);
+            FuncionesGenerales.CargarInterfaz(this);
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -148,16 +148,16 @@ namespace GYM.Formularios.Socio
         private void bgwBusqueda_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             tmrEspera.Enabled = false;
-            CFuncionesGenerales.frmEsperaClose();
+            FuncionesGenerales.frmEsperaClose();
             LlenarDataGrid();
             txtBusqueda.Enabled = true;
-            CFuncionesGenerales.HabilitarBotonCerrar(this);
+            FuncionesGenerales.HabilitarBotonCerrar(this);
         }
 
         private void tmrEspera_Tick(object sender, EventArgs e)
         {
             tmrEspera.Enabled = false;
-            CFuncionesGenerales.frmEspera("Espere, buscando socios", this);
+            FuncionesGenerales.frmEspera("Espere, buscando socios", this);
         }
 
         private void bgwImagen_DoWork(object sender, DoWorkEventArgs e)

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Drawing;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
@@ -12,7 +11,7 @@ namespace GYM
     {
         int segundos = 0;
         public static int id;
-        public static int nivelUsuario;
+        bool cierreSesion = false;
 
         #region Instancia
         private static frmMain frmInstancia;
@@ -38,22 +37,18 @@ namespace GYM
         public frmMain()
         {
             InitializeComponent();
-            pnlFondo.BackColor = Color.Transparent;
-            pnlFondo.BackgroundImage = Clases.CFuncionesGenerales.img;
+            pnlFondo.BackgroundImage = Clases.FuncionesGenerales.img;
             
         }
 
-        public void InformacionInicio(int nivelUsuario, int id, string nomUsu, Image img)
+        internal void UserDataChanged(object sender, EventArgs e)
         {
-            frmMain.nivelUsuario = nivelUsuario;
-            frmMain.id = id;
-            OcultarElementosBarra();
+            lblNombre.Text = Clases.Usuario.NombreUsuarioActual + "\n" + Clases.Usuario.ApellidosUsuarioActual;
         }
 
         private void main_Load(object sender, EventArgs e)
         {
-            Clases.CFuncionesGenerales.CargarInterfaz(this);
-            if (!Clases.CFuncionesGenerales.versionGratuita)
+            Clases.FuncionesGenerales.CargarInterfaz(this);
                 tmrCumpleaños.Enabled = true;
             if (Clases.Caja.EstadoDeCaja)
                 abrirToolStripMenuItem.Text = "Cierre de Caja";
@@ -74,18 +69,6 @@ namespace GYM
                     frm.Close();
         }
 
-        private void toolStripSalir_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                
-            Application.Exit();
-            }
-            catch 
-            {
-                MessageBox.Show("Se ha generado un error, favor de intentarlo de nuevo","Error",MessageBoxButtons.OK,MessageBoxIcon.Error);
-            }
-        }
 
         private void main_FormClosed(object sender, FormClosedEventArgs e)
         {
@@ -107,8 +90,6 @@ namespace GYM
         {
             if (!Formularios.frmIngresoSocio.Instancia.Visible)
             {
-                Formularios.frmIngresoSocio.Instancia.ID = frmMain.id;
-                Formularios.frmIngresoSocio.Instancia.NivelUsuario = frmMain.nivelUsuario;
                 Formularios.frmIngresoSocio.Instancia.Show(this);
             }
         }
@@ -138,35 +119,8 @@ namespace GYM
             (new Formularios.Socio.frmSocios()).Show();
         }
 
-        private void OcultarElementosBarra()
-        {
-            switch (frmMain.nivelUsuario)
-            {
-                case 1://Ayudante
-                    ElementosAyudante();
-                    break;
-                case 2://Encargado
-                    ElementosEncargado();
-                    break;
-                case 3://Administrador
-                    break;
-                
-            }
-        }
+ 
 
-        private void ElementosEncargado()
-        {
-            sonidosToolStripMenuItem.Visible = false;
-            correoToolStripMenuItem.Visible = false;
-            huellaDigitalToolStripMenuItem.Visible = false;
-            baseDedatosToolStripMenuItem.Visible = false;
-        }
-
-        private void ElementosAyudante()
-        {
-            configuraciónToolStripMenuItem1.Visible = false;
-           
-        }
 
         private void toolStripSocios_Click(object sender, EventArgs e)
         {
@@ -201,11 +155,6 @@ namespace GYM
 
         private void agregarGastoDeCajaToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (Clases.CFuncionesGenerales.versionGratuita)
-            {
-                MessageBox.Show("Esta opción no está disponible en la versión strandar de HS FIT .\nContacta con el proveedor para adquirir la versión completa.", "HS FIT", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
-            }
             if (Clases.Caja.EstadoCaja())
             {
                 Formularios.Caja.frmMovimientoCaja frm = new Formularios.Caja.frmMovimientoCaja();
@@ -219,9 +168,12 @@ namespace GYM
 
         private void frmMain_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (!Clases.CFuncionesGenerales.versionGratuita)
+            if (!cierreSesion)
             {
-                if (Clases.Caja.EstadoCaja())
+                Application.Exit();
+                Clases.ConexionBD.CerrarConexion();
+            }
+            if (Clases.Caja.EstadoCaja())
                 {
                     DialogResult d = MessageBox.Show("La caja se encuentra abierta, ¿Desea cerrarla?", "Advertencia", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Exclamation);
                     if (d == DialogResult.Yes)
@@ -229,7 +181,6 @@ namespace GYM
                     else if (d == DialogResult.Cancel)
                         e.Cancel = true;
                 }
-            }
         }
 
         private void tmrCumpleaños_Tick(object sender, EventArgs e)
@@ -246,27 +197,27 @@ namespace GYM
             }
             catch (MySqlException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("No se ha podido mostrar a los socios que cumplen años. No se pudo conectar con la base de datos.", ex);
+                Clases.FuncionesGenerales.MensajeError("No se ha podido mostrar a los socios que cumplen años. No se pudo conectar con la base de datos.", ex);
             }
             catch (InvalidOperationException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("No se ha podido mostrar a los socios que cumplen años. La llamada al método no es válida para el estado actual del objeto", ex);
+                Clases.FuncionesGenerales.MensajeError("No se ha podido mostrar a los socios que cumplen años. La llamada al método no es válida para el estado actual del objeto", ex);
             }
             catch (System.Threading.ThreadStateException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("No se ha podido mostrar a los socios que cumplen años. El ThreadState del hilo no es válido para el método invocado.", ex);
+                Clases.FuncionesGenerales.MensajeError("No se ha podido mostrar a los socios que cumplen años. El ThreadState del hilo no es válido para el método invocado.", ex);
             }
             catch (OutOfMemoryException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("No se ha podido mostrar a los socios que cumplen años. No hay suficiente memoria para continuar la ejecución del programa.", ex);
+                Clases.FuncionesGenerales.MensajeError("No se ha podido mostrar a los socios que cumplen años. No hay suficiente memoria para continuar la ejecución del programa.", ex);
             }
             catch (ArgumentNullException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("No se ha podido mostrar a los socios que cumplen años. El argumento dado al método no es válido.", ex);
+                Clases.FuncionesGenerales.MensajeError("No se ha podido mostrar a los socios que cumplen años. El argumento dado al método no es válido.", ex);
             }
             catch (Exception ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("No se ha podido mostrar a los socios que cumplen años. Ha ocurrido un error genérico.", ex);
+                Clases.FuncionesGenerales.MensajeError("No se ha podido mostrar a los socios que cumplen años. Ha ocurrido un error genérico.", ex);
             }
         }
 
@@ -304,8 +255,6 @@ namespace GYM
         {
             if (!Formularios.frmIngresoSocio.Instancia.Visible)
             {
-                Formularios.frmIngresoSocio.Instancia.ID = id;
-                Formularios.frmIngresoSocio.Instancia.NivelUsuario = nivelUsuario;
                 Formularios.frmIngresoSocio.Instancia.Show(this);
             }
         }
@@ -424,16 +373,14 @@ namespace GYM
 
         private void lockersToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (!Formularios.frmLockers.Instancia.Visible)
-                Formularios.frmLockers.Instancia.Show();
+            if (!Formularios.FrmLockers.Instancia.Visible)
+                Formularios.FrmLockers.Instancia.Show();
             else
-                Formularios.frmLockers.Instancia.Select();
+                Formularios.FrmLockers.Instancia.Select();
         }
 
         private void pendientesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (nivelUsuario < 2)
-                return;
             if (!Formularios.frmPendientes.Instancia.Visible)
                 Formularios.frmPendientes.Instancia.Show();
             else
@@ -482,23 +429,7 @@ namespace GYM
 
         private void frmMain_VisibleChanged(object sender, EventArgs e)
         {
-            if (!Visible)
-            {
-                sonidosToolStripMenuItem.Visible = true;
-                correoToolStripMenuItem.Visible = true;
-                huellaDigitalToolStripMenuItem.Visible = true;
-                baseDedatosToolStripMenuItem.Visible = true;
-                configuraciónToolStripMenuItem1.Visible = true;
-                DetalladoCajaToolStripMenuItem.Visible = true;
-                empleadoToolStripMenuItem.Visible = true;
-                reportesToolStripMenuItem.Visible = true;
-                cortesíasToolStripMenuItem.Visible = true;
-                membresíasToolStripMenuItem.Visible = true;
-            }
-            else
-            {
-                OcultarElementosBarra();
-            }
+
         }
 
         private void ventasDiariasToolStripMenuItem_Click(object sender, EventArgs e)
@@ -551,10 +482,7 @@ namespace GYM
 
         private void btnNuevoSocio_Click(object sender, EventArgs e)
         {
-            if (!Formularios.Socio.frmSocios.Instancia.Visible)
-            {
-                Formularios.Socio.frmSocios.Instancia.Show(this);
-            }
+            (new Formularios.Socio.frmNuevoSocio()).ShowDialog(this);
         }
 
         private void btnMembresias_Click(object sender, EventArgs e)
@@ -589,12 +517,6 @@ namespace GYM
 
         private void btnExistencias_Click(object sender, EventArgs e)
         {
-            if (!Formularios.frmIngresoSocio.Instancia.Visible)
-            {
-                Formularios.frmIngresoSocio.Instancia.ID = id;
-                Formularios.frmIngresoSocio.Instancia.NivelUsuario = nivelUsuario;
-                Formularios.frmIngresoSocio.Instancia.Show(this);
-            }
         }
 
         private void pnlAccesosDirectos_Paint(object sender, PaintEventArgs e)
@@ -609,7 +531,18 @@ namespace GYM
 
         private void btnCerrarSesion_Click(object sender, EventArgs e)
         {
-            Close();
+            List<Form> forms = new List<Form>();
+            cierreSesion = true;
+            this.Close();
+            foreach (Form frm in Application.OpenForms)
+            {
+                forms.Add(frm);
+            }
+            for (int i = 0; i < forms.Count; i++)
+            {
+                forms[i].Close();
+            }
+            (new Formularios.frmLogin()).Show();
         }
     }
 }

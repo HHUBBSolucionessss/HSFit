@@ -6,7 +6,7 @@ using System.Threading;
 
 namespace GYM.Clases
 {
-    class CCorreos
+    class Correos
     {
         MailMessage email;
         SmtpClient smtp;
@@ -56,17 +56,17 @@ namespace GYM.Clases
         /// </summary>
         /// <exception cref="System.ArgumentNullException">Excepción que se produce cuando se pasa una referencia nula a un método que no la acepta como argumento válido.</exception>
         /// <exception cref="System.Exception">Representa los errores que se producen durante la ejecución de una aplicación.</exception>
-        public CCorreos()
+        public Correos()
         {
             try
             {
                 hiloCorreo = new Thread(new ThreadStart(Correo));
-                if (CConfiguracionXML.ExisteConfiguracion("correo"))
+                if (ConfiguracionXML.ExisteConfiguracion("correo"))
                 {
-                    correoOrigen = CConfiguracionXML.LeerConfiguración("correo", "correoR");
-                    contraseña = CConfiguracionXML.LeerConfiguración("correo", "pass");
-                    puerto = int.Parse(CConfiguracionXML.LeerConfiguración("correo", "puerto"));
-                    host = CConfiguracionXML.LeerConfiguración("correo", "host");
+                    correoOrigen = ConfiguracionXML.LeerConfiguración("correo", "correoR");
+                    contraseña = ConfiguracionXML.LeerConfiguración("correo", "pass");
+                    puerto = int.Parse(ConfiguracionXML.LeerConfiguración("correo", "puerto"));
+                    host = ConfiguracionXML.LeerConfiguración("correo", "host");
                 }
             }
             catch (ArgumentNullException ex)
@@ -137,7 +137,7 @@ namespace GYM.Clases
         {
             try
             {
-                if (CConfiguracionXML.ExisteConfiguracion("correo"))
+                if (ConfiguracionXML.ExisteConfiguracion("correo"))
                 {
                     email = new MailMessage();
                     smtp = new SmtpClient();

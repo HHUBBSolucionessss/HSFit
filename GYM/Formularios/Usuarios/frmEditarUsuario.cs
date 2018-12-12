@@ -90,24 +90,6 @@ namespace GYM.Formularios
 
         #endregion
 
-        private void CargarNiveles()
-        {
-            switch (frmMain.nivelUsuario)
-            {
-                case 3:
-                    cboNivel.Items.AddRange(new object[] { "Asistente", "Encargado", "Administrador" });
-                    cboNivel.SelectedIndex = 2;
-                    break;
-                case 2:
-                    cboNivel.Items.AddRange(new object[] { "Asistente", "Encargado" });
-                    cboNivel.SelectedIndex = 1;
-                    break;
-                case 1:
-                    cboNivel.Items.AddRange(new object[] { "Asistente" });
-                    cboNivel.SelectedIndex = 0;
-                    break;
-            }
-        }
 
         private void ObtenerDatosUsuario()
         {
@@ -119,7 +101,7 @@ namespace GYM.Formularios
                 pass = dr["password"].ToString();
                 nivel = Convert.ToInt32(dr["nivel"]);
                 if (dr["imagen"] != DBNull.Value)
-                    pcbImagenUsuario.Image = CFuncionesGenerales.BytesImagen((byte[])dr["imagen"]);
+                    pcbImagenUsuario.Image = FuncionesGenerales.BytesImagen((byte[])dr["imagen"]);
                 if (dr["huella"] != DBNull.Value)
                     huella = (byte[])dr["huella"];
                 else
@@ -132,12 +114,12 @@ namespace GYM.Formularios
             MySql.Data.MySqlClient.MySqlCommand sql = new MySql.Data.MySqlClient.MySqlCommand();
             sql.CommandText = "UPDATE usuarios SET password=?password, nivel=?nivel, imagen=?imagen, huella=?huella WHERE id='" + id + "'";
             if (chbContrasena.Checked)
-                sql.Parameters.AddWithValue("?password", Clases.CFuncionesGenerales.GetHashString(txtContra.Text));
+                sql.Parameters.AddWithValue("?password", Clases.FuncionesGenerales.GetHashString(txtContra.Text));
             else
                 sql.Parameters.AddWithValue("?password", pass);
             sql.Parameters.AddWithValue("?nivel", nivel);
             if (pcbImagenUsuario.Image != null)
-                sql.Parameters.AddWithValue("?imagen", CFuncionesGenerales.ImagenBytes(pcbImagenUsuario.Image));
+                sql.Parameters.AddWithValue("?imagen", FuncionesGenerales.ImagenBytes(pcbImagenUsuario.Image));
             else
                 sql.Parameters.AddWithValue("?imagen", DBNull.Value);
             if (huella != null)
@@ -151,7 +133,6 @@ namespace GYM.Formularios
         {
             int index = frm.dgvUsuarios.CurrentRow.Index;
             frm.dgvUsuarios[1, index].Value = lblNombreUsuario.Text;
-            frm.dgvUsuarios[2, index].Value = cboNivel.Items[cboNivel.SelectedIndex];
         }
 
         private bool ValidarCampos()
@@ -165,7 +146,7 @@ namespace GYM.Formularios
                 }
                 else
                 {
-                    if (Clases.CFuncionesGenerales.GetHashString(txtAntiContra.Text) != pass)
+                    if (Clases.FuncionesGenerales.GetHashString(txtAntiContra.Text) != pass)
                     {
                         MessageBox.Show("Debes ingresar la antigua contraseña para cambiarla.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return false;
@@ -193,19 +174,13 @@ namespace GYM.Formularios
 
         private void cboNivel_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cboNivel.Items[cboNivel.SelectedIndex].ToString() == "Administrador")
-                nivel = 3;
-            else if (cboNivel.Items[cboNivel.SelectedIndex].ToString() == "Encargado")
-                nivel = 2;
-            else
-                nivel = 1;
+ 
         }
 
         private void frmEditarUsuario_Load(object sender, EventArgs e)
         {
-            CFuncionesGenerales.CerrarHuellas();
+            FuncionesGenerales.CerrarHuellas();
             ObtenerDatosUsuario();
-            CargarNiveles();
         }
 
         private void chbContrasena_CheckedChanged(object sender, EventArgs e)
@@ -240,7 +215,7 @@ namespace GYM.Formularios
             }
             catch (Exception ex)
             {
-                CFuncionesGenerales.MensajeError("Ocurrió un error al seleccionar la imagen. Hubo un error genérico.", ex);
+                FuncionesGenerales.MensajeError("Ocurrió un error al seleccionar la imagen. Hubo un error genérico.", ex);
             }
         }
 
@@ -251,7 +226,7 @@ namespace GYM.Formularios
 
         private void btnHuella_Click(object sender, EventArgs e)
         {
-            if (!Clases.CConfiguracionXML.ExisteConfiguracion("huella","lector"))
+            if (!Clases.ConfiguracionXML.ExisteConfiguracion("huella","lector"))
                 MessageBox.Show("No se ha configurado un lector de huella digital","Gym CSY",MessageBoxButtons.OK,MessageBoxIcon.Information);
             else
                 (new Formularios.Socio.frmCapturarHuella(this)).ShowDialog();
@@ -278,7 +253,7 @@ namespace GYM.Formularios
 
         private void frmEditarUsuario_FormClosed(object sender, FormClosedEventArgs e)
         {
-            CFuncionesGenerales.AbrirHuellas();
+            FuncionesGenerales.AbrirHuellas();
         }
     }
 }

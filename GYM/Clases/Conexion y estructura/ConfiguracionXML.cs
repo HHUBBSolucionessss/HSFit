@@ -6,7 +6,7 @@ using System.Text;
 
 namespace GYM.Clases
 {
-    class CConfiguracionXML
+    class ConfiguracionXML
     {
         /// <summary>
         /// Función que lee el valor del atributo dado del archivo de configuración XML
@@ -46,7 +46,7 @@ namespace GYM.Clases
                 {
                     //Obtenemos el segundo nodo a partir del primer nodo para tener acceso a su información
                     XmlNodeList nodoSec = nodoInt.GetElementsByTagName(nodoSecundario);
-                    dato = CFuncionesGenerales.Descifrar(nodoSec[0].InnerText);
+                    dato = FuncionesGenerales.Descifrar(nodoSec[0].InnerText);
                 }
             }
             catch (XmlException ex)
@@ -131,7 +131,7 @@ namespace GYM.Clases
                             if (nodo1.Name == nodoPrincipal)
                                 foreach (XmlNode nodo2 in nodo1)
                                     if (nodo2.Name == nodoSecundario)
-                                        nodo2.InnerText = CFuncionesGenerales.Cifrar(valor);
+                                        nodo2.InnerText = FuncionesGenerales.Cifrar(valor);
                         xml.Save(ruta);
                     }
                     else
@@ -143,7 +143,7 @@ namespace GYM.Clases
                             if (nodo1.Name == nodoPrincipal)
                             {
                                 XmlNode nodo2 = xml.CreateNode(XmlNodeType.Element, nodoSecundario, null);
-                                nodo2.InnerText = CFuncionesGenerales.Cifrar(valor);
+                                nodo2.InnerText = FuncionesGenerales.Cifrar(valor);
                                 nodo1.AppendChild(nodo2);
                             }
                         xml.Save(ruta);

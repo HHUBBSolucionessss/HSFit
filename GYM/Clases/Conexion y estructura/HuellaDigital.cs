@@ -45,7 +45,7 @@ namespace GYM.Clases
                 result = reader.Open(Constants.CapturePriority.DP_PRIORITY_COOPERATIVE);
                 if (result != Constants.ResultCode.DP_SUCCESS)
                 {
-                    (new frmMensaje("Error:  " + result, "HS FIT")).ShowDialog();
+                    (new frmMensajeIngreso("Error:  " + result, "HS FIT")).ShowDialog();
                     reset = true;
                     return false;
                 }
@@ -177,7 +177,7 @@ namespace GYM.Clases
             }
             catch (Exception ex)
             {
-                (new frmMensaje("Error:  " + ex.Message, "HS FIT")).ShowDialog();
+                (new frmMensajeIngreso("Error:  " + ex.Message, "HS FIT")).ShowDialog();
                 //System.Windows.Forms.MessageBox.Show("Error:  " + ex.Message);
                 return false;
             }

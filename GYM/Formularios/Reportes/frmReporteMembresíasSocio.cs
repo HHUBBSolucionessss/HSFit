@@ -46,7 +46,7 @@ namespace GYM.Formularios.Reportes
 
         private void BuscarMembresias(string p)
         {
-            MensajeError m = new MensajeError(CFuncionesGenerales.MensajeError);
+            MensajeError m = new MensajeError(FuncionesGenerales.MensajeError);
 
                 try
                 {
@@ -79,15 +79,15 @@ namespace GYM.Formularios.Reportes
                 }
                 catch (FormatException ex)
                 {
-                    CFuncionesGenerales.MensajeError("No se pudo mostrar el dato de un socio. No se pudo dar formato a una variable.", ex);
+                    FuncionesGenerales.MensajeError("No se pudo mostrar el dato de un socio. No se pudo dar formato a una variable.", ex);
                 }
                 catch (ArgumentNullException ex)
                 {
-                    CFuncionesGenerales.MensajeError("No se pudo mostrar el dato de un socio. El argumento dado al método es nulo.", ex); 
+                    FuncionesGenerales.MensajeError("No se pudo mostrar el dato de un socio. El argumento dado al método es nulo.", ex); 
                 }
                 catch (Exception ex)
                 {
-                    CFuncionesGenerales.MensajeError("No se pudo mostrar el dato de un socio. Ocurrió un error genérico.", ex);
+                    FuncionesGenerales.MensajeError("No se pudo mostrar el dato de un socio. Ocurrió un error genérico.", ex);
                 }
             }
         }
@@ -100,16 +100,16 @@ namespace GYM.Formularios.Reportes
         private void bgwBusqueda_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             tmrConteo.Enabled = false;
-            CFuncionesGenerales.frmEsperaClose();
+            FuncionesGenerales.frmEsperaClose();
             LlenarDataGrid();
             txtBusqueda.Enabled = true;
-            CFuncionesGenerales.HabilitarBotonCerrar(this);
+            FuncionesGenerales.HabilitarBotonCerrar(this);
         }
 
         private void tmrConteo_Tick(object sender, EventArgs e)
         {
             tmrConteo.Enabled = false;
-            CFuncionesGenerales.frmEspera("Espere, búscando socios...", this);
+            FuncionesGenerales.frmEspera("Espere, búscando socios...", this);
         }
 
         private void txtBusqueda_KeyDown(object sender, KeyEventArgs e)
@@ -117,7 +117,7 @@ namespace GYM.Formularios.Reportes
             if (e.KeyCode == Keys.Enter)
             {
                 txtBusqueda.Enabled = false;
-                CFuncionesGenerales.DeshabilitarBotonCerrar(this);
+                FuncionesGenerales.DeshabilitarBotonCerrar(this);
                 tmrConteo.Enabled = true;
                 bgwBusqueda.RunWorkerAsync(txtBusqueda.Text);
             }

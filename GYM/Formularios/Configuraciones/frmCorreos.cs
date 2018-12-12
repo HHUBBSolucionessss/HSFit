@@ -25,12 +25,12 @@ namespace GYM.Formularios
         {
             try
             {
-                if (CConfiguracionXML.ExisteConfiguracion("correo"))
+                if (ConfiguracionXML.ExisteConfiguracion("correo"))
                 {
-                    txtCorreo.Text = CConfiguracionXML.LeerConfiguración("correo", "correoR");
-                    txtPass.Text = CConfiguracionXML.LeerConfiguración("correo", "pass");
-                    txtPuerto.Text = CConfiguracionXML.LeerConfiguración("correo", "puerto");
-                    txtHost.Text = CConfiguracionXML.LeerConfiguración("correo", "host");
+                    txtCorreo.Text = ConfiguracionXML.LeerConfiguración("correo", "correoR");
+                    txtPass.Text = ConfiguracionXML.LeerConfiguración("correo", "pass");
+                    txtPuerto.Text = ConfiguracionXML.LeerConfiguración("correo", "puerto");
+                    txtHost.Text = ConfiguracionXML.LeerConfiguración("correo", "host");
                 }
             }
             catch (XmlException ex)
@@ -39,43 +39,43 @@ namespace GYM.Formularios
             }
             catch (PathTooLongException ex)
             {
-                CFuncionesGenerales.MensajeError("La ruta especificada para el arhcivo de configuración en muy larga.", ex);
+                FuncionesGenerales.MensajeError("La ruta especificada para el arhcivo de configuración en muy larga.", ex);
             }
             catch (DirectoryNotFoundException ex)
             {
-                CFuncionesGenerales.MensajeError("El directorio del archivo de configuración no se pudo encontrar.", ex);
+                FuncionesGenerales.MensajeError("El directorio del archivo de configuración no se pudo encontrar.", ex);
             }
             catch (FileNotFoundException ex)
             {
-                CFuncionesGenerales.MensajeError("El archivo de configuración no se pudo encontrar.", ex);
+                FuncionesGenerales.MensajeError("El archivo de configuración no se pudo encontrar.", ex);
             }
             catch (IOException ex)
             {
-                CFuncionesGenerales.MensajeError("Ocurrio un error de E/S.", ex);
+                FuncionesGenerales.MensajeError("Ocurrio un error de E/S.", ex);
             }
             catch (NotSupportedException ex)
             {
-                CFuncionesGenerales.MensajeError("El método invocado no admite la funcionalidad invocada.", ex);
+                FuncionesGenerales.MensajeError("El método invocado no admite la funcionalidad invocada.", ex);
             }
             catch (UnauthorizedAccessException ex)
             {
-                CFuncionesGenerales.MensajeError("Windows ha denegado el acceso al archivo de configuración por un error de E/S o por un problema de seguridad.", ex);
+                FuncionesGenerales.MensajeError("Windows ha denegado el acceso al archivo de configuración por un error de E/S o por un problema de seguridad.", ex);
             }
             catch (System.Security.SecurityException ex)
             {
-                CFuncionesGenerales.MensajeError("Se detectó un error de seguridad.", ex);
+                FuncionesGenerales.MensajeError("Se detectó un error de seguridad.", ex);
             }
             catch (ArgumentNullException ex)
             {
-                CFuncionesGenerales.MensajeError("El argumento dado en el método es nulo.", ex);
+                FuncionesGenerales.MensajeError("El argumento dado en el método es nulo.", ex);
             }
             catch (ArgumentException ex)
             {
-                CFuncionesGenerales.MensajeError("El argumento dado en el método no es aceptado por éste.", ex);
+                FuncionesGenerales.MensajeError("El argumento dado en el método no es aceptado por éste.", ex);
             }
             catch (Exception ex)
             {
-                CFuncionesGenerales.MensajeError("Ha ocurrido un error genérico.", ex);
+                FuncionesGenerales.MensajeError("Ha ocurrido un error genérico.", ex);
             }
         }
 
@@ -83,10 +83,10 @@ namespace GYM.Formularios
         {
             try
             {
-                CConfiguracionXML.GuardarConfiguracion("correo", "correoR", txtCorreo.Text );
-                CConfiguracionXML.GuardarConfiguracion("correo", "pass", txtPass.Text);
-                CConfiguracionXML.GuardarConfiguracion("correo", "puerto", txtPuerto.Text);
-                CConfiguracionXML.GuardarConfiguracion("correo", "host", txtHost.Text);
+                ConfiguracionXML.GuardarConfiguracion("correo", "correoR", txtCorreo.Text );
+                ConfiguracionXML.GuardarConfiguracion("correo", "pass", txtPass.Text);
+                ConfiguracionXML.GuardarConfiguracion("correo", "puerto", txtPuerto.Text);
+                ConfiguracionXML.GuardarConfiguracion("correo", "host", txtHost.Text);
                 pcbImagen.Image.Save(Application.StartupPath + "\\Img\\imagencorreo.jpeg", System.Drawing.Imaging.ImageFormat.Jpeg);
             }
             catch (XmlException ex)
@@ -95,44 +95,44 @@ namespace GYM.Formularios
             }
             catch (PathTooLongException ex)
             {
-                CFuncionesGenerales.MensajeError("La ruta especificada para el arhcivo de configuración en muy larga.", ex);
+                FuncionesGenerales.MensajeError("La ruta especificada para el arhcivo de configuración en muy larga.", ex);
             }
             catch (DirectoryNotFoundException ex)
             {
-                CFuncionesGenerales.MensajeError("El directorio del archivo de configuración no se pudo encontrar.", ex);
+                FuncionesGenerales.MensajeError("El directorio del archivo de configuración no se pudo encontrar.", ex);
             }
             catch (FileNotFoundException ex)
             {
-                CFuncionesGenerales.MensajeError("El archivo de configuración no se pudo encontrar.", ex);
+                FuncionesGenerales.MensajeError("El archivo de configuración no se pudo encontrar.", ex);
             }
             catch (IOException ex)
             {
-                CFuncionesGenerales.MensajeError("Ocurrio un error de E/S.", ex);
+                FuncionesGenerales.MensajeError("Ocurrio un error de E/S.", ex);
             }
             catch (NotSupportedException ex)
             {
-                CFuncionesGenerales.MensajeError("El método invocado no admite la funcionalidad invocada.", ex);
+                FuncionesGenerales.MensajeError("El método invocado no admite la funcionalidad invocada.", ex);
                 throw ex;
             }
             catch (UnauthorizedAccessException ex)
             {
-                CFuncionesGenerales.MensajeError("Windows ha denegado el acceso al archivo de configuración por un error de E/S o por un problema de seguridad.", ex);
+                FuncionesGenerales.MensajeError("Windows ha denegado el acceso al archivo de configuración por un error de E/S o por un problema de seguridad.", ex);
             }
             catch (System.Security.SecurityException ex)
             {
-                CFuncionesGenerales.MensajeError("Se detectó un error de seguridad.", ex);
+                FuncionesGenerales.MensajeError("Se detectó un error de seguridad.", ex);
             }
             catch (ArgumentNullException ex)
             {
-                CFuncionesGenerales.MensajeError("El argumento dado en el método es nulo.", ex);
+                FuncionesGenerales.MensajeError("El argumento dado en el método es nulo.", ex);
             }
             catch (ArgumentException ex)
             {
-                CFuncionesGenerales.MensajeError("El argumento dado en el método no es aceptado por éste.", ex);
+                FuncionesGenerales.MensajeError("El argumento dado en el método no es aceptado por éste.", ex);
             }
             catch (Exception ex)
             {
-                CFuncionesGenerales.MensajeError("Ha ocurrido un error genérico.", ex);
+                FuncionesGenerales.MensajeError("Ha ocurrido un error genérico.", ex);
             }
         }
 
@@ -145,7 +145,7 @@ namespace GYM.Formularios
             }
             else
             {
-                if (!CFuncionesGenerales.EsCorreoValido(txtCorreo.Text))
+                if (!FuncionesGenerales.EsCorreoValido(txtCorreo.Text))
                 {
                     MessageBox.Show("El correo ingresado no es válido.", "HS FIT", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return false;
@@ -186,7 +186,7 @@ namespace GYM.Formularios
 
         private void txtPuerto_KeyPress(object sender, KeyPressEventArgs e)
         {
-            CFuncionesGenerales.VerificarEsNumero(ref sender, ref e, true);
+            FuncionesGenerales.VerificarEsNumero(ref sender, ref e, true);
         }
 
         private void pcbImagen_Click(object sender, EventArgs e)

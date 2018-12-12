@@ -67,27 +67,27 @@ namespace GYM.Formularios.Compras
             }
             catch (MySqlException ex)
             {
-                CFuncionesGenerales.MensajeError("No se ha podido obtener la información. Ocurrió un error al conectar con la base de datos. La ventana se cerrará.", ex);
+                FuncionesGenerales.MensajeError("No se ha podido obtener la información. Ocurrió un error al conectar con la base de datos. La ventana se cerrará.", ex);
                 this.Close();
             }
             catch (FormatException ex)
             {
-                CFuncionesGenerales.MensajeError("No se ha podido obtener la información. Ocurrió un error al convertir una variable. La ventana se cerrará.", ex);
+                FuncionesGenerales.MensajeError("No se ha podido obtener la información. Ocurrió un error al convertir una variable. La ventana se cerrará.", ex);
                 this.Close();
             }
             catch (OverflowException ex)
             {
-                CFuncionesGenerales.MensajeError("No se ha podido obtener la información. Ocurrió un desbordamiento. La ventana se cerrará.", ex);
+                FuncionesGenerales.MensajeError("No se ha podido obtener la información. Ocurrió un desbordamiento. La ventana se cerrará.", ex);
                 this.Close();
             }
             catch (ArgumentNullException ex)
             {
-                CFuncionesGenerales.MensajeError("No se ha podido obtener la información. El argumento dado al método es nulo. La ventana se cerrará.", ex);
+                FuncionesGenerales.MensajeError("No se ha podido obtener la información. El argumento dado al método es nulo. La ventana se cerrará.", ex);
                 this.Close();
             }
             catch (Exception ex)
             {
-                CFuncionesGenerales.MensajeError("No se ha podido obtener la información. Ocurrió un error genérico. La ventana se cerrará.", ex);
+                FuncionesGenerales.MensajeError("No se ha podido obtener la información. Ocurrió un error genérico. La ventana se cerrará.", ex);
                 this.Close();
             }
         }
@@ -109,27 +109,27 @@ namespace GYM.Formularios.Compras
             }
             catch (MySqlException ex)
             {
-                CFuncionesGenerales.MensajeError("No se ha podido obtener el detallado de la información. Ocurrió un error al conectar con la base de datos. La ventana se cerrará.", ex);
+                FuncionesGenerales.MensajeError("No se ha podido obtener el detallado de la información. Ocurrió un error al conectar con la base de datos. La ventana se cerrará.", ex);
                 this.Close();
             }
             catch (FormatException ex)
             {
-                CFuncionesGenerales.MensajeError("No se ha podido obtener el detallado de la información. Ocurrió un error al convertir una variable. La ventana se cerrará.", ex);
+                FuncionesGenerales.MensajeError("No se ha podido obtener el detallado de la información. Ocurrió un error al convertir una variable. La ventana se cerrará.", ex);
                 this.Close();
             }
             catch (OverflowException ex)
             {
-                CFuncionesGenerales.MensajeError("No se ha podido obtener el detallado de la información. Ocurrió un desbordamiento. La ventana se cerrará.", ex);
+                FuncionesGenerales.MensajeError("No se ha podido obtener el detallado de la información. Ocurrió un desbordamiento. La ventana se cerrará.", ex);
                 this.Close();
             }
             catch (ArgumentNullException ex)
             {
-                CFuncionesGenerales.MensajeError("No se ha podido obtener el detallado de la información. El argumento dado al método es nulo. La ventana se cerrará.", ex);
+                FuncionesGenerales.MensajeError("No se ha podido obtener el detallado de la información. El argumento dado al método es nulo. La ventana se cerrará.", ex);
                 this.Close();
             }
             catch (Exception ex)
             {
-                CFuncionesGenerales.MensajeError("No se ha podido obtener la información. Ocurrió un error genérico. La ventana se cerrará.", ex);
+                FuncionesGenerales.MensajeError("No se ha podido obtener la información. Ocurrió un error genérico. La ventana se cerrará.", ex);
                 this.Close();
             }
         }

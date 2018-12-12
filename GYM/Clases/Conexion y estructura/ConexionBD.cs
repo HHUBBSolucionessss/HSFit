@@ -1,15 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
 using MySql.Data.MySqlClient;
 
 namespace GYM.Clases
 {
     class ConexionBD
     {
-        public static string baseDatos = "", servidor = "", usuario = "", pass = "";
+        static MySqlConnection conexion;
 
         /// <summary>
         /// Función que pasa los parametros de conexión MySQL y la abre.
@@ -17,12 +14,12 @@ namespace GYM.Clases
         /// <exception cref="MySql.Data.MySqlClient.MySqlException">Excepción que se lanza cuando ocurre un error con la conexión a la base de datos o con la ejecución de la consulta</exception>
         /// <exception cref="System.Exception">Representa los errores que se producen durante la ejecución de una aplicación.</exception>
         /// <returns>Clase MySqlConnection con la información de la conexión</returns>
-        private static MySqlConnection AbrirConexion()
+        public static void AbrirConexion()
         {
-            MySqlConnection conexion = new MySqlConnection();
+            conexion = new MySqlConnection();
             try
             {
-                conexion.ConnectionString = @"Server=" + servidor + ";Port=3306;Database=" + baseDatos + ";Uid=" + usuario + ";Pwd=" + pass;
+                conexion.ConnectionString = @"Server=" + Config.servidor + ";Port=3306;Database=" + Config.baseDatos + ";Uid=" + Config.usuario + ";Pwd=" + Config.pass + "; default command timeout=" + int.MaxValue;
                 conexion.Open();
             }
             catch (MySqlException ex)
@@ -31,20 +28,69 @@ namespace GYM.Clases
             }
             catch (Exception ex)
             {
-                System.Windows.Forms.MessageBox.Show(ex.ToString());
+                throw ex;
             }
-            return conexion;
+            //return conexion;
+        }
+
+        public static void AbrirConexion(ref MySqlConnection con)
+        {
+            try
+            {
+                con.ConnectionString = @"Server=" + Config.servidor + ";Port=3306;Database=" + Config.baseDatos + ";Uid=" + Config.usuario + ";Pwd=" + Config.pass + "; default command timeout=" + int.MaxValue;
+                con.Open();
+            }
+            catch (MySqlException ex)
+            {
+                throw ex;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         /// <summary>
         /// Función que cierra la conexión con la base de datos.
         /// </summary>
         /// <param name="conexion">Objeto usado para establecer la conexión.</param>
-        private static void CerrarConexion(ref MySqlConnection conexion)
+        public static void CerrarConexion()
         {
             if (conexion != null)
+            {
                 if (conexion.State == ConnectionState.Open)
+                {
                     conexion.Close();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Función que cierra la conexión con la base de datos.
+        /// </summary>
+        /// <param name="conexion">Objeto usado para establecer la conexión.</param>
+        public static void CerrarConexion(ref MySqlConnection con)
+        {
+            if (con != null)
+            {
+                if (con.State == ConnectionState.Open)
+                {
+                    con.Close();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Método que verifica la conexión a la base de datos
+        /// </summary>
+        /// <returns></returns>
+        public static bool Ping()
+        {
+            bool ping;
+            AbrirConexion();
+            ping = conexion.Ping();
+            CerrarConexion();
+            return ping;
         }
 
         /// <summary>
@@ -53,17 +99,23 @@ namespace GYM.Clases
         /// <exception cref="MySql.Data.MySqlClient.MySqlException">Excepción que se lanza cuando ocurre un error con la conexión a la base de datos o con la ejecución de la consulta</exception>
         /// <exception cref="System.Exception">Representa los errores que se producen durante la ejecución de una aplicación.</exception>
         /// <param name="consulta">Consulta SQLite que puede ser INSERT, UPDATE, DELETE</param>
-        public static void EjecutarConsulta(string consulta)
+        /// <returns>En caso de ser consulta INSERT, regresa el último ID ingresado</returns>
+        public static int EjecutarConsulta(string consulta)
         {
-            MySqlConnection conexion = null;
+            int id = 0;
             try
             {
-                conexion = AbrirConexion();
-                MySqlCommand sql = new MySqlCommand();
-                sql.Connection = conexion;
-                sql.CommandText = consulta;
-                sql.CommandType = CommandType.Text;
-                sql.ExecuteNonQuery();
+                using (conexion)
+                {
+                    AbrirConexion();
+                    MySqlCommand sql = new MySqlCommand();
+                    sql.Connection = conexion;
+                    sql.CommandTimeout = int.MaxValue;
+                    sql.CommandText = consulta;
+                    sql.CommandType = CommandType.Text;
+                    sql.ExecuteNonQuery();
+                    id = (int)sql.LastInsertedId;
+                }
             }
             catch (MySqlException ex)
             {
@@ -75,8 +127,9 @@ namespace GYM.Clases
             }
             finally
             {
-                CerrarConexion(ref conexion);
+                CerrarConexion();
             }
+            return id;
         }
 
         /// <summary>
@@ -85,15 +138,21 @@ namespace GYM.Clases
         /// <exception cref="MySql.Data.MySqlClient.MySqlException">Excepción que se lanza cuando ocurre un error con la conexión a la base de datos o con la ejecución de la consulta</exception>
         /// <exception cref="System.Exception">Representa los errores que se producen durante la ejecución de una aplicación.</exception>
         /// <param name="comando">Comando SQLite que se va a ejecutar</param>
-        public static void EjecutarConsulta(MySqlCommand comando)
+        /// <returns>En caso de ser consulta INSERT, regresa el último ID ingresado</returns>
+        public static int EjecutarConsulta(MySqlCommand comando)
         {
-            MySqlConnection conexion = null;
+            int id = 0;
             try
             {
-                conexion = AbrirConexion();
-                comando.Connection = conexion;
-                comando.CommandType = CommandType.Text;
-                comando.ExecuteReader();
+                using (conexion)
+                {
+                    AbrirConexion();
+                    comando.Connection = conexion;
+                    comando.CommandTimeout = int.MaxValue;
+                    comando.CommandType = CommandType.Text;
+                    comando.ExecuteNonQuery();
+                    id = (int)comando.LastInsertedId;
+                }
             }
             catch (MySqlException ex)
             {
@@ -105,8 +164,9 @@ namespace GYM.Clases
             }
             finally
             {
-                CerrarConexion(ref conexion);
+                CerrarConexion();
             }
+            return id;
         }
 
         /// <summary>
@@ -119,18 +179,22 @@ namespace GYM.Clases
         public static DataTable EjecutarConsultaSelect(string consulta)
         {
             DataTable dt = new DataTable();
-            dt.BeginInit();
-            DataSet ds = new DataSet();
-            MySqlConnection conexion = null;
             try
             {
-                conexion = AbrirConexion();
-                MySqlCommand sql = new MySqlCommand();
-                sql.Connection = conexion;
-                sql.CommandText = consulta;
-                sql.CommandType = CommandType.Text;
-                IDataReader res = sql.ExecuteReader();
-                dt.Load(res);
+                AbrirConexion();
+                using (conexion)
+                {
+                    MySqlCommand sql = new MySqlCommand();
+                    sql.Connection = conexion;
+                    sql.CommandTimeout = int.MaxValue;
+                    sql.CommandText = consulta;
+                    sql.CommandType = CommandType.Text;
+                    using (MySqlDataReader res = sql.ExecuteReader())
+                    {
+                        dt.Load(res);
+                        res.Close();
+                    }
+                }
             }
             catch (MySqlException ex)
             {
@@ -142,7 +206,7 @@ namespace GYM.Clases
             }
             finally
             {
-                CerrarConexion(ref conexion);
+                CerrarConexion();
             }
             return dt;
         }
@@ -157,14 +221,20 @@ namespace GYM.Clases
         public static DataTable EjecutarConsultaSelect(MySqlCommand comando)
         {
             DataTable dt = new DataTable();
-            MySqlConnection conexion = null;
             try
             {
-                conexion = AbrirConexion();
-                comando.Connection = conexion;
-                comando.CommandType = CommandType.Text;
-                IDataReader res = comando.ExecuteReader();
-                dt.Load(res);
+                using (conexion)
+                {
+                    AbrirConexion();
+                    comando.Connection = conexion;
+                    comando.CommandTimeout = int.MaxValue;
+                    comando.CommandType = CommandType.Text;
+                    using (MySqlDataReader res = comando.ExecuteReader())
+                    {
+                        dt.Load(res);
+                        res.Close();
+                    }
+                }
             }
             catch (MySqlException ex)
             {
@@ -176,9 +246,12 @@ namespace GYM.Clases
             }
             finally
             {
-                CerrarConexion(ref conexion);
+                CerrarConexion();
             }
             return dt;
         }
     }
+
+
+
 }

@@ -38,22 +38,22 @@ namespace GYM.Formularios.Membresia
                     txtPrecio.Text = dr["precio"].ToString();
                     cboTipo.SelectedIndex = (int)dr["duracion"];
                     cboGenero.SelectedIndex = (int)dr["genero"];
-                    lblCreateUser.Text = CFuncionesGenerales.NombreUsuario(dr["create_user_id"].ToString());
+                    lblCreateUser.Text = FuncionesGenerales.NombreUsuario(dr["create_user_id"].ToString());
                     lblCreateTime.Text = fechaCreacion.ToString("dd") + " de " + fechaCreacion.ToString("MMMM") + " del " + fechaCreacion.ToString("yyyy");
                     if (dr["update_user_id"] != DBNull.Value)
                     {
-                        lblUpdateUser.Text = CFuncionesGenerales.NombreUsuario(dr["update_user_id"].ToString());
+                        lblUpdateUser.Text = FuncionesGenerales.NombreUsuario(dr["update_user_id"].ToString());
                         lblUpdateTime.Text = fechaModificacion.ToString("dd") + " de " + fechaModificacion.ToString("MMMM") + " del " + fechaModificacion.ToString("yyyy");
                     }
                 }
             }
             catch (MySqlException ex)
             {
-                CFuncionesGenerales.MensajeError("No se pudo recuperar la información de la promoción. Hubo un error al conectar con la base de datos.", ex);
+                FuncionesGenerales.MensajeError("No se pudo recuperar la información de la promoción. Hubo un error al conectar con la base de datos.", ex);
             }
             catch (Exception ex)
             {
-                CFuncionesGenerales.MensajeError("No se pudo recuperar la información de la promoción. Hubo un error genérico.", ex);
+                FuncionesGenerales.MensajeError("No se pudo recuperar la información de la promoción. Hubo un error genérico.", ex);
             }
         }
 
@@ -119,7 +119,7 @@ namespace GYM.Formularios.Membresia
 
         private void txtPrecio_KeyPress(object sender, KeyPressEventArgs e)
         {
-            CFuncionesGenerales.VerificarEsNumero(ref sender, ref e, false);
+            FuncionesGenerales.VerificarEsNumero(ref sender, ref e, false);
         }
 
         private void btnAceptar_Click(object sender, EventArgs e)
@@ -135,11 +135,11 @@ namespace GYM.Formularios.Membresia
             }
             catch (MySqlException ex)
             {
-                CFuncionesGenerales.MensajeError("Ha ocurrido un error al guardar la promoción. No se ha podido conectar con la base de datos.", ex);
+                FuncionesGenerales.MensajeError("Ha ocurrido un error al guardar la promoción. No se ha podido conectar con la base de datos.", ex);
             }
             catch (Exception ex)
             {
-                CFuncionesGenerales.MensajeError("Ha ocurrido un error al guardar la promoción. Ocurrió un error genérico.", ex);
+                FuncionesGenerales.MensajeError("Ha ocurrido un error al guardar la promoción. Ocurrió un error genérico.", ex);
             }
         }
     }

@@ -25,7 +25,7 @@ namespace GYM.Formularios.Compras
 
         private void txtIVA_KeyPress(object sender, KeyPressEventArgs e)
         {
-            CFuncionesGenerales.VerificarEsNumero(ref sender, ref e, true);
+            FuncionesGenerales.VerificarEsNumero(ref sender, ref e, true);
         }
 
         private void btnAceptar_Click(object sender, EventArgs e)
@@ -38,19 +38,19 @@ namespace GYM.Formularios.Compras
             }
             catch (FormatException ex)
             {
-                CFuncionesGenerales.MensajeError("No se ha modificado el valor del I.V.A. El número dado no es válido.", ex);
+                FuncionesGenerales.MensajeError("No se ha modificado el valor del I.V.A. El número dado no es válido.", ex);
             }
             catch (OverflowException ex)
             {
-                CFuncionesGenerales.MensajeError("No se ha modificado el valor del I.V.A. El número dado excede el valor máxico.", ex);
+                FuncionesGenerales.MensajeError("No se ha modificado el valor del I.V.A. El número dado excede el valor máxico.", ex);
             }
             catch (ArgumentNullException ex)
             {
-                CFuncionesGenerales.MensajeError("No se ha modificado el valor del I.V.A. El argumento dado es nulo.", ex);
+                FuncionesGenerales.MensajeError("No se ha modificado el valor del I.V.A. El argumento dado es nulo.", ex);
             }
             catch (Exception ex)
             {
-                CFuncionesGenerales.MensajeError("No se ha modificado el valor del I.V.A. Ha ocurrido un error genérico.", ex);
+                FuncionesGenerales.MensajeError("No se ha modificado el valor del I.V.A. Ha ocurrido un error genérico.", ex);
             }
         }
 

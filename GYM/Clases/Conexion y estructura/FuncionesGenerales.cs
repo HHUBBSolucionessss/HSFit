@@ -13,6 +13,7 @@ using System.Drawing.Imaging;
 using System.Drawing.Drawing2D;
 using MySql.Data.MySqlClient;
 using System.IO.Ports;
+using System.Diagnostics;
 
 namespace System
 {
@@ -26,7 +27,7 @@ namespace System
 
 namespace GYM.Clases
 {
-    class CFuncionesGenerales
+    class FuncionesGenerales
     {
         static frmEspera frm;
 
@@ -206,7 +207,6 @@ namespace GYM.Clases
         #endregion
 
         #region Variables
-        public static bool versionGratuita = false;
         public static bool soloRegistro;
         public static Bitmap img;
         public static Bitmap promo01;
@@ -230,6 +230,21 @@ namespace GYM.Clases
         const int HWND_NOTOPMOST = -2;
 
         #endregion
+
+        /// <summary>
+        /// Función que muestra un MessageBox con un mensaje de error y el mensaje de la excepción.
+        /// </summary>
+        /// <param name="mensaje">Mensaje a mostrar</param>
+        /// <param name="ex">Excepción que ocurrió</param>
+        public static DialogResult Mensaje(IWin32Window frm, Mensajes m, string mensaje, string titulo, Exception ex = null)
+        {
+            //return (new frmMensaje(m, mensaje, titulo)).ShowDialog(frm);
+            if (m != Mensajes.Error)
+                return (new FrmMensaje(m, mensaje, titulo)).ShowDialog(frm);
+            else
+                return MessageBox.Show(ex.ToString());
+
+        }
 
         /// <summary>
         /// Función que valida que un TextBox solo sea númerico
@@ -306,33 +321,6 @@ namespace GYM.Clases
             return valido;
         }
 
-        //Funcion que no ocupe, pero por si las dudas
-        ///// <summary>
-        ///// Función que verifica que el valor de una cadena sea númerico
-        ///// </summary>
-        ///// <param name="valor">Cadena de la cual se comprobará el valor</param>
-        ///// <returns>Valor booleano que indica si la cadena es o no un número</returns>
-        //public static bool EsNumero(string valor)
-        //{
-        //    //Y pus a declarar variables a lo loco porque así lo requiere la función ¬¬
-        //    int num;
-        //    decimal num2;
-        //    float num3;
-        //    long num4;
-        //    double num5;
-        //    bool esNum = false;
-        //    if (int.TryParse(valor, out num))
-        //        esNum = true;
-        //    else if (decimal.TryParse(valor, out num2))
-        //        esNum = true;
-        //    else if (float.TryParse(valor, out num3))
-        //        esNum = true;
-        //    else if (long.TryParse(valor, out num4))
-        //        esNum = true;
-        //    else if (double.TryParse(valor, out num5))
-        //        esNum = true;
-        //    return esNum;
-        //}
 
         /// <summary>
         /// Redimensiona una imagen al tamaño definido
@@ -342,15 +330,15 @@ namespace GYM.Clases
         /// <exception cref="System.ArgumentNullException">Excepción que se produce cuando se pasa una referencia nula a un método que no la acepta como argumento válido.</exception>
         /// <exception cref="System.Exception">Representa los errores que se producen durante la ejecución de un programa.</exception>
         /// <returns>Imagen redimensionada.</returns>
-        public static System.Drawing.Image RedimensionarLogo(System.Drawing.Image imagen, System.Drawing.Size nuevoTamanio)
+        public static Image RedimensionarLogo(Image imagen, Size nuevoTamanio)
         {
-            System.Drawing.Image nuevaImagen = null;
+            Image nuevaImagen = null;
             try
             {
-                nuevaImagen = new System.Drawing.Bitmap(nuevoTamanio.Width, nuevoTamanio.Height);
-                using (System.Drawing.Graphics GFX = System.Drawing.Graphics.FromImage((System.Drawing.Bitmap)nuevaImagen))
+                nuevaImagen = new Bitmap(nuevoTamanio.Width, nuevoTamanio.Height);
+                using (Graphics GFX = Graphics.FromImage((Bitmap)nuevaImagen))
                 {
-                    GFX.DrawImage(imagen, new System.Drawing.Rectangle(System.Drawing.Point.Empty, nuevoTamanio));
+                    GFX.DrawImage(imagen, new Rectangle(Point.Empty, nuevoTamanio));
                 }
             }
             catch (ArgumentNullException ex)
@@ -862,7 +850,7 @@ namespace GYM.Clases
             {
                 MySqlCommand sql = new MySqlCommand();
                 sql.CommandText = "UPDATE locker SET estado=?estado WHERE DATE_FORMAT(fecha_fin, '%Y-%m-%d')<?fecha_fin";
-                sql.Parameters.AddWithValue("?estado", frmLockers.EstadoLocker.Desocupado);
+                sql.Parameters.AddWithValue("?estado", FrmLockers.EstadoLocker.Desocupado);
                 sql.Parameters.AddWithValue("?fecha_fin", DateTime.Now.ToString("yyyy-MM-dd"));
                 ConexionBD.EjecutarConsulta(sql);
             }
@@ -882,6 +870,113 @@ namespace GYM.Clases
             {
                 throw ex;
             }
+        }
+
+
+        public static bool HayInternet()
+        {
+            bool hay = false;
+            try
+            {
+                System.Net.IPHostEntry host = System.Net.Dns.GetHostEntry("www.google.com.mx");
+                hay = true;
+            }
+            catch
+            {
+            }
+            return hay;
+        }
+
+        public static int IDProceso(string nombreProceso)
+        {
+            int id = -1;
+            try
+            {
+                Process[] pr = Process.GetProcesses();
+                foreach (Process p in pr)
+                {
+                    if (p.ProcessName.Contains(nombreProceso))
+                    {
+                        id = p.Id;
+                        break;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return id;
+        }
+
+        public static void IniciarProceso(string rutaArchivo, string argumentos = "")
+        {
+            try
+            {
+                Process p = new Process();
+                ProcessStartInfo psi = new ProcessStartInfo(rutaArchivo);
+                psi.Arguments = argumentos;
+                psi.CreateNoWindow = true;
+                psi.WindowStyle = ProcessWindowStyle.Hidden;
+                p.StartInfo = psi;
+                p.Start();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public static bool ExisteProceso(int id)
+        {
+            try
+            {
+                Process[] pr = Process.GetProcesses();
+                foreach (Process p in pr)
+                {
+                    if (p.Id == id)
+                    {
+                        return true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return false;
+        }
+
+        public static void ColoresError(Control ctr)
+        {
+            ctr.BackColor = Colores.Error;
+            ctr.ForeColor = Colores.Claro;
+        }
+
+        public static void ColoresBien(Control ctr)
+        {
+            if (ctr.GetType() == typeof(TextBox) || ctr.GetType() == typeof(Label))
+            {
+                ctr.BackColor = Colores.Claro;
+                ctr.ForeColor = Colores.Obscuro;
+            }
+            else if (ctr.GetType() == typeof(ComboBox))
+            {
+                ctr.BackColor = Colores.ClaroObscuro;
+                ctr.ForeColor = Colores.Obscuro;
+            }
+        }
+
+        public static void DataGridViewUp(DataGridView dgv)
+        {
+            if (dgv.CurrentRow.Index > 0)
+                dgv[1, dgv.CurrentRow.Index - 1].Selected = true;
+        }
+
+        public static void DataGridViewDown(DataGridView dgv)
+        {
+            if (dgv.CurrentRow.Index < dgv.RowCount - 1)
+                dgv[1, dgv.CurrentRow.Index + 1].Selected = true;
         }
 
         #region Siempre Encima

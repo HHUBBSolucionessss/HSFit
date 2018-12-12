@@ -18,6 +18,7 @@ public class Socio
     private string telefono;
     private string celular;
 	private string email;
+    private int eliminado;
     private int genero;
     private DateTime fechaNacimiento;
     private Socio persona;
@@ -27,6 +28,7 @@ public class Socio
     private DateTime createTime;
     private int updateUser;
     private DateTime updateTime;
+    private decimal limiteCredito;
 
     Thread hiloCumpleaños;
     DataTable dt;
@@ -101,6 +103,12 @@ public class Socio
         set { this.genero = value; }
     }
 
+    public int Eliminado
+    {
+        get { return eliminado; }
+        set { eliminado = value; }
+    }
+
     public DateTime FechaNacimiento
     {
         get { return this.fechaNacimiento; }
@@ -111,6 +119,12 @@ public class Socio
     {
         get { return this.persona; }
         set { this.persona = value; }
+    }
+
+    public decimal LimiteCredito
+    {
+        get { return limiteCredito; }
+        set { limiteCredito = value; }
     }
 
     public byte[] Huella
@@ -198,9 +212,6 @@ public class Socio
         {
             MySqlCommand sql = new MySqlCommand();
 
-            //strftime('%d/%m/%Y',miembros.fecha_nac) AS 
-            //strftime('%d/%m/%Y',miembros.fecha_creacion) AS 
-            //
             sql.CommandText = "SELECT * FROM miembros WHERE numSocio=?";
             sql.Parameters.AddWithValue("@numSocio", numSocio);
             DataTable list = ConexionBD.EjecutarConsultaSelect(sql);
@@ -246,6 +257,10 @@ public class Socio
                     email = "";
                 else
                     email = dr["email"].ToString();
+                if (dr["limite_credito"].ToString().Equals("") || dr["limite_credito"].Equals(DBNull.Value))
+                    limiteCredito = 0;
+                else
+                    limiteCredito = (decimal)dr["limite_credito"];
 
 
                 genero = int.Parse(dr["genero"].ToString());
@@ -260,7 +275,7 @@ public class Socio
                 if (dr["huella"] != DBNull.Value)
                     huella = (byte[])dr["huella"];
                 if (dr["imagen"] != DBNull.Value)
-                    ImagenMiembro = CFuncionesGenerales.BytesImagen((byte[])dr["imagen"]);
+                    ImagenMiembro = FuncionesGenerales.BytesImagen((byte[])dr["imagen"]);
                 else
                     ImagenMiembro = null;
 
@@ -452,8 +467,8 @@ public class Socio
         try
         {
             MySqlCommand sql = new MySqlCommand();
-            sql.CommandText = "INSERT INTO miembros (numSocio, nombre, apellidos, direccion, ciudad, estado, telefono, celular, email, genero, fecha_nac, create_time, create_user_id, huella, imagen)" +
-                "VALUES (?numSocio, ?nombre, ?apellidos, ?direccion, ?ciudad, ?estado, ?telefono, ?celular, ?email, ?genero, ?fecha_nac, NOW(), ?create_user_id, ?huella, ?imagen)";
+            sql.CommandText = "INSERT INTO miembros (numSocio, nombre, apellidos, direccion, ciudad, estado, telefono, celular, email, genero, fecha_nac,limite_credito,eliminado, create_time, create_user_id, huella, imagen)" +
+                "VALUES (?numSocio, ?nombre, ?apellidos, ?direccion, ?ciudad, ?estado, ?telefono, ?celular, ?email, ?genero, ?fecha_nac,?limite_credito,?eliminado, NOW(), ?create_user_id, ?huella, ?imagen)";
             sql.Parameters.AddWithValue("?numSocio", miembro.numSocio);
             sql.Parameters.AddWithValue("?nombre", miembro.nombre);
             sql.Parameters.AddWithValue("?apellidos", miembro.apellidos);
@@ -465,13 +480,15 @@ public class Socio
             sql.Parameters.AddWithValue("?email", miembro.email);
             sql.Parameters.AddWithValue("?genero", miembro.genero);
             sql.Parameters.AddWithValue("?fecha_nac", miembro.fechaNacimiento.ToString("yyyy-MM-dd") + " 00:00:00");
+            sql.Parameters.AddWithValue("?eliminado", 0);
+            sql.Parameters.AddWithValue("?limite_credito", miembro.limiteCredito);
             sql.Parameters.AddWithValue("?create_user_id", miembro.CreateUser);
             if (huella != null)
                 sql.Parameters.AddWithValue("?huella", huella);
             else
                 sql.Parameters.AddWithValue("?huella", DBNull.Value);
             if (imgMiembro != null)
-                sql.Parameters.AddWithValue("@imagen", CFuncionesGenerales.ImagenBytes(imgMiembro));
+                sql.Parameters.AddWithValue("@imagen", FuncionesGenerales.ImagenBytes(imgMiembro));
             else
                 sql.Parameters.AddWithValue("@imagen", DBNull.Value);
             ConexionBD.EjecutarConsulta(sql);
@@ -508,8 +525,8 @@ public class Socio
         try
         {
             MySqlCommand sql = new MySqlCommand();
-            sql.CommandText = "UPDATE miembros SET nombre=?, apellidos=?, direccion=?, ciudad=?, estado=?, telefono=?, celular=?, " + 
-                "email=?, fecha_nac=?, genero=?, update_time=NOW(), update_user_id=?, huella=?, imagen=? WHERE numSocio=?";
+            sql.CommandText = "UPDATE miembros SET nombre=?, apellidos=?, direccion=?, ciudad=?, estado=?, telefono=?, celular=?, " +
+                "email=?, fecha_nac=?, genero=?,limite_credito=?, update_time=NOW(), update_user_id=?, huella=?, imagen=? WHERE numSocio=?";
             sql.Parameters.AddWithValue("@nombre", nombre);
             sql.Parameters.AddWithValue("@apellidos", apellidos);
             sql.Parameters.AddWithValue("@direccion", direccion);
@@ -520,13 +537,14 @@ public class Socio
             sql.Parameters.AddWithValue("@email", email);
             sql.Parameters.AddWithValue("@fecha_nac", fechaNacimiento.ToString("yyyy-MM-dd") + " 00:00:00");
             sql.Parameters.AddWithValue("@genero", genero);
+            sql.Parameters.AddWithValue("@limite_credito", limiteCredito);
             sql.Parameters.AddWithValue("@update_user_id", updateUser);
             if (huella != null)
                 sql.Parameters.AddWithValue("@huella", huella);
             else
                 sql.Parameters.AddWithValue("@huella", DBNull.Value);
             if (imgMiembro != null)
-                sql.Parameters.AddWithValue("@imagen", CFuncionesGenerales.ImagenBytes(imgMiembro));
+                sql.Parameters.AddWithValue("@imagen", FuncionesGenerales.ImagenBytes(imgMiembro));
             else
                 sql.Parameters.AddWithValue("@imagen", DBNull.Value);
             sql.Parameters.AddWithValue("@numSocio", numSocio);
@@ -583,6 +601,41 @@ public class Socio
         }
     }
 
+
+    /// <summary>
+    /// Función que obtiene las huellas digitales de los miembros guardadas en la base de datos de los ultimos 6 meses.
+    /// </summary>
+    /// <exception cref="MySql.Data.MySqlClient.MySqlException">Excepción que se lanza cuando ocurre un error con la conexión a la base de datos o con la ejecución de la consulta</exception>
+    /// <exception cref="System.Exception">Representa los errores que se producen durante la ejecución de una aplicación.</exception>
+    public static void ObtenerHuellasIngreso()
+    {
+        try
+        {
+            HuellaDigital.Fmds.Clear();
+            MySqlCommand sql = new MySqlCommand();
+            sql.CommandText = "SELECT m.numSocio AS numSocio,m.huella AS huella FROM miembros AS m INNER JOIN membresias AS mem ON (m.numSocio=mem.numsocio) WHERE mem.fecha_fin >= date_sub(curdate(), interval 3 month)";
+            DataTable dt = ConexionBD.EjecutarConsultaSelect(sql);
+            foreach (DataRow dr in dt.Rows)
+            {
+                if (dr["huella"] != DBNull.Value)
+                {
+                    byte[] h = (byte[])dr["huella"];
+                    DPUruNet.Fmd fm = DPUruNet.Importer.ImportFmd(h, DPUruNet.Constants.Formats.Fmd.ANSI, DPUruNet.Constants.Formats.Fmd.ANSI).Data;
+                    HuellaDigital.Fmds.Add(int.Parse(dr["numSocio"].ToString()), fm);
+                }
+            }
+        }
+        catch (MySqlException ex)
+        {
+            throw ex;
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+    }
+
+
     /// <summary>
     /// Función que registra el ingreso de un socio al gimnasio.
     /// </summary>
@@ -637,7 +690,7 @@ public class Socio
             foreach (DataRow dr in dt.Rows)
             {
                 if (dr["imagen"] != DBNull.Value)
-                    img = CFuncionesGenerales.BytesImagen((byte[])dr["imagen"]);
+                    img = FuncionesGenerales.BytesImagen((byte[])dr["imagen"]);
             }
         }
         catch (MySqlException ex)
@@ -743,7 +796,7 @@ public class Socio
     /// <exception cref="System.Exception">Representa los errores que se producen durante la ejecución de una aplicación.</exception>
     private void ObtenerCumpleañeros()
     {
-        MensajeError m = new MensajeError(CFuncionesGenerales.MensajeError);
+        MensajeError m = new MensajeError(FuncionesGenerales.MensajeError);
         try
         {
             string sql = "SELECT numSocio, nombre, apellidos, fecha_nac, email FROM miembros WHERE DATE_FORMAT(fecha_nac, '%m')='" + fecha.Month.ToString("00") + "' AND DATE_FORMAT(fecha_nac, '%d')='" + fecha.Day.ToString("00") + "'";
@@ -754,7 +807,7 @@ public class Socio
                 GYM.Formularios.frmCumple frm = new GYM.Formularios.frmCumple(dt);
                 frm.AgregarCumpleañeros();
                 frm.ShowDialog();
-                CFuncionesGenerales.SiempreEncima(frm.Handle.ToInt32());
+                FuncionesGenerales.SiempreEncima(frm.Handle.ToInt32());
             }
         }
         catch (MySqlException ex)

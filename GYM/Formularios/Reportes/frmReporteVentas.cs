@@ -114,12 +114,12 @@ namespace GYM.Formularios.Reportes
             }
             catch (MySqlException ex)
             {
-                CFuncionesGenerales.MensajeError("Ha ocurrido un error al tomar la cantidad de ventas. La ventana se cerrará. Ocurrió un error al conectar con la base de datos.", ex);
+                FuncionesGenerales.MensajeError("Ha ocurrido un error al tomar la cantidad de ventas. La ventana se cerrará. Ocurrió un error al conectar con la base de datos.", ex);
                 this.Close();
             }
             catch (Exception ex)
             {
-                CFuncionesGenerales.MensajeError("Ha ocurrido un error al tomar la cantidad de ventas. La ventana se cerrará. Ocurrió un error genérico.", ex);
+                FuncionesGenerales.MensajeError("Ha ocurrido un error al tomar la cantidad de ventas. La ventana se cerrará. Ocurrió un error genérico.", ex);
                 this.Close();
             }
             return cant;
@@ -139,13 +139,13 @@ namespace GYM.Formularios.Reportes
             catch (MySqlException)
             {
                 tmrEspera.Enabled = false;
-                CFuncionesGenerales.frmEsperaClose();
+                FuncionesGenerales.frmEsperaClose();
                 this.Invoke(e, new object[] { "No se encontraron ventas en esas fechas." });
             }
             catch (Exception)
             {
                 tmrEspera.Enabled = false;
-                CFuncionesGenerales.frmEsperaClose();
+                FuncionesGenerales.frmEsperaClose();
                 this.Invoke(e, new object[] { "No se encontraron ventas en esas fechas." });
             }
         }
@@ -181,11 +181,11 @@ namespace GYM.Formularios.Reportes
             }
             catch (MySqlException ex)
             {
-                CFuncionesGenerales.MensajeError("Ha ocurrido un error al obtener el total de productos de ventas. No se pudo realizar la conexión con la base de datos.", ex);
+                FuncionesGenerales.MensajeError("Ha ocurrido un error al obtener el total de productos de ventas. No se pudo realizar la conexión con la base de datos.", ex);
             }
             catch (Exception ex)
             {
-                CFuncionesGenerales.MensajeError("Ha ocurrido un error al obtener el total de productos de ventas. Ocurrió un error genérico.", ex);
+                FuncionesGenerales.MensajeError("Ha ocurrido un error al obtener el total de productos de ventas. Ocurrió un error genérico.", ex);
             }
         }
 
@@ -280,7 +280,7 @@ namespace GYM.Formularios.Reportes
             }
             catch (Exception ex)
             {
-                CFuncionesGenerales.MensajeError("Ocurrió un error genérico al mostrar la información de los productos.", ex);
+                FuncionesGenerales.MensajeError("Ocurrió un error genérico al mostrar la información de los productos.", ex);
             }
         }
 
@@ -353,7 +353,7 @@ namespace GYM.Formularios.Reportes
             }
             catch (Exception ex)
             {
-                CFuncionesGenerales.MensajeError("Ocurrió un error genérico al mostrar la información de los totales de productos.", ex);
+                FuncionesGenerales.MensajeError("Ocurrió un error genérico al mostrar la información de los totales de productos.", ex);
             }
         }
 
@@ -405,14 +405,14 @@ namespace GYM.Formularios.Reportes
                         tipoPago = "Efectivo";
                     else if (dr["tipo_pago"].ToString() == "1")
                         tipoPago = "Tarjeta";
-                    dgvVentas.Rows.Add(new object[] { dr["id"], fecha, total, tipoPago, dr["c"], CFuncionesGenerales.NombreUsuario(dr["create_user_id"].ToString()) });
+                    dgvVentas.Rows.Add(new object[] { dr["id"], fecha, total, tipoPago, dr["c"], FuncionesGenerales.NombreUsuario(dr["create_user_id"].ToString()) });
                     Application.DoEvents();
                 }
                 dgvVentas_RowEnter(dgvVentas, new DataGridViewCellEventArgs(0, 0));
             }
             catch (Exception ex)
             {
-                CFuncionesGenerales.MensajeError("No se ha podido mostrar la información. ", ex);
+                FuncionesGenerales.MensajeError("No se ha podido mostrar la información. ", ex);
             }
         }
 
@@ -435,7 +435,7 @@ namespace GYM.Formularios.Reportes
             {
                 tmrEspera.Enabled = true;
                 btnBuscar.Enabled = false;
-                CFuncionesGenerales.DeshabilitarBotonCerrar(this);
+                FuncionesGenerales.DeshabilitarBotonCerrar(this);
                 ObtenerTotalVentasPOS();
                 bgwBusqueda.RunWorkerAsync(new object[] { dtpFechaInicio.Value, dtpFechaFin.Value });
             }
@@ -451,17 +451,17 @@ namespace GYM.Formularios.Reportes
         private void bgwBusqueda_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             tmrEspera.Enabled = false;
-            CFuncionesGenerales.frmEsperaClose();
+            FuncionesGenerales.frmEsperaClose();
             LlenarDataGrid();
             LlenarPanelTotalProductos();
             btnBuscar.Enabled = true;
-            CFuncionesGenerales.HabilitarBotonCerrar(this);
+            FuncionesGenerales.HabilitarBotonCerrar(this);
         }
 
         private void tmrEspera_Tick(object sender, EventArgs e)
         {
             tmrEspera.Enabled = false;
-            CFuncionesGenerales.frmEspera("Espere mientras se efectua la búsqueda", this);
+            FuncionesGenerales.frmEspera("Espere mientras se efectua la búsqueda", this);
         }
 
         private void frmReporteVentas_Load(object sender, EventArgs e)

@@ -36,11 +36,11 @@ namespace GYM.Formularios.Caja
             }
             catch (MySqlException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error al tratar de obtener la información de los cierres de caja.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ha ocurrido un error al tratar de obtener la información de los cierres de caja.", ex);
             }
             catch (Exception ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error genérico.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ha ocurrido un error genérico.", ex);
             }
         }
 
@@ -59,19 +59,19 @@ namespace GYM.Formularios.Caja
             }
             catch (FormatException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error al tratar de convertir una variable. El formato de entrada no es correcto.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ha ocurrido un error al tratar de convertir una variable. El formato de entrada no es correcto.", ex);
             }
             catch (OverflowException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un desbordamiento.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ha ocurrido un desbordamiento.", ex);
             }
             catch (InvalidOperationException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("La operación no pudo ser completada. El estado actual del DataGridView no lo permite.", ex);
+                Clases.FuncionesGenerales.MensajeError("La operación no pudo ser completada. El estado actual del DataGridView no lo permite.", ex);
             }
             catch (ArgumentNullException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("El argumento dado en la llamada al método es nulo, y el método no admite este tipo de valores.", ex);
+                Clases.FuncionesGenerales.MensajeError("El argumento dado en la llamada al método es nulo, y el método no admite este tipo de valores.", ex);
             }
         }
 
@@ -99,16 +99,16 @@ namespace GYM.Formularios.Caja
         private void bgwCortes_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             tmrEspera.Enabled = false;
-            Clases.CFuncionesGenerales.frmEsperaClose();
+            Clases.FuncionesGenerales.frmEsperaClose();
             LlenarDataGrid();
             btnBuscar.Enabled = true;
-            CFuncionesGenerales.HabilitarBotonCerrar(this);
+            FuncionesGenerales.HabilitarBotonCerrar(this);
         }
 
         private void tmrEspera_Tick(object sender, EventArgs e)
         {
             tmrEspera.Enabled = false;
-            Clases.CFuncionesGenerales.frmEspera("Espere, búscando los cortes", this);
+            Clases.FuncionesGenerales.frmEspera("Espere, búscando los cortes", this);
         }
 
         private void btnImprimir_Click(object sender, EventArgs e)
@@ -126,7 +126,7 @@ namespace GYM.Formularios.Caja
             if (dtpFechaFin.Value < dtpFechaInicio.Value)
                 dtpFechaFin.Value = dtpFechaInicio.Value.AddDays(1);
             btnBuscar.Enabled = false;
-            CFuncionesGenerales.DeshabilitarBotonCerrar(this);
+            FuncionesGenerales.DeshabilitarBotonCerrar(this);
             bgwCortes.RunWorkerAsync(new object[] { dtpFechaInicio.Value, dtpFechaFin.Value });
             tmrEspera.Enabled = true;
         }
@@ -166,7 +166,7 @@ namespace GYM.Formularios.Caja
         private void tmrReporte_Tick(object sender, EventArgs e)
         {
             tmrReporte.Enabled = false;
-            CFuncionesGenerales.frmEspera("Espere, generando reporte", this);
+            FuncionesGenerales.frmEspera("Espere, generando reporte", this);
         }
 
         private void bgwReporte_DoWork(object sender, DoWorkEventArgs e)
@@ -183,7 +183,7 @@ namespace GYM.Formularios.Caja
         private void CerrarReporte()
         {
             tmrReporte.Enabled = false;
-            CFuncionesGenerales.frmEsperaClose();
+            FuncionesGenerales.frmEsperaClose();
         }
     }
 }

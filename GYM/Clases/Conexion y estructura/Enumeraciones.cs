@@ -1,7 +1,5 @@
-﻿namespace GYM.Clases
+﻿namespace GYM
 {
-    class Enumeraciones
-    {
         public enum Duracion
         {
             Semanal = 0,
@@ -15,7 +13,26 @@
 
         }
 
-        public enum Mensajes
+    public enum TipoPago
+    {
+        Efectivo = 0,
+        Cheque = 1,
+        Crédito = 2,
+        Débito = 3,
+        Transferencia = 4,
+        Mixto = 5,
+        Deposito = 6,
+        Boveda = 7
+    }
+
+    public enum TipoCuenta
+    {
+        Sucursal = 0,
+        Cliente = 1,
+        Proveedor = 2
+    }
+
+    public enum Mensajes
         {
             Exito = 0,
             Informativo = 1,
@@ -29,5 +46,4 @@
             Caja=0,
         }
 
-    }
 }

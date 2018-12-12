@@ -21,7 +21,7 @@ namespace GYM.Formularios.Membresia
             this.id = id;
             cboTipo.SelectedIndex = 0;
             cboGenero.SelectedIndex = 0;
-            CFuncionesGenerales.CargarInterfaz(this);
+            FuncionesGenerales.CargarInterfaz(this);
         }
 
         private void CargarPromocion()
@@ -52,16 +52,16 @@ namespace GYM.Formularios.Membresia
             }
             catch (MySqlException ex)
             {
-                CFuncionesGenerales.MensajeError("No se han podido obtener los datos. No se pudo conectar con la base de datos. La ventana se cerrará.", ex);
+                FuncionesGenerales.MensajeError("No se han podido obtener los datos. No se pudo conectar con la base de datos. La ventana se cerrará.", ex);
                 this.Close();
             }
             catch (InvalidCastException ex)
             {
-                CFuncionesGenerales.MensajeError("No se han podido obtener los datos. Ocurrió un error al convertir las variables.", ex);
+                FuncionesGenerales.MensajeError("No se han podido obtener los datos. Ocurrió un error al convertir las variables.", ex);
             }
             catch (Exception ex)
             {
-                CFuncionesGenerales.MensajeError("No se han podido obtener los datos. Ocurrió un error genérico.", ex);
+                FuncionesGenerales.MensajeError("No se han podido obtener los datos. Ocurrió un error genérico.", ex);
             }
         }
 
@@ -79,11 +79,11 @@ namespace GYM.Formularios.Membresia
             }
             catch (MySqlException ex)
             {
-                CFuncionesGenerales.MensajeError("No se ha podido obtener el nombre de usuario. No se ha podido conectar a la base de datos.", ex);
+                FuncionesGenerales.MensajeError("No se ha podido obtener el nombre de usuario. No se ha podido conectar a la base de datos.", ex);
             }
             catch (Exception ex)
             {
-                CFuncionesGenerales.MensajeError("No se ha podido obtener el nombre de usuario. Ocurrió un error genérico.", ex);
+                FuncionesGenerales.MensajeError("No se ha podido obtener el nombre de usuario. Ocurrió un error genérico.", ex);
             }
             return nomUsu;
         }
@@ -145,7 +145,7 @@ namespace GYM.Formularios.Membresia
 
         private void txtPrecio_KeyPress(object sender, KeyPressEventArgs e)
         {
-            CFuncionesGenerales.VerificarEsNumero(ref sender, ref e, false);
+            FuncionesGenerales.VerificarEsNumero(ref sender, ref e, false);
         }
 
         private void btnAceptar_Click(object sender, EventArgs e)
@@ -161,11 +161,11 @@ namespace GYM.Formularios.Membresia
             }
             catch (MySqlException ex)
             {
-                CFuncionesGenerales.MensajeError("Se ha producido un error al modificar la promoción. No se pudo conectar a la base de datos.", ex);
+                FuncionesGenerales.MensajeError("Se ha producido un error al modificar la promoción. No se pudo conectar a la base de datos.", ex);
             }
             catch (Exception ex)
             {
-                CFuncionesGenerales.MensajeError("Se ha producido un error al modificar la promoción. Ocurrió un error genérico.", ex);
+                FuncionesGenerales.MensajeError("Se ha producido un error al modificar la promoción. Ocurrió un error genérico.", ex);
             }
         }
 

@@ -20,7 +20,7 @@ namespace GYM.Formularios.Socio
         public frmNuevoSocio()
         {
             InitializeComponent();
-            CFuncionesGenerales.CargarInterfaz(this);
+            FuncionesGenerales.CargarInterfaz(this);
             cbxEstado.SelectedIndex = 0;
             cbxSexo.SelectedIndex = 0;
             BuscarDispositivos();
@@ -38,23 +38,23 @@ namespace GYM.Formularios.Socio
             }
             catch (MySql.Data.MySqlClient.MySqlException ex)
             {
-               CFuncionesGenerales.MensajeError("No se pudo obtener el último número de miembro. No se pudo conectar a la base de datos.", ex);
+               FuncionesGenerales.MensajeError("No se pudo obtener el último número de miembro. No se pudo conectar a la base de datos.", ex);
             }
             catch (FormatException ex)
             {
-                CFuncionesGenerales.MensajeError("No se pudo obtener el último número de miembro. No se pudo dar formato a una variable.", ex);
+                FuncionesGenerales.MensajeError("No se pudo obtener el último número de miembro. No se pudo dar formato a una variable.", ex);
             }
             catch (OverflowException ex)
             {
-                CFuncionesGenerales.MensajeError("No se pudo obtener el último número de miembro. Hubo un desbordamiento.", ex);
+                FuncionesGenerales.MensajeError("No se pudo obtener el último número de miembro. Hubo un desbordamiento.", ex);
             }
             catch (ArgumentNullException ex)
             {
-                CFuncionesGenerales.MensajeError("No se pudo obtener el último número de miembro. El argumento dado al método es nulo y éste no lo acepta.", ex);
+                FuncionesGenerales.MensajeError("No se pudo obtener el último número de miembro. El argumento dado al método es nulo y éste no lo acepta.", ex);
             }
             catch (Exception ex)
             {
-                CFuncionesGenerales.MensajeError("No se pudo obtener el último número de miembro. Ocurrio un error genérico.", ex);
+                FuncionesGenerales.MensajeError("No se pudo obtener el último número de miembro. Ocurrio un error genérico.", ex);
             }
         }
 
@@ -111,36 +111,41 @@ namespace GYM.Formularios.Socio
 
         private void Form_Load(object sender, EventArgs e)
         {
-            CFuncionesGenerales.CerrarHuellas();
+            FuncionesGenerales.CerrarHuellas();
             if (HuellaDigital.reader == null)
                 btnHuella.Enabled = false;
-            CFuncionesGenerales.CargarInterfaz(this);
+            FuncionesGenerales.CargarInterfaz(this);
             cbxSexo.SelectedIndex = 0;
             cbxEstado.SelectedIndex = 13;
         }
 
         private bool validarCampos()
         {
+            bool res = true;
             if (txtNumSocio.Text == "")
             {
-                MessageBox.Show("Debes haber ingresado un número de socio", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                FuncionesGenerales.ColoresError(txtNumSocio);
+                res = false;
                 return false;
             }
             if (tbxNombre.Text.Trim() == "")
             {
-                MessageBox.Show("Debes ingresar el nombre del socio", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                FuncionesGenerales.ColoresError(tbxNombre);
+                res = false;
                 return false;
             }
             if (tbxApellidos.Text.Trim() == "")
             {
-                MessageBox.Show("Debes ingresar los apellidos del socio", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                FuncionesGenerales.ColoresError(tbxApellidos);
+                res = false;
                 return false;
             }
             if (tbxTel.Text == "")
             {
                 if (tbxCelular.Text == "")
                 {
-                    MessageBox.Show("Debes ingresar al menos un número teléfonico", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    FuncionesGenerales.ColoresError(tbxCelular);
+                    res = false;
                     return false;
                 }
             }
@@ -148,11 +153,12 @@ namespace GYM.Formularios.Socio
             {
                 if (tbxTel.Text == "")
                 {
-                    MessageBox.Show("Debes ingresar al menos un número teléfonico", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    FuncionesGenerales.ColoresError(tbxTel);
+                    res = false;
                     return false;
                 }
             }
-            return true;
+            return res;
         }
 
 
@@ -178,15 +184,20 @@ namespace GYM.Formularios.Socio
                         miembro.Estado = cbxEstado.Text;
                         miembro.FechaNacimiento = timePickerFechaNac.Value;
                         miembro.Genero = cbxSexo.SelectedIndex;
+                        if (tbxCredito.Text=="")
+                        {
+                            miembro.LimiteCredito = 0;
+                        }
+                        else
+                            miembro.LimiteCredito = decimal.Parse(tbxCredito.Text);
+
                         miembro.Huella = huella;
                         miembro.ImagenMiembro = pbxImagenPerfil.Image;
-
-   
                         if (miembro.InsertarMiembro(miembro))
                         {
                             MessageBox.Show("Socio Agregado Satisfactoriamente", "Socio Nuevo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                             global::Socio.ObtenerHuellas();
-                            this.Close();
+                            Close();
                         }
                         else
                             MessageBox.Show("Ocurrio un error al ingresar el socio", "Socio Nuevo", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -197,27 +208,27 @@ namespace GYM.Formularios.Socio
             }
             catch (MySql.Data.MySqlClient.MySqlException ex)
             {
-                CFuncionesGenerales.MensajeError("Ha ocurrido un error al tratar de agregar el miembro. No se pudo conectar con la base de datos.", ex);
+                FuncionesGenerales.MensajeError("Ha ocurrido un error al tratar de agregar el miembro. No se pudo conectar con la base de datos.", ex);
             }
             catch (System.Runtime.InteropServices.ExternalException ex)
             {
-                CFuncionesGenerales.MensajeError("Ha ocurrido un error al tratar de agregar el miembro. Hubo un problema con la interoperabilidad COM.", ex);
+                FuncionesGenerales.MensajeError("Ha ocurrido un error al tratar de agregar el miembro. Hubo un problema con la interoperabilidad COM.", ex);
             }
             catch (FormatException ex)
             {
-                CFuncionesGenerales.MensajeError("Ha ocurrido un error al tratar de agregar el miembro. Ha ocurrido un error al dar formato a una variable.", ex);
+                FuncionesGenerales.MensajeError("Ha ocurrido un error al tratar de agregar el miembro. Ha ocurrido un error al dar formato a una variable.", ex);
             }
             catch (OverflowException ex)
             {
-                CFuncionesGenerales.MensajeError("Ha ocurrido un error al tratar de agregar el miembro. Ocurrio un desbordamiento.", ex);
+                FuncionesGenerales.MensajeError("Ha ocurrido un error al tratar de agregar el miembro. Ocurrio un desbordamiento.", ex);
             }
             catch (ArgumentNullException ex)
             {
-                CFuncionesGenerales.MensajeError("Ha ocurrido un error al tratar de agregar el miembro. El argumento dado es nulo y el método no lo acepta.", ex);
+                FuncionesGenerales.MensajeError("Ha ocurrido un error al tratar de agregar el miembro. El argumento dado es nulo y el método no lo acepta.", ex);
             }
             catch (Exception ex)
             {
-                CFuncionesGenerales.MensajeError("Ha ocurrido un error al tratar de agregar el miembro. Ocurrio un error genérico.", ex);
+                FuncionesGenerales.MensajeError("Ha ocurrido un error al tratar de agregar el miembro. Ocurrio un error genérico.", ex);
             }
         }
 
@@ -247,13 +258,13 @@ namespace GYM.Formularios.Socio
             }
             catch (Exception ex)
             {
-                CFuncionesGenerales.MensajeError("Ha ocurrido un error al tratar de tomar la foto del miembro.", ex);
+                FuncionesGenerales.MensajeError("Ha ocurrido un error al tratar de tomar la foto del miembro.", ex);
             }
         }
 
         private void txtNumSocio_KeyPress(object sender, KeyPressEventArgs e)
         {
-            CFuncionesGenerales.VerificarEsNumero(ref sender, ref e, true);
+            FuncionesGenerales.VerificarEsNumero(ref sender, ref e, true);
         }
 
         private void frmAgregarMiembro_FormClosing(object sender, FormClosingEventArgs e)
@@ -270,12 +281,12 @@ namespace GYM.Formularios.Socio
 
         private void tbxCelular_KeyPress(object sender, KeyPressEventArgs e)
         {
-            CFuncionesGenerales.VerificarEsNumero(ref sender, ref e, true);
+            FuncionesGenerales.VerificarEsNumero(ref sender, ref e, true);
         }
 
         private void tbxTel_KeyPress(object sender, KeyPressEventArgs e)
         {
-            CFuncionesGenerales.VerificarEsNumero(ref sender, ref e, true);
+            FuncionesGenerales.VerificarEsNumero(ref sender, ref e, true);
         }
 
         private void btnCancelar_Click(object sender, EventArgs e)
@@ -290,7 +301,7 @@ namespace GYM.Formularios.Socio
 
         private void frmAgregarMiembro_FormClosed(object sender, FormClosedEventArgs e)
         {
-            CFuncionesGenerales.AbrirHuellas();
+            FuncionesGenerales.AbrirHuellas();
         }
 
         private void cbxCamara_SelectedIndexChanged(object sender, EventArgs e)
@@ -300,7 +311,7 @@ namespace GYM.Formularios.Socio
 
         private void txtNumeros_KeyPress(object sender, KeyPressEventArgs e)
         {
-            CFuncionesGenerales.VerificarEsNumero(ref sender, ref e, true);
+            FuncionesGenerales.VerificarEsNumero(ref sender, ref e, true);
         }
 
         private void frmNuevoSocio_KeyDown(object sender, KeyEventArgs e)

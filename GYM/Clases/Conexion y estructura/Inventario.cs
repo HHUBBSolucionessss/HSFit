@@ -9,11 +9,8 @@ namespace GYM.Clases
         #region Propiedades
         private int id;
         private int idProducto;
-        private int idSucursal;
         private int cantidad;
-        private decimal precioMedioMayoreo;
-        private decimal precio2;
-        private decimal precioEspecial;
+        private decimal precio;
         private int createUser;
         private DateTime createTime;
         private int updateUser;
@@ -48,8 +45,8 @@ namespace GYM.Clases
 
         public decimal PrecioMedioMayoreo
         {
-            get { return precioMedioMayoreo; }
-            set { precioMedioMayoreo = value; }
+            get { return precio; }
+            set { precio = value; }
         }
 
         public decimal Precio2
@@ -98,11 +95,10 @@ namespace GYM.Clases
         /// <param name="idProducto">ID del producto con el que está relacionado el inventario</param>
         /// <exception cref="MySql.Data.MySqlClient.MySqlException"></exception>
         /// <exception cref="System.Exception"></exception>
-        public Inventario(int idProducto, int idSucursal)
+        public Inventario(int idProducto)
         {
-            this.IDProducto = idProducto;
-            this.idSucursal = idSucursal;
-            this.ID = ObtenerIDInventario();
+            IDProducto = idProducto;
+            ID = ObtenerIDInventario();
         }
 
         private int ObtenerIDInventario()
@@ -111,9 +107,8 @@ namespace GYM.Clases
             try
             {
                 MySqlCommand sql = new MySqlCommand();
-                sql.CommandText = "SELECT id FROM inventario WHERE id_producto=?id_producto AND id_sucursal=?id_sucursal";
+                sql.CommandText = "SELECT id FROM inventario WHERE id_producto=?id_producto";
                 sql.Parameters.AddWithValue("?id_producto", idProducto);
-                sql.Parameters.AddWithValue("?id_sucursal", idSucursal);
                 DataTable dt = ConexionBD.EjecutarConsultaSelect(sql);
                 foreach (DataRow dr in dt.Rows)
                 {
@@ -133,7 +128,7 @@ namespace GYM.Clases
 
         public Inventario(int id)
         {
-            this.ID = id;
+            ID = id;
         }
 
         public void ObtenerDatos()
@@ -147,11 +142,8 @@ namespace GYM.Clases
                 foreach (DataRow dr in dt.Rows)
                 {
                     idProducto = (int)dr["id_producto"];
-                    idSucursal = (int)dr["id_sucursal"];
                     cantidad = (int)dr["cant"];
-                    precioMedioMayoreo = (decimal)dr["precio_medio_mayoreo"];
-                    precio2 = (decimal)dr["precio_mayoreo"];
-                    precioEspecial = (decimal)dr["precio_especial"];
+                    precio = (decimal)dr["precio"];
                     createUser = (int)dr["create_user"];
                     createTime = (DateTime)dr["create_time"];
                     if (dr["update_user"] != DBNull.Value)
@@ -179,14 +171,11 @@ namespace GYM.Clases
             try
             {
                 MySqlCommand sql = new MySqlCommand();
-                sql.CommandText = "INSERT INTO inventario (id_producto, id_sucursal, cant, precio_medio_mayoreo, precio_mayoreo, precio_especial, create_user, create_time) " +
-                    "VALUES (?id_producto, ?id_sucursal, ?cant, ?precio_medio_mayoreo, ?precio_mayoreo, ?precio_especial, ?create_user, NOW())";
+                sql.CommandText = "INSERT INTO inventario (id_producto, cant, precio, create_user, create_time) " +
+                    "VALUES (?id_producto, ?id_sucursal, ?cant, ?precio, ?create_user, NOW())";
                 sql.Parameters.AddWithValue("?id_producto", idProducto);
-                sql.Parameters.AddWithValue("?id_sucursal", idSucursal);
                 sql.Parameters.AddWithValue("?cant", cantidad);
-                sql.Parameters.AddWithValue("?precio_medio_mayoreo", precioMedioMayoreo);
-                sql.Parameters.AddWithValue("?precio_mayoreo", precio2);
-                sql.Parameters.AddWithValue("?precio_especial", precioEspecial);
+                sql.Parameters.AddWithValue("?precio", precio);
                 sql.Parameters.AddWithValue("?create_user", Usuario.IDUsuarioActual);
                 //this.id = ConexionBD.EjecutarConsulta(sql);
             }
@@ -206,13 +195,11 @@ namespace GYM.Clases
             {
                 MySqlCommand sql = new MySqlCommand();
                 sql.CommandText = "UPDATE inventario SET id_producto=?id_producto, id_sucursal=?id_sucursal, cant=?cant, " + 
-                    "precio_medio_mayoreo=?precio_medio_mayoreo, precio_mayoreo=?precio_mayoreo, precio_especial=?precio_especial, update_user=?update_user, update_time=NOW() WHERE id=?id";
+                    "precio=?precio,  update_user=?update_user, update_time=NOW() WHERE id=?id";
                 sql.Parameters.AddWithValue("?id_producto", idProducto);
                 sql.Parameters.AddWithValue("?id_sucursal", idSucursal);
                 sql.Parameters.AddWithValue("?cant", cantidad);
-                sql.Parameters.AddWithValue("?precio_medio_mayoreo", precioMedioMayoreo);
-                sql.Parameters.AddWithValue("?precio_mayoreo", precio2);
-                sql.Parameters.AddWithValue("?precio_especial", precioEspecial);
+                sql.Parameters.AddWithValue("?precio", precio);
                 sql.Parameters.AddWithValue("?update_user", Usuario.IDUsuarioActual);
                 sql.Parameters.AddWithValue("?id", id);
                 ConexionBD.EjecutarConsulta(sql);
@@ -232,15 +219,14 @@ namespace GYM.Clases
         /// </summary>
         /// <param name="id">ID del producto</param>
         /// <param name="cant">Cantidad a sumar (Para restar ingresar un número negativo)</param>
-        public static void CambiarCantidadInventario(int id, int cant, int idSucursal)
+        public static void CambiarCantidadInventario(int id, int cant)
         {
             try
             {
                 MySqlCommand sql = new MySqlCommand();
-                sql.CommandText = "UPDATE inventario SET cant=cant+?cant WHERE id_producto=?id AND id_sucursal=?id_sucursal";
+                sql.CommandText = "UPDATE inventario SET cant=cant+?cant WHERE id_producto=?id";
                 sql.Parameters.AddWithValue("?cant", cant);
                 sql.Parameters.AddWithValue("?id", id);
-                sql.Parameters.AddWithValue("?id_sucursal", idSucursal);
                 ConexionBD.EjecutarConsulta(sql);
             }
             catch (MySqlException ex)
@@ -261,10 +247,9 @@ namespace GYM.Clases
             try
             {
                 MySqlCommand sql = new MySqlCommand();
-                sql.CommandText = "UPDATE inventario SET cant=?cant WHERE id_producto=?id AND id_sucursal=?id_sucursal";
+                sql.CommandText = "UPDATE inventario SET cant=?cant WHERE id_producto=?id";
                 sql.Parameters.AddWithValue("?cant", cant);
                 sql.Parameters.AddWithValue("?id", id);
-                sql.Parameters.AddWithValue("?id_sucursal", idSuc);
                 ConexionBD.EjecutarConsulta(sql);
             }
             catch (MySqlException ex)
@@ -277,13 +262,12 @@ namespace GYM.Clases
             }
         }
 
-        public void ReiniciarInventario(int idSuc)
+        public void ReiniciarInventario()
         {
             try
             {
                 MySqlCommand sql = new MySqlCommand();
-                sql.CommandText = "UPDATE inventario SET cant=0 WHERE id_sucursal=?id_sucursal";
-                sql.Parameters.AddWithValue("?id_sucursal", idSuc);
+                sql.CommandText = "UPDATE inventario SET cant=0";
                 ConexionBD.EjecutarConsulta(sql);
             }
             catch (MySqlException ex)
@@ -297,15 +281,14 @@ namespace GYM.Clases
         }
 
 
-        public static int CantidadProducto(int id, int idSucursal)
+        public static int CantidadProducto(int id)
         {
             int cant = 0;
             try
             {
                 MySqlCommand sql = new MySqlCommand();
-                sql.CommandText = "SELECT cant FROM inventario WHERE id_producto=?id AND id_sucursal=?id_sucursal";
+                sql.CommandText = "SELECT cant FROM inventario WHERE id_producto=?id";
                 sql.Parameters.AddWithValue("?id", id);
-                sql.Parameters.AddWithValue("?id_sucursal", idSucursal);
                 DataTable dt = ConexionBD.EjecutarConsultaSelect(sql);
                 foreach (DataRow dr in dt.Rows)
                 {
@@ -323,20 +306,18 @@ namespace GYM.Clases
             return cant;
         }
 
-        public static decimal[] PrecioProducto(int id, int idSucursal)
+        public static decimal[] PrecioProducto(int id)
         {
             decimal[] precio = new decimal[3] { 0M, 0M, 0M };
             try
             {
                 MySqlCommand sql = new MySqlCommand();
-                sql.CommandText = "SELECT precio_medio_mayoreo, precio_mayoreo, precio_especial FROM inventario WHERE id=?id AND id_sucursal=?id_sucursal";
+                sql.CommandText = "SELECT precio FROM inventario WHERE id=?id";
                 sql.Parameters.AddWithValue("?id", id);
                 DataTable dt = ConexionBD.EjecutarConsultaSelect(sql);
                 foreach (DataRow dr in dt.Rows)
                 {
-                    precio[1] = (decimal)dr["precio_medio_mayoreo"];
-                    precio[2] = (decimal)dr["precio_mayoreo"];
-                    precio[3] = (decimal)dr["precio_especial"];
+                    precio[1] = (decimal)dr["precio"];
                 }
             }
             catch (MySqlException ex)
@@ -350,15 +331,14 @@ namespace GYM.Clases
             return precio;
         }
 
-        public static bool TieneInventario(int idProducto, int idSucursal)
+        public static bool TieneInventario(int idProducto)
         {
             bool tiene = false;
             try
             {
                 MySqlCommand sql = new MySqlCommand();
-                sql.CommandText = "SELECT id FROM inventario WHERE id_producto=?id_producto AND id_sucursal=?id_sucursal";
+                sql.CommandText = "SELECT id FROM inventario WHERE id_producto=?id_producto";
                 sql.Parameters.AddWithValue("?id_producto", idProducto);
-                sql.Parameters.AddWithValue("?id_sucursal", idSucursal);
                 DataTable dt = ConexionBD.EjecutarConsultaSelect(sql);
                 if (dt.Rows.Count > 0)
                 {

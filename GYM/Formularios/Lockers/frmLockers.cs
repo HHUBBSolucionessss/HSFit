@@ -1,33 +1,27 @@
 ﻿using GYM.Clases;
 using MySql.Data.MySqlClient;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace GYM.Formularios
 {
-    public partial class frmLockers : Form
+    public partial class FrmLockers : Form
     {
-        private int numLocker;
+        private string numLocker;
         private int idLocker = 0;
         DateTime fechaIni, fechaFin;
 
         #region Instancia
-        private static frmLockers frmInstancia;
-        public static frmLockers Instancia
+        private static FrmLockers frmInstancia;
+        public static FrmLockers Instancia
         {
             get
             {
                 if (frmInstancia == null)
-                    frmInstancia = new frmLockers();
+                    frmInstancia = new FrmLockers();
                 else if (frmInstancia.IsDisposed)
-                    frmInstancia = new frmLockers();
+                    frmInstancia = new FrmLockers();
                 return frmInstancia;
 
             }
@@ -46,13 +40,13 @@ namespace GYM.Formularios
             Rechazado = 3
         }
 
-        public int NumeroLocker
+        public string NumeroLocker
         {
             get { return numLocker; }
             set { numLocker = value; }
         }
         
-        public frmLockers()
+        public FrmLockers()
         {
             InitializeComponent();
 
@@ -63,8 +57,10 @@ namespace GYM.Formularios
             try
             {
                 dgvLockers.Rows.Clear();
-                MySqlCommand sql = new MySqlCommand();
-                sql.CommandText = "SELECT l.id, l.num, l.estado,l.fecha_fin,l.fecha_ini, r.nom_persona, s.nombre, s.apellidos, s.telefono, s.celular FROM locker AS l LEFT JOIN miembros AS s ON (l.numSocio=s.numSocio) LEFT JOIN registro_locker AS r ON (l.id=r.locker_id)";
+                MySqlCommand sql = new MySqlCommand
+                {
+                    CommandText = "SELECT l.id, l.num, l.estado,l.fecha_fin,l.fecha_ini, r.nom_persona, s.nombre, s.apellidos, s.telefono, s.celular FROM locker AS l LEFT JOIN miembros AS s ON (l.numSocio=s.numSocio) LEFT JOIN registro_locker AS r ON (l.id=r.locker_id)"
+                };
                 DataTable dt = ConexionBD.EjecutarConsultaSelect(sql);
                 foreach (DataRow dr in dt.Rows)
                 {
@@ -113,19 +109,19 @@ namespace GYM.Formularios
             }
             catch (MySqlException ex)
             {
-                CFuncionesGenerales.MensajeError("No se han podido cargar los lockers. No se pudo conectar a la base de datos.", ex);
+                FuncionesGenerales.MensajeError("No se han podido cargar los lockers. No se pudo conectar a la base de datos.", ex);
             }
             catch (InvalidOperationException ex)
             {
-                CFuncionesGenerales.MensajeError("No se han podido cargar los lockers. La operación no se pudo completar debido al estado actual del control DataGridView.", ex);
+                FuncionesGenerales.MensajeError("No se han podido cargar los lockers. La operación no se pudo completar debido al estado actual del control DataGridView.", ex);
             }
             catch (ArgumentNullException ex)
             {
-                CFuncionesGenerales.MensajeError("No se han podido cargar los lockers. El argumento dado es nulo y el control DataGridView no lo admite.", ex);
+                FuncionesGenerales.MensajeError("No se han podido cargar los lockers. El argumento dado es nulo y el control DataGridView no lo admite.", ex);
             }
             catch (Exception ex)
             {
-                CFuncionesGenerales.MensajeError("No se han podido cargar los lockers. Ha ocurrido un error genérico.", ex);
+                FuncionesGenerales.MensajeError("No se han podido cargar los lockers. Ha ocurrido un error genérico.", ex);
             }
         }
 
@@ -133,11 +129,13 @@ namespace GYM.Formularios
         {
             try
             {
-                MySqlCommand sql = new MySqlCommand();
-                sql.CommandText = "INSERT INTO locker (numSocio, num,fecha_ini,fecha_fin, estado, create_time, create_user_id) " +
-                    "VALUES (?numSocio, ?num,?fecha_ini,?fecha_fin, ?estado, NOW(), ?create_user_id)";
+                MySqlCommand sql = new MySqlCommand
+                {
+                    CommandText = "INSERT INTO locker (numSocio, num,fecha_ini,fecha_fin, estado, create_time, create_user_id) " +
+                    "VALUES (?numSocio, ?num,?fecha_ini,?fecha_fin, ?estado, NOW(), ?create_user_id)"
+                };
                 sql.Parameters.AddWithValue("?numSocio", 0);
-                sql.Parameters.AddWithValue("?num", this.NumeroLocker);
+                sql.Parameters.AddWithValue("?num", NumeroLocker);
                 sql.Parameters.AddWithValue("?fecha_ini", DBNull.Value);
                 sql.Parameters.AddWithValue("?fecha_fin", DBNull.Value);
                 sql.Parameters.AddWithValue("?estado", EstadoLocker.Desocupado);
@@ -146,11 +144,11 @@ namespace GYM.Formularios
             }
             catch (MySqlException ex)
             {
-                CFuncionesGenerales.MensajeError("No se ha podido crear el locker. No se pudo conectar con la base de datos.", ex);
+                FuncionesGenerales.MensajeError("No se ha podido crear el locker. No se pudo conectar con la base de datos.", ex);
             }
             catch (Exception ex)
             {
-                CFuncionesGenerales.MensajeError("No se ha podido crear el locker. Ha ocurrido un error genérico.", ex);
+                FuncionesGenerales.MensajeError("No se ha podido crear el locker. Ha ocurrido un error genérico.", ex);
             }
         }
 
@@ -158,19 +156,21 @@ namespace GYM.Formularios
         {
             try
             {
-                MySqlCommand sql = new MySqlCommand();
-                sql.CommandText = "UPDATE locker SET num=?num WHERE id=?id";
+                MySqlCommand sql = new MySqlCommand
+                {
+                    CommandText = "UPDATE locker SET num=?num WHERE id=?id"
+                };
                 sql.Parameters.AddWithValue("?num", this.NumeroLocker);
                 sql.Parameters.AddWithValue("?id", this.idLocker);
                 ConexionBD.EjecutarConsulta(sql);
             }
             catch (MySqlException ex)
             {
-                CFuncionesGenerales.MensajeError("No se ha podido editar el locker. No se pudo conectar con la base de datos.", ex);
+                FuncionesGenerales.MensajeError("No se ha podido editar el locker. No se pudo conectar con la base de datos.", ex);
             }
             catch (Exception ex)
             {
-                CFuncionesGenerales.MensajeError("No se ha podido editar el locker. Ha ocurrido un error genérico.", ex);
+                FuncionesGenerales.MensajeError("No se ha podido editar el locker. Ha ocurrido un error genérico.", ex);
             }
         }
 
@@ -178,39 +178,41 @@ namespace GYM.Formularios
         {
             try
             {
-                MySqlCommand sql = new MySqlCommand();
-                sql.CommandText = "SET foreign_key_checks=0; DELETE FROM locker WHERE id=?id; SET foreign_key_checks=1;";
-                sql.Parameters.AddWithValue("?id", this.idLocker);
+                MySqlCommand sql = new MySqlCommand
+                {
+                    CommandText = "SET foreign_key_checks=0; DELETE FROM locker WHERE id=?id; SET foreign_key_checks=1;"
+                };
+                sql.Parameters.AddWithValue("?id",idLocker);
                 ConexionBD.EjecutarConsulta(sql);
             }
             catch (MySqlException ex)
             {
-                CFuncionesGenerales.MensajeError("No se ha podido eliminar el locker. No se pudo conectar con la base de datos.", ex);
+                FuncionesGenerales.MensajeError("No se ha podido eliminar el locker. No se pudo conectar con la base de datos.", ex);
             }
             catch (Exception ex)
             {
-                CFuncionesGenerales.MensajeError("No se ha podido eliminar el locker. Ha ocurrido un error genérico.", ex);
+                FuncionesGenerales.MensajeError("No se ha podido eliminar el locker. Ha ocurrido un error genérico.", ex);
             }
         }
 
-        private void btnNuevo_Click(object sender, EventArgs e)
+        private void BtnNuevo_Click(object sender, EventArgs e)
         {
-            if ((new frmNumeroLocker(this)).ShowDialog(this) == System.Windows.Forms.DialogResult.OK)
+            if ((new frmNumeroLocker(this,"")).ShowDialog(this) == DialogResult.OK)
                 InsertarLocker();
             BuscarLockers();
         }
 
-        private void btnEditar_Click(object sender, EventArgs e)
+        private void BtnEditar_Click(object sender, EventArgs e)
         {
             if (idLocker > 0)
             {
-                if ((new frmNumeroLocker(this, this.numLocker)).ShowDialog(this) == System.Windows.Forms.DialogResult.OK)
+                if ((new frmNumeroLocker(this, numLocker)).ShowDialog(this) == System.Windows.Forms.DialogResult.OK)
                     EditarLocker();
                 BuscarLockers();
             }
         }
 
-        private void btnEliminar_Click(object sender, EventArgs e)
+        private void BtnEliminar_Click(object sender, EventArgs e)
         {
             if (idLocker > 0)
             {
@@ -220,7 +222,7 @@ namespace GYM.Formularios
             }
         }
 
-        private void btnAsignar_Click(object sender, EventArgs e)
+        private void BtnAsignar_Click(object sender, EventArgs e)
         {
             if (dgvLockers.CurrentRow != null)
             {
@@ -243,17 +245,17 @@ namespace GYM.Formularios
             }
         }
 
-        private void frmLockers_Load(object sender, EventArgs e)
+        private void FrmLockers_Load(object sender, EventArgs e)
         {
             BuscarLockers();
         }
 
-        private void dgvLockers_RowEnter(object sender, DataGridViewCellEventArgs e)
+        private void DgvLockers_RowEnter(object sender, DataGridViewCellEventArgs e)
         {
             try
             {
                 idLocker = (int)dgvLockers[0, e.RowIndex].Value;
-                numLocker = (int)dgvLockers[1, e.RowIndex].Value;
+                numLocker = (string)dgvLockers[1, e.RowIndex].Value;
             }
             catch
             {

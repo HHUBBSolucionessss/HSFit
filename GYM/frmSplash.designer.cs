@@ -34,6 +34,7 @@
             this.lblBETA = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.prbProgreso1 = new Bunifu.Framework.UI.BunifuCircleProgressbar();
+            this.lblEstado = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -51,9 +52,9 @@
             // bgwCargar
             // 
             this.bgwCargar.WorkerReportsProgress = true;
-            this.bgwCargar.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgwCargar_DoWork);
+            this.bgwCargar.DoWork += new System.ComponentModel.DoWorkEventHandler(this.BgwCargar_DoWork);
             this.bgwCargar.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.bgwCargar_ProgressChanged);
-            this.bgwCargar.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bgwCargar_RunWorkerCompleted);
+            this.bgwCargar.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.BgwCargar_RunWorkerCompleted);
             // 
             // lblBETA
             // 
@@ -89,7 +90,7 @@
             this.prbProgreso1.LabelVisible = false;
             this.prbProgreso1.LineProgressThickness = 8;
             this.prbProgreso1.LineThickness = 5;
-            this.prbProgreso1.Location = new System.Drawing.Point(202, 142);
+            this.prbProgreso1.Location = new System.Drawing.Point(201, 164);
             this.prbProgreso1.Margin = new System.Windows.Forms.Padding(10, 9, 10, 9);
             this.prbProgreso1.MaxValue = 100;
             this.prbProgreso1.Name = "prbProgreso1";
@@ -99,12 +100,24 @@
             this.prbProgreso1.TabIndex = 8;
             this.prbProgreso1.Value = 0;
             // 
+            // lblEstado
+            // 
+            this.lblEstado.AutoSize = true;
+            this.lblEstado.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.lblEstado.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(50)))));
+            this.lblEstado.Location = new System.Drawing.Point(129, 135);
+            this.lblEstado.Name = "lblEstado";
+            this.lblEstado.Size = new System.Drawing.Size(201, 20);
+            this.lblEstado.TabIndex = 9;
+            this.lblEstado.Text = "Espere, cargando aplicación";
+            // 
             // frmSplash
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.ClientSize = new System.Drawing.Size(489, 218);
+            this.ClientSize = new System.Drawing.Size(485, 240);
+            this.Controls.Add(this.lblEstado);
             this.Controls.Add(this.prbProgreso1);
             this.Controls.Add(this.lblBETA);
             this.Controls.Add(this.lblVersion);
@@ -130,5 +143,6 @@
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Label lblBETA;
         private Bunifu.Framework.UI.BunifuCircleProgressbar prbProgreso1;
+        private System.Windows.Forms.Label lblEstado;
     }
 }

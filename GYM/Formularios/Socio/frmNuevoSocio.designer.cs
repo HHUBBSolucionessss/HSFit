@@ -59,6 +59,8 @@
             this.txtNumSocio = new System.Windows.Forms.TextBox();
             this.btnHuella = new System.Windows.Forms.Button();
             this.btnCancelar = new System.Windows.Forms.Button();
+            this.tbxCredito = new System.Windows.Forms.TextBox();
+            this.lblCredito = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pbxImagenPerfil)).BeginInit();
             this.SuspendLayout();
             // 
@@ -149,7 +151,7 @@
             this.tbxNombre.Location = new System.Drawing.Point(393, 41);
             this.tbxNombre.Name = "tbxNombre";
             this.tbxNombre.Size = new System.Drawing.Size(301, 26);
-            this.tbxNombre.TabIndex = 5;
+            this.tbxNombre.TabIndex = 4;
             // 
             // tbxApellidos
             // 
@@ -158,7 +160,7 @@
             this.tbxApellidos.Location = new System.Drawing.Point(393, 73);
             this.tbxApellidos.Name = "tbxApellidos";
             this.tbxApellidos.Size = new System.Drawing.Size(301, 26);
-            this.tbxApellidos.TabIndex = 7;
+            this.tbxApellidos.TabIndex = 5;
             // 
             // tbxDomicilio
             // 
@@ -167,7 +169,7 @@
             this.tbxDomicilio.Location = new System.Drawing.Point(393, 138);
             this.tbxDomicilio.Name = "tbxDomicilio";
             this.tbxDomicilio.Size = new System.Drawing.Size(301, 26);
-            this.tbxDomicilio.TabIndex = 13;
+            this.tbxDomicilio.TabIndex = 8;
             // 
             // tbxTel
             // 
@@ -176,7 +178,7 @@
             this.tbxTel.Location = new System.Drawing.Point(393, 235);
             this.tbxTel.Name = "tbxTel";
             this.tbxTel.Size = new System.Drawing.Size(149, 26);
-            this.tbxTel.TabIndex = 21;
+            this.tbxTel.TabIndex = 12;
             this.tbxTel.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtNumeros_KeyPress);
             // 
             // tbxEmail
@@ -185,7 +187,7 @@
             this.tbxEmail.Location = new System.Drawing.Point(393, 267);
             this.tbxEmail.Name = "tbxEmail";
             this.tbxEmail.Size = new System.Drawing.Size(301, 26);
-            this.tbxEmail.TabIndex = 23;
+            this.tbxEmail.TabIndex = 13;
             // 
             // cbxSexo
             // 
@@ -199,7 +201,7 @@
             this.cbxSexo.Location = new System.Drawing.Point(592, 105);
             this.cbxSexo.Name = "cbxSexo";
             this.cbxSexo.Size = new System.Drawing.Size(102, 27);
-            this.cbxSexo.TabIndex = 11;
+            this.cbxSexo.TabIndex = 7;
             // 
             // btnAceptar
             // 
@@ -213,7 +215,7 @@
             this.btnAceptar.Location = new System.Drawing.Point(468, 349);
             this.btnAceptar.Name = "btnAceptar";
             this.btnAceptar.Size = new System.Drawing.Size(110, 50);
-            this.btnAceptar.TabIndex = 27;
+            this.btnAceptar.TabIndex = 17;
             this.btnAceptar.Text = "Aceptar";
             this.btnAceptar.UseVisualStyleBackColor = false;
             this.btnAceptar.Click += new System.EventHandler(this.btnAceptar_Click);
@@ -230,7 +232,7 @@
             this.btnTomarFoto.Location = new System.Drawing.Point(67, 302);
             this.btnTomarFoto.Name = "btnTomarFoto";
             this.btnTomarFoto.Size = new System.Drawing.Size(151, 44);
-            this.btnTomarFoto.TabIndex = 25;
+            this.btnTomarFoto.TabIndex = 15;
             this.btnTomarFoto.Text = "Iniciar Camara";
             this.btnTomarFoto.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnTomarFoto.UseVisualStyleBackColor = false;
@@ -252,17 +254,17 @@
             this.timePickerFechaNac.Location = new System.Drawing.Point(449, 105);
             this.timePickerFechaNac.Name = "timePickerFechaNac";
             this.timePickerFechaNac.Size = new System.Drawing.Size(93, 26);
-            this.timePickerFechaNac.TabIndex = 9;
+            this.timePickerFechaNac.TabIndex = 6;
             // 
             // label10
             // 
             this.label10.AutoSize = true;
             this.label10.Font = new System.Drawing.Font("Segoe UI", 10.5F);
-            this.label10.Location = new System.Drawing.Point(487, 12);
+            this.label10.Location = new System.Drawing.Point(479, 12);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(101, 19);
+            this.label10.Size = new System.Drawing.Size(114, 19);
             this.label10.TabIndex = 2;
-            this.label10.Text = "Fecha de inicio:";
+            this.label10.Text = "Fecha de registro";
             // 
             // timePickerFechaIni
             // 
@@ -316,7 +318,7 @@
             this.cbxEstado.Location = new System.Drawing.Point(393, 170);
             this.cbxEstado.Name = "cbxEstado";
             this.cbxEstado.Size = new System.Drawing.Size(112, 27);
-            this.cbxEstado.TabIndex = 15;
+            this.cbxEstado.TabIndex = 9;
             // 
             // cbxCamara
             // 
@@ -357,7 +359,7 @@
             this.tbxCiudad.Location = new System.Drawing.Point(572, 170);
             this.tbxCiudad.Name = "tbxCiudad";
             this.tbxCiudad.Size = new System.Drawing.Size(122, 26);
-            this.tbxCiudad.TabIndex = 17;
+            this.tbxCiudad.TabIndex = 10;
             // 
             // tbxCelular
             // 
@@ -366,7 +368,7 @@
             this.tbxCelular.Location = new System.Drawing.Point(393, 203);
             this.tbxCelular.Name = "tbxCelular";
             this.tbxCelular.Size = new System.Drawing.Size(149, 26);
-            this.tbxCelular.TabIndex = 19;
+            this.tbxCelular.TabIndex = 11;
             this.tbxCelular.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtNumeros_KeyPress);
             // 
             // label5
@@ -399,7 +401,7 @@
             this.btnHuella.Location = new System.Drawing.Point(67, 352);
             this.btnHuella.Name = "btnHuella";
             this.btnHuella.Size = new System.Drawing.Size(151, 34);
-            this.btnHuella.TabIndex = 26;
+            this.btnHuella.TabIndex = 16;
             this.btnHuella.Text = "Capturar huella";
             this.btnHuella.UseVisualStyleBackColor = false;
             this.btnHuella.Click += new System.EventHandler(this.btnHuella_Click);
@@ -422,6 +424,25 @@
             this.btnCancelar.UseVisualStyleBackColor = false;
             this.btnCancelar.Click += new System.EventHandler(this.btnCancelar_Click_1);
             // 
+            // tbxCredito
+            // 
+            this.tbxCredito.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.tbxCredito.Font = new System.Drawing.Font("Segoe UI", 10.5F);
+            this.tbxCredito.Location = new System.Drawing.Point(392, 299);
+            this.tbxCredito.Name = "tbxCredito";
+            this.tbxCredito.Size = new System.Drawing.Size(149, 26);
+            this.tbxCredito.TabIndex = 14;
+            // 
+            // lblCredito
+            // 
+            this.lblCredito.AutoSize = true;
+            this.lblCredito.Font = new System.Drawing.Font("Segoe UI", 10.5F);
+            this.lblCredito.Location = new System.Drawing.Point(291, 306);
+            this.lblCredito.Name = "lblCredito";
+            this.lblCredito.Size = new System.Drawing.Size(98, 19);
+            this.lblCredito.TabIndex = 29;
+            this.lblCredito.Text = "Limite Crédito:";
+            // 
             // frmNuevoSocio
             // 
             this.AcceptButton = this.btnAceptar;
@@ -429,7 +450,9 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.WhiteSmoke;
             this.CancelButton = this.btnCancelar;
-            this.ClientSize = new System.Drawing.Size(706, 411);
+            this.ClientSize = new System.Drawing.Size(732, 411);
+            this.Controls.Add(this.tbxCredito);
+            this.Controls.Add(this.lblCredito);
             this.Controls.Add(this.btnCancelar);
             this.Controls.Add(this.btnHuella);
             this.Controls.Add(this.txtNumSocio);
@@ -508,6 +531,8 @@
         private System.Windows.Forms.TextBox txtNumSocio;
         private System.Windows.Forms.Button btnHuella;
         private System.Windows.Forms.Button btnCancelar;
+        private System.Windows.Forms.TextBox tbxCredito;
+        private System.Windows.Forms.Label lblCredito;
     }
 }
 

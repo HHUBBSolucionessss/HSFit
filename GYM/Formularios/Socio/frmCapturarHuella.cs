@@ -17,7 +17,7 @@ namespace GYM.Formularios.Socio
         public frmCapturarHuella(frmNuevoSocio frm)
         {
             InitializeComponent();
-            Clases.CFuncionesGenerales.CargarInterfaz(this);
+            Clases.FuncionesGenerales.CargarInterfaz(this);
             frmA = frm;
         }
 

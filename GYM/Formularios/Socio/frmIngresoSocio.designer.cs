@@ -54,9 +54,9 @@
             this.lblNumSocio.ForeColor = System.Drawing.SystemColors.ControlText;
             this.lblNumSocio.Location = new System.Drawing.Point(17, 90);
             this.lblNumSocio.Name = "lblNumSocio";
-            this.lblNumSocio.Size = new System.Drawing.Size(389, 25);
+            this.lblNumSocio.Size = new System.Drawing.Size(388, 25);
             this.lblNumSocio.TabIndex = 3;
-            this.lblNumSocio.Text = "Ingresa tu número de socio y preciona enter";
+            this.lblNumSocio.Text = "Ingresa tu número de socio y presiona enter";
             this.lblNumSocio.Click += new System.EventHandler(this.lblNumSocio_Click);
             // 
             // tbxNumSocio
@@ -156,7 +156,7 @@
             // 
             // pcbPromociones
             // 
-            this.pcbPromociones.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.pcbPromociones.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
             this.pcbPromociones.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pcbPromociones.Image = global::GYM.Properties.Resources.Fondo;
             this.pcbPromociones.Location = new System.Drawing.Point(0, 0);

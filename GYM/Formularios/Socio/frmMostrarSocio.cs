@@ -55,11 +55,11 @@ namespace GYM.Formularios.Socio
             }
             catch (MySqlException ex)
             {
-                CFuncionesGenerales.MensajeError("No se ha podido obtener los horarios de la promoción del socio. Ocurrió un error al conectar con la base de datos.", ex);
+                FuncionesGenerales.MensajeError("No se ha podido obtener los horarios de la promoción del socio. Ocurrió un error al conectar con la base de datos.", ex);
             }
             catch (Exception ex)
             {
-                CFuncionesGenerales.MensajeError("No se ha podido obtener los horarios de la promoción del socio. Ocurrió un error genérico.", ex);
+                FuncionesGenerales.MensajeError("No se ha podido obtener los horarios de la promoción del socio. Ocurrió un error genérico.", ex);
             }
         }
 
@@ -84,11 +84,11 @@ namespace GYM.Formularios.Socio
             }
             catch (MySqlException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("No se pudo obtener la fecha final de la cortesía.", ex);
+                Clases.FuncionesGenerales.MensajeError("No se pudo obtener la fecha final de la cortesía.", ex);
             }
             catch (Exception ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error genérico.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ha ocurrido un error genérico.", ex);
             }
             return tiene;
         }
@@ -97,7 +97,7 @@ namespace GYM.Formularios.Socio
         {
             string sonido = "";
             Application.DoEvents();
-            Clases.CFuncionesGenerales.CargarInterfaz(this);
+            Clases.FuncionesGenerales.CargarInterfaz(this);
             lblInfo.ForeColor = Color.Orange;
             if (!ingresar)
             {
@@ -115,8 +115,8 @@ namespace GYM.Formularios.Socio
                     lblInfo.ForeColor = Color.Red;
                     lblInfo.Visible = true;
                     lblInfo.Text = "¡No cuentas con una membresia!";
-                    if (Clases.CFuncionesGenerales.sonidoRegMal != "Personalizado")
-                        sonido = "SonidoError" + Clases.CFuncionesGenerales.sonidoRegMal.Substring(Clases.CFuncionesGenerales.sonidoRegMal.Length - 2, 2);
+                    if (Clases.FuncionesGenerales.sonidoRegMal != "Personalizado")
+                        sonido = "SonidoError" + Clases.FuncionesGenerales.sonidoRegMal.Substring(Clases.FuncionesGenerales.sonidoRegMal.Length - 2, 2);
                     else
                         sonido = "SonidoErrorP";
                 }
@@ -125,11 +125,11 @@ namespace GYM.Formularios.Socio
                     lblInfo.ForeColor = Color.LightSeaGreen;
                     lblInfo.Visible = true;
                     lblInfo.Text = "Cuentas con una cortesía";
-                    if (Clases.CFuncionesGenerales.usarAcceso)
-                        CFuncionesGenerales.abrirAcceso();
-                    if (Clases.CFuncionesGenerales.sonidoRegBien != "Personalizado")
+                    if (Clases.FuncionesGenerales.usarAcceso)
+                        FuncionesGenerales.abrirAcceso();
+                    if (Clases.FuncionesGenerales.sonidoRegBien != "Personalizado")
                     {
-                        sonido = "SonidoBien" + Clases.CFuncionesGenerales.sonidoRegBien.Substring(Clases.CFuncionesGenerales.sonidoRegBien.Length - 2, 2);
+                        sonido = "SonidoBien" + Clases.FuncionesGenerales.sonidoRegBien.Substring(Clases.FuncionesGenerales.sonidoRegBien.Length - 2, 2);
 
                     }
                     else
@@ -148,10 +148,10 @@ namespace GYM.Formularios.Socio
                         lblInfo.Visible = true;
                         lblFechaFinal.Text = fechaSocio.ToString("dd") + " de " + fechaSocio.ToString("MMMM") + " del " + fechaSocio.ToString("yyyy");
                         ingresar = true;
-                        if (Clases.CFuncionesGenerales.usarAcceso)
-                            CFuncionesGenerales.abrirAcceso();
-                        if (Clases.CFuncionesGenerales.sonidoRegBien != "Personalizado")
-                            sonido = "SonidoBien" + Clases.CFuncionesGenerales.sonidoRegBien.Substring(Clases.CFuncionesGenerales.sonidoRegBien.Length - 2, 2);
+                        if (Clases.FuncionesGenerales.usarAcceso)
+                            FuncionesGenerales.abrirAcceso();
+                        if (Clases.FuncionesGenerales.sonidoRegBien != "Personalizado")
+                            sonido = "SonidoBien" + Clases.FuncionesGenerales.sonidoRegBien.Substring(Clases.FuncionesGenerales.sonidoRegBien.Length - 2, 2);
                         else
                             sonido = "SonidoBienP";
                     }
@@ -161,8 +161,8 @@ namespace GYM.Formularios.Socio
                         lblInfo.Visible = true;
                         lblInfo.Text = "¡Tu membresía no cubre este horario!"; 
                         lblFechaFinal.Text = fechaSocio.ToString("dd") + " de " + fechaSocio.ToString("MMMM") + " del " + fechaSocio.ToString("yyyy");
-                        if (Clases.CFuncionesGenerales.sonidoRegMal != "Personalizado")
-                            sonido = "SonidoError" + Clases.CFuncionesGenerales.sonidoRegMal.Substring(Clases.CFuncionesGenerales.sonidoRegMal.Length - 2, 2);
+                        if (Clases.FuncionesGenerales.sonidoRegMal != "Personalizado")
+                            sonido = "SonidoError" + Clases.FuncionesGenerales.sonidoRegMal.Substring(Clases.FuncionesGenerales.sonidoRegMal.Length - 2, 2);
                         else
                             sonido = "SonidoErrorP";
                     }
@@ -173,8 +173,8 @@ namespace GYM.Formularios.Socio
                     lblInfo.Visible = true;
                     lblInfo.Text = "¡Tu membresia ha expirado!";
                     lblFechaFinal.Text = fechaSocio.ToString("dd") + " de " + fechaSocio.ToString("MMMM") + " del " + fechaSocio.ToString("yyyy");
-                    if (Clases.CFuncionesGenerales.sonidoRegMal != "Personalizado")
-                        sonido = "SonidoError" + Clases.CFuncionesGenerales.sonidoRegMal.Substring(Clases.CFuncionesGenerales.sonidoRegMal.Length - 2, 2);
+                    if (Clases.FuncionesGenerales.sonidoRegMal != "Personalizado")
+                        sonido = "SonidoError" + Clases.FuncionesGenerales.sonidoRegMal.Substring(Clases.FuncionesGenerales.sonidoRegMal.Length - 2, 2);
                     else
                         sonido = "SonidoErrorP";
                 }
@@ -184,10 +184,10 @@ namespace GYM.Formularios.Socio
                     lblInfo.Text = "Bienvenido\nTu membresia esta por expirar";
                     lblFechaFinal.Text = fechaSocio.ToString("dd") + " de " + fechaSocio.ToString("MMMM") + " del " + fechaSocio.ToString("yyyy");
                     ingresar = true;
-                    if (Clases.CFuncionesGenerales.usarAcceso)
-                        CFuncionesGenerales.abrirAcceso();
-                    if (Clases.CFuncionesGenerales.sonidoRegBien != "Personalizado")
-                        sonido = "SonidoBien" + Clases.CFuncionesGenerales.sonidoRegBien.Substring(Clases.CFuncionesGenerales.sonidoRegBien.Length - 2, 2);
+                    if (Clases.FuncionesGenerales.usarAcceso)
+                        FuncionesGenerales.abrirAcceso();
+                    if (Clases.FuncionesGenerales.sonidoRegBien != "Personalizado")
+                        sonido = "SonidoBien" + Clases.FuncionesGenerales.sonidoRegBien.Substring(Clases.FuncionesGenerales.sonidoRegBien.Length - 2, 2);
                     else
                         sonido = "SonidoBienP";
                 }
@@ -197,8 +197,8 @@ namespace GYM.Formularios.Socio
                     lblInfo.Visible = true;
                     lblInfo.Text = "Tu membresía aún no ha iniciado.\nVuelve el " + mem.FechaInicio.ToString("dd") + " de " + mem.FechaInicio.ToString("MMMM") + " del " + mem.FechaInicio.ToString("yyyy");
                     lblFechaFinal.Text = fechaSocio.ToString("dd") + " de " + fechaSocio.ToString("MMMM") + " del " + fechaSocio.ToString("yyyy");
-                    if (Clases.CFuncionesGenerales.sonidoRegMal != "Personalizado")
-                        sonido = "SonidoError" + Clases.CFuncionesGenerales.sonidoRegMal.Substring(Clases.CFuncionesGenerales.sonidoRegMal.Length - 2, 2);
+                    if (Clases.FuncionesGenerales.sonidoRegMal != "Personalizado")
+                        sonido = "SonidoError" + Clases.FuncionesGenerales.sonidoRegMal.Substring(Clases.FuncionesGenerales.sonidoRegMal.Length - 2, 2);
                     else
                         sonido = "SonidoErrorP";
                 }
@@ -208,10 +208,10 @@ namespace GYM.Formularios.Socio
                     lblInfo.Visible = true;
                     lblFechaFinal.Text = fechaSocio.ToString("dd") + " de " + fechaSocio.ToString("MMMM") + " del " + fechaSocio.ToString("yyyy");
                     ingresar = true;
-                    if (Clases.CFuncionesGenerales.usarAcceso)
-                        CFuncionesGenerales.abrirAcceso();
-                    if (Clases.CFuncionesGenerales.sonidoRegBien != "Personalizado")
-                        sonido = "SonidoBien" + Clases.CFuncionesGenerales.sonidoRegBien.Substring(Clases.CFuncionesGenerales.sonidoRegBien.Length - 2, 2);
+                    if (Clases.FuncionesGenerales.usarAcceso)
+                        FuncionesGenerales.abrirAcceso();
+                    if (Clases.FuncionesGenerales.sonidoRegBien != "Personalizado")
+                        sonido = "SonidoBien" + Clases.FuncionesGenerales.sonidoRegBien.Substring(Clases.FuncionesGenerales.sonidoRegBien.Length - 2, 2);
                     else
                         sonido = "SonidoBienP";
                 }
@@ -223,8 +223,8 @@ namespace GYM.Formularios.Socio
                 lblInfo.Text = "¡Han rechazado tu membresía!";
                 lblFecha.Visible = false;
                 lblFechaFinal.Visible = false;
-                if (Clases.CFuncionesGenerales.sonidoRegBien != "Personalizado")
-                    sonido = "SonidoError" + Clases.CFuncionesGenerales.sonidoRegBien.Substring(Clases.CFuncionesGenerales.sonidoRegBien.Length - 2, 2);
+                if (Clases.FuncionesGenerales.sonidoRegBien != "Personalizado")
+                    sonido = "SonidoError" + Clases.FuncionesGenerales.sonidoRegBien.Substring(Clases.FuncionesGenerales.sonidoRegBien.Length - 2, 2);
                 else
                     sonido = "SonidoErrorP";
             }
@@ -235,13 +235,13 @@ namespace GYM.Formularios.Socio
                 lblInfo.Text = "¡Tu membresía ha terminado!";
                 lblFecha.Visible = true;
                 lblFechaFinal.Text = fechaSocio.ToString("dd") + " de " + fechaSocio.ToString("MMMM") + " del " + fechaSocio.ToString("yyyy");
-                if (Clases.CFuncionesGenerales.sonidoRegBien != "Personalizado")
-                    sonido = "SonidoError" + Clases.CFuncionesGenerales.sonidoRegBien.Substring(Clases.CFuncionesGenerales.sonidoRegBien.Length - 2, 2);
+                if (Clases.FuncionesGenerales.sonidoRegBien != "Personalizado")
+                    sonido = "SonidoError" + Clases.FuncionesGenerales.sonidoRegBien.Substring(Clases.FuncionesGenerales.sonidoRegBien.Length - 2, 2);
                 else
                     sonido = "SonidoErrorP";
             }
             lblInfo.Left = (this.Width - lblInfo.Width) / 2;
-            if (Clases.CFuncionesGenerales.usarSonidos)
+            if (Clases.FuncionesGenerales.usarSonidos)
             {
                 bgwSonido.RunWorkerAsync(sonido);
             }

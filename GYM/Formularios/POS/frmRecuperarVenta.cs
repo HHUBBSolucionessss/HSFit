@@ -36,11 +36,11 @@ namespace GYM.Formularios.POS
             }
             catch (MySql.Data.MySqlClient.MySqlException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ocurrio un error búscando las ventas. No se pudo conectar a la base de datos.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ocurrio un error búscando las ventas. No se pudo conectar a la base de datos.", ex);
             }
             catch (Exception ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ocurrio un error búscando las ventas. Ha ocurrido un error genérico.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ocurrio un error búscando las ventas. Ha ocurrido un error genérico.", ex);
             }
         }
 
@@ -58,11 +58,11 @@ namespace GYM.Formularios.POS
             }
             catch (MySql.Data.MySqlClient.MySqlException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ocurrio un error búscando las ventas. No se pudo conectar a la base de datos.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ocurrio un error búscando las ventas. No se pudo conectar a la base de datos.", ex);
             }
             catch (Exception ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ocurrio un error búscando las ventas. Ha ocurrido un error genérico.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ocurrio un error búscando las ventas. Ha ocurrido un error genérico.", ex);
             }
         }
 
@@ -84,23 +84,23 @@ namespace GYM.Formularios.POS
             }
             catch (FormatException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("No se pudo mostrar la información. ", ex);
+                Clases.FuncionesGenerales.MensajeError("No se pudo mostrar la información. ", ex);
             }
             catch (OverflowException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("No se pudo mostrar la información. ", ex);
+                Clases.FuncionesGenerales.MensajeError("No se pudo mostrar la información. ", ex);
             }
             catch (InvalidOperationException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("No se pudo mostrar la información. ", ex);
+                Clases.FuncionesGenerales.MensajeError("No se pudo mostrar la información. ", ex);
             }
             catch (ArgumentNullException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("No se pudo mostrar la información. ", ex);
+                Clases.FuncionesGenerales.MensajeError("No se pudo mostrar la información. ", ex);
             }
             catch (Exception ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("No se pudo mostrar la información. ", ex);
+                Clases.FuncionesGenerales.MensajeError("No se pudo mostrar la información. ", ex);
             }
         }
 
@@ -109,7 +109,7 @@ namespace GYM.Formularios.POS
             if (e.KeyCode == Keys.Enter && !bgwBusqueda.IsBusy)
             {
                 tmrEspera.Enabled = true;
-                CFuncionesGenerales.DeshabilitarBotonCerrar(this);
+                FuncionesGenerales.DeshabilitarBotonCerrar(this);
                 btnBuscar.Enabled = false;
                 txtFolio.Enabled = false;
                 bgwBusqueda.RunWorkerAsync(new object[] { txtFolio.Text });
@@ -142,7 +142,7 @@ namespace GYM.Formularios.POS
 
         private void frmRecuperarVenta_Load(object sender, EventArgs e)
         {
-            Clases.CFuncionesGenerales.CargarInterfaz(this);
+            Clases.FuncionesGenerales.CargarInterfaz(this);
             BuscarVentaFechas(DateTime.Now, DateTime.Now);
         }
 
@@ -154,7 +154,7 @@ namespace GYM.Formularios.POS
             }
             catch (Exception ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ocurrio un error al dar click en el DataGridView", ex);
+                Clases.FuncionesGenerales.MensajeError("Ocurrio un error al dar click en el DataGridView", ex);
             }
         }
 
@@ -163,7 +163,7 @@ namespace GYM.Formularios.POS
             if (!bgwBusqueda.IsBusy)
             {
                 tmrEspera.Enabled = true;
-                CFuncionesGenerales.DeshabilitarBotonCerrar(this);
+                FuncionesGenerales.DeshabilitarBotonCerrar(this);
                 btnBuscar.Enabled = false;
                 txtFolio.Enabled = false;
                 bgwBusqueda.RunWorkerAsync(new object[] { dtpFechaInicio.Value, dtpFechaFin.Value });
@@ -187,8 +187,8 @@ namespace GYM.Formularios.POS
         private void bgwBusqueda_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             tmrEspera.Enabled = false;
-            CFuncionesGenerales.frmEsperaClose();
-            CFuncionesGenerales.HabilitarBotonCerrar(this);
+            FuncionesGenerales.frmEsperaClose();
+            FuncionesGenerales.HabilitarBotonCerrar(this);
             btnBuscar.Enabled = true;
             txtFolio.Enabled = true;
             LlenarDataGrid();
@@ -197,7 +197,7 @@ namespace GYM.Formularios.POS
         private void tmrEspera_Tick(object sender, EventArgs e)
         {
             tmrEspera.Enabled = false;
-            CFuncionesGenerales.frmEspera("Espere, buscando ventas sin terminar", this);
+            FuncionesGenerales.frmEspera("Espere, buscando ventas sin terminar", this);
         }
     }
 }

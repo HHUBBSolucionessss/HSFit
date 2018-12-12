@@ -19,7 +19,7 @@ namespace GYM.Formularios.Membresia
         {
             InitializeComponent();
             this.sexo = sexo;
-            CFuncionesGenerales.CargarInterfaz(this);
+            FuncionesGenerales.CargarInterfaz(this);
         }
 
         private void CargarPrecio(int id)
@@ -39,11 +39,11 @@ namespace GYM.Formularios.Membresia
             }
             catch (MySqlException ex)
             {
-                CFuncionesGenerales.MensajeError("No se ha podido cargar el precio de la duración seleccionada. Ocurrió un error al conectar la base de datos.", ex);
+                FuncionesGenerales.MensajeError("No se ha podido cargar el precio de la duración seleccionada. Ocurrió un error al conectar la base de datos.", ex);
             }
             catch (Exception ex)
             {
-                CFuncionesGenerales.MensajeError("No se ha podido cargar el precio de la duración seleccionada. Ocurrió un error genérico.", ex);
+                FuncionesGenerales.MensajeError("No se ha podido cargar el precio de la duración seleccionada. Ocurrió un error genérico.", ex);
             }
         }
 
@@ -73,7 +73,7 @@ namespace GYM.Formularios.Membresia
 
         private void txtPrecio_KeyPress(object sender, KeyPressEventArgs e)
         {
-            CFuncionesGenerales.VerificarEsNumero(ref sender, ref e, false);
+            FuncionesGenerales.VerificarEsNumero(ref sender, ref e, false);
         }
 
         private void btnAceptar_Click(object sender, EventArgs e)
@@ -87,11 +87,11 @@ namespace GYM.Formularios.Membresia
                 }
                 catch (MySqlException ex)
                 {
-                    CFuncionesGenerales.MensajeError("No se ha podido guardar el precio de la duración seleccionada. Ocurrió un error al conectar la base de datos.", ex);
+                    FuncionesGenerales.MensajeError("No se ha podido guardar el precio de la duración seleccionada. Ocurrió un error al conectar la base de datos.", ex);
                 }
                 catch (Exception ex)
                 {
-                    CFuncionesGenerales.MensajeError("No se ha podido guardar el precio de la duración seleccionada. Ocurrió un error genérico.", ex);
+                    FuncionesGenerales.MensajeError("No se ha podido guardar el precio de la duración seleccionada. Ocurrió un error genérico.", ex);
                 }
             }
         }

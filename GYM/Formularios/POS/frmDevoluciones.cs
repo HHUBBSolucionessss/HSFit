@@ -27,12 +27,12 @@ namespace GYM.Formularios.POS
         {
             try
             {
-                Clases.CFuncionesGenerales.CargarInterfaz(this);
+                Clases.FuncionesGenerales.CargarInterfaz(this);
                 ObtenerProductosVenta();
             }
             catch (Exception ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error genérico.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ha ocurrido un error genérico.", ex);
             }
         }
 
@@ -49,11 +49,11 @@ namespace GYM.Formularios.POS
             }
             catch (MySql.Data.MySqlClient.MySqlException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error al tratar de obtener los productos de la venta.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ha ocurrido un error al tratar de obtener los productos de la venta.", ex);
             }
             catch (Exception ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error genérico.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ha ocurrido un error genérico.", ex);
             }
         }
 

@@ -1,20 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using MySql.Data.MySqlClient;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using GYM.Formularios.POS;
+using System.Drawing;
 using GYM.Clases;
 
 namespace GYM.Formularios.POS
 {
     public partial class frmPuntoVenta : Form
     {
+        delegate void ImagenProducto(Image img);
+        int id;
+        int index;
+        //Variable para el control de excepciones
+        int cont = 0;
+        decimal subtotal = 0M, impuesto = 0M, descuento = 0M, total = 0M, precioTMP = 0M;
+        int cantTot = 0;
+
+
+        Venta v;
+        public int numSocio;
         bool abierta = false;
         string idProducto = "";
         List<string> idProds;
@@ -44,6 +50,17 @@ namespace GYM.Formularios.POS
             InitializeComponent();
 
         }
+        private void VerificarVisible()
+        {
+            if (!Instancia.Visible)
+            {
+                Instancia.Show();
+            }
+            else
+            {
+                Instancia.Select();
+            }
+        }
 
         #region Metodos
         /// <summary>
@@ -62,14 +79,138 @@ namespace GYM.Formularios.POS
             }
             catch (MySqlException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error al obtener el nombre de usuario.", ex);
+                FuncionesGenerales.MensajeError("Ha ocurrido un error al obtener el nombre de usuario.", ex);
             }
             catch (Exception ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error genérico.", ex);
+                FuncionesGenerales.MensajeError("Ha ocurrido un error genérico.", ex);
             }
             return nomUsuario;
         }
+
+        #region Venta
+
+        /// <summary>
+        /// Inicia una nueva venta, y verifica si el formulario es visible, en caso de no serlo, lo muestra primero
+        /// y después inicia la nueva venta
+        /// </summary>
+        public void NuevaVenta()
+        {
+            VerificarVisible();
+            if (v.Abierta)
+            {
+                if (FuncionesGenerales.Mensaje(this, Mensajes.Pregunta, "La venta no se ha finalizado, ¿desea crear una nueva?\n(Puedes guardar la venta actual para continuarla posteriormente)", "Admin CSY") == System.Windows.Forms.DialogResult.Yes)
+                {
+                    v.NumSocio = numSocio;
+                    v.NuevaVenta();
+                    ControlesHabilitados();
+                    AsignarCliente(0, "Público en general");
+                    lblFolio.Text = v.IDVenta.ToString();
+                    lblSubtotal.Text = lblImpuesto.Text = lblTotal.Text = "$0.00";
+                    txtDescuento.Text = "0.00";
+                    lblCantDif.Text = lblCantTot.Text = "0";
+                    dgvProductos.Rows.Clear();
+                    CalcularTotales();
+                }
+            }
+            else
+            {
+                v.NuevaVenta();
+                ControlesHabilitados();
+                AsignarCliente(0, "Público en general");
+                lblFolio.Text = v.IDVenta.ToString();
+                lblSubtotal.Text = lblImpuesto.Text = lblTotal.Text = "$0.00";
+                txtDescuento.Text = "0.00";
+                lblCantDif.Text = lblCantTot.Text = "0";
+                dgvProductos.Rows.Clear();
+                CalcularTotales();
+            }
+        }
+
+
+        private void CalcularTotales()
+        {
+            subtotal = 0M;
+            impuesto = 0M;
+            descuento = 0M;
+            total = 0M;
+            cantTot = 0;
+            foreach (DataGridViewRow dr in dgvProductos.Rows)
+            {
+                subtotal += (decimal.Parse(dr.Cells[3].Value.ToString(), System.Globalization.NumberStyles.Currency) * (int)dr.Cells[4].Value);
+                cantTot += (int)dr.Cells[4].Value;
+            }
+            decimal.TryParse(txtDescuento.Text, out descuento);
+            total = subtotal + impuesto - descuento;
+
+            lblSubtotal.Text = subtotal.ToString("C2");
+            lblImpuesto.Text = impuesto.ToString("C2");
+            lblTotal.Text = total.ToString("C2");
+            lblCantDif.Text = dgvProductos.RowCount.ToString();
+            lblCantTot.Text = cantTot.ToString();
+        }
+
+        /// <summary>
+        /// Recupera una venta que no haya sido completada antes
+        /// </summary>
+        /// <param name="id">ID de la venta</param>
+        public void RecuperarVenta(int id)
+        {
+            cont += 1;
+            try
+            {
+                VerificarVisible();
+                dgvProductos.Rows.Clear();
+                v.IDVenta = id;
+                lblFolio.Text = id.ToString();
+                v.RecuperarVenta();
+                ControlesHabilitados();
+                idCliente = v.IDCliente;
+                lblCliente.Text = Cliente.NombreCliente(idCliente);
+                idVendedor = v.IDVendedor;
+                lblVendedor.Text = Trabajador.NombreTrabajador(idVendedor);
+                txtDescuento.Text = v.Descuento.ToString();
+                for (int i = 0; i < v.IDProductos.Count; i++)
+                {
+                    if (v.Promocion[i] <= 0)
+                    {
+                        AgregarProducto(v.IDProductos[i], CodigoProducto(v.IDProductos[i]), Producto.NombreProducto(v.IDProductos[i]), v.Precio[i], v.Cantidad[i], v.DescuentoProducto[i], v.Unidad[i], v.Paquete[i], v.CantApartado[i]);
+                    }
+                    else
+                    {
+                        Promociones p = new Promociones(v.Promocion[i]);
+                        p.ObtenerDatos();
+                        PromocionProducto(v.IDProductos[i], CodigoProducto(v.IDProductos[i]), Producto.NombreProducto(v.IDProductos[i]), v.Precio[i], v.Cantidad[i], p.Cantidad, v.Unidad[i], v.Promocion[i]);
+                    }
+                    Application.DoEvents();
+                }
+            }
+            catch (MySqlException ex)
+            {
+                FuncionesGenerales.Mensaje(this, Mensajes.Error, "Ocurrió un error al recuperar la venta. No se ha podido conectar con la base de datos. La ventana se cerrará.", Config.shrug, ex);
+                this.Close();
+            }
+            catch (Exception ex)
+            {
+                if (cont < 3)
+                {
+                    RecuperarVenta(id);
+                }
+                else
+                {
+                    FuncionesGenerales.Mensaje(this, Mensajes.Error, "Ocurrió un error al recuperar la venta. La ventana se cerrará.", Config.shrug, ex);
+                    this.Close();
+                }
+            }
+            cont = 0;
+        }
+
+        public void AsignarCliente(int id, string nombre)
+        {
+            numSocio = id;
+            lblCliente.Text = nombre;
+        }
+
 
         /// <summary>
         /// Función que crea una nueva venta
@@ -88,11 +229,11 @@ namespace GYM.Formularios.POS
             }
             catch (MySqlException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error al tratar de crear una nueva venta.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ha ocurrido un error al tratar de crear una nueva venta.", ex);
             }
             catch (Exception ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error genérico.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ha ocurrido un error genérico.", ex);
             }
         }
 
@@ -113,15 +254,15 @@ namespace GYM.Formularios.POS
             }
             catch (MySqlException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error al tratar de obtener el último ID de venta.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ha ocurrido un error al tratar de obtener el último ID de venta.", ex);
             }
             catch (FormatException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error al tratar de dar formato a una variable.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ha ocurrido un error al tratar de dar formato a una variable.", ex);
             }
             catch (Exception ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error genérico.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ha ocurrido un error genérico.", ex);
             }
             return id;
         }
@@ -164,27 +305,27 @@ namespace GYM.Formularios.POS
             }
             catch (MySqlException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error al tratar de agregar un producto a la venta.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ha ocurrido un error al tratar de agregar un producto a la venta.", ex);
             }
             catch (FormatException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error al tratar de dar formato a una variable.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ha ocurrido un error al tratar de dar formato a una variable.", ex);
             }
             catch (OverflowException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un desbordamiento.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ha ocurrido un desbordamiento.", ex);
             }
             catch (InvalidCastException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("La conversión de una variable no fue válida.", ex);
+                Clases.FuncionesGenerales.MensajeError("La conversión de una variable no fue válida.", ex);
             }
             catch (ArgumentNullException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Algún método invocado en AgregarProducto no admite argumentos nulos.", ex);
+                Clases.FuncionesGenerales.MensajeError("Algún método invocado en AgregarProducto no admite argumentos nulos.", ex);
             }
             catch (Exception ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error genérico.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ha ocurrido un error genérico.", ex);
             }
         }       
         
@@ -218,15 +359,15 @@ namespace GYM.Formularios.POS
             }
             catch (FormatException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error al tratar de dar formato a una variable.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ha ocurrido un error al tratar de dar formato a una variable.", ex);
             }
             catch (OverflowException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un desbordamiento.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ha ocurrido un desbordamiento.", ex);
             }
             catch (ArgumentNullException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Algún método llamado en VerificarProducto no admite argumentos nulos.", ex);
+                Clases.FuncionesGenerales.MensajeError("Algún método llamado en VerificarProducto no admite argumentos nulos.", ex);
             }
             return false;
         }
@@ -249,11 +390,11 @@ namespace GYM.Formularios.POS
             }
             catch (MySqlException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error al insertar el producto en la venta.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ha ocurrido un error al insertar el producto en la venta.", ex);
             }
             catch (Exception ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error genérico.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ha ocurrido un error genérico.", ex);
             }
         }
 
@@ -275,11 +416,11 @@ namespace GYM.Formularios.POS
             }
             catch (MySqlException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error al modificar la cantidad del producto.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ha ocurrido un error al modificar la cantidad del producto.", ex);
             }
             catch (Exception ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error genéral.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ha ocurrido un error genéral.", ex);
             }
         }
 
@@ -297,11 +438,11 @@ namespace GYM.Formularios.POS
             }
             catch (MySqlException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("No se ha podido eliminar el producto de la venta. Hubo un error de conexión con la base de datos.", ex);
+                Clases.FuncionesGenerales.MensajeError("No se ha podido eliminar el producto de la venta. Hubo un error de conexión con la base de datos.", ex);
             }
             catch (Exception ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("No se ha podido eliminar el producto de la venta. Ha ocurrido un error genérico.", ex);
+                Clases.FuncionesGenerales.MensajeError("No se ha podido eliminar el producto de la venta. Ha ocurrido un error genérico.", ex);
             }
         }
 
@@ -321,19 +462,19 @@ namespace GYM.Formularios.POS
             }
             catch (InvalidOperationException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("No se pudo eliminar el producto del DataGridView. La operación no fue válida.", ex);
+                Clases.FuncionesGenerales.MensajeError("No se pudo eliminar el producto del DataGridView. La operación no fue válida.", ex);
             }
             catch (ArgumentNullException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("No se pudo eliminar el producto del DataGridView. El argumento dado fue nulo.", ex);
+                Clases.FuncionesGenerales.MensajeError("No se pudo eliminar el producto del DataGridView. El argumento dado fue nulo.", ex);
             }
             catch (ArgumentException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("No se pudo eliminar el producto del DataGridView. El argumento dado no fue aceptado por el método.", ex);
+                Clases.FuncionesGenerales.MensajeError("No se pudo eliminar el producto del DataGridView. El argumento dado no fue aceptado por el método.", ex);
             }
             catch (Exception ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("No se pudo eliminar el producto del DataGridView. Ha ocurrido un error genérico.", ex);
+                Clases.FuncionesGenerales.MensajeError("No se pudo eliminar el producto del DataGridView. Ha ocurrido un error genérico.", ex);
             }
         }
 
@@ -357,19 +498,19 @@ namespace GYM.Formularios.POS
             }
             catch (FormatException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("No se pudo actualizar los totales. Ha ocurrido un error al tratar de dar formato a una variable.", ex);
+                Clases.FuncionesGenerales.MensajeError("No se pudo actualizar los totales. Ha ocurrido un error al tratar de dar formato a una variable.", ex);
             }
             catch (OverflowException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("No se pudo actualizar los totales. Hubo un desbordamiento.", ex);
+                Clases.FuncionesGenerales.MensajeError("No se pudo actualizar los totales. Hubo un desbordamiento.", ex);
             }
             catch (ArgumentNullException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("No se pudo actualizar los totales. El argumento dado es nulo.", ex);
+                Clases.FuncionesGenerales.MensajeError("No se pudo actualizar los totales. El argumento dado es nulo.", ex);
             }
             catch (Exception ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("No se pudo actualizar los totales. Ha ocurrido un error genérico.", ex);
+                Clases.FuncionesGenerales.MensajeError("No se pudo actualizar los totales. Ha ocurrido un error genérico.", ex);
             }
         }
 
@@ -386,11 +527,11 @@ namespace GYM.Formularios.POS
             }
             catch (MySqlException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("No se pudo actualizar los totales. La conexión con la base de datos no se pudo realizar.", ex);
+                Clases.FuncionesGenerales.MensajeError("No se pudo actualizar los totales. La conexión con la base de datos no se pudo realizar.", ex);
             }
             catch (Exception ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("No se pudo actualizar los totales. Ha ocurrido un error genérico.", ex);
+                Clases.FuncionesGenerales.MensajeError("No se pudo actualizar los totales. Ha ocurrido un error genérico.", ex);
             }
         }
 
@@ -400,7 +541,7 @@ namespace GYM.Formularios.POS
         private void MostrarControles()
         {
             abierta = true;
-            txtCodigo.Enabled = true;
+            txtBusqueda.Enabled = true;
             lblFolio.Text = UltimoIdVenta();
             lblFolio.Visible = true;
             lblEtiquetaFolio.Visible = true;
@@ -414,8 +555,7 @@ namespace GYM.Formularios.POS
             lblEtiquetaTotal.Visible = true;
             lblTotal.Visible = true;
             lblTotal.Text = "$0.00";
-            txtCodigo.Focus();
-            btnDevolver.Visible = false;
+            txtBusqueda.Focus();
         }
 
         /// <summary>
@@ -467,27 +607,27 @@ namespace GYM.Formularios.POS
             }
             catch (MySqlException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("No se ha podido recuperar la venta. Hubo un error con la conexión a la base de datos.", ex);
+                Clases.FuncionesGenerales.MensajeError("No se ha podido recuperar la venta. Hubo un error con la conexión a la base de datos.", ex);
             }
             catch (FormatException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("No se ha podido recuperar la venta. Hubo un error al tratar de dar formato a una variable.", ex);
+                Clases.FuncionesGenerales.MensajeError("No se ha podido recuperar la venta. Hubo un error al tratar de dar formato a una variable.", ex);
             }
             catch (OverflowException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("No se ha podido recuperar la venta. Hubo un desbordamiento.", ex);
+                Clases.FuncionesGenerales.MensajeError("No se ha podido recuperar la venta. Hubo un desbordamiento.", ex);
             }
             catch (InvalidOperationException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("No se ha podido recuperar la venta. La operación no pudo ser completada.", ex);
+                Clases.FuncionesGenerales.MensajeError("No se ha podido recuperar la venta. La operación no pudo ser completada.", ex);
             }
             catch (ArgumentNullException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("No se ha podido recuperar la venta. Se ha dado un argumento nulo.", ex);
+                Clases.FuncionesGenerales.MensajeError("No se ha podido recuperar la venta. Se ha dado un argumento nulo.", ex);
             }
             catch (Exception ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("No se ha podido recuperar la venta. Ha ocurrido un error genérico.", ex);
+                Clases.FuncionesGenerales.MensajeError("No se ha podido recuperar la venta. Ha ocurrido un error genérico.", ex);
             }
         }
 
@@ -512,23 +652,23 @@ namespace GYM.Formularios.POS
             }
             catch (MySqlException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("No se ha podido recuperar el detallado de la venta. Hubo un error con la conexión a la base de datos.", ex);
+                Clases.FuncionesGenerales.MensajeError("No se ha podido recuperar el detallado de la venta. Hubo un error con la conexión a la base de datos.", ex);
             }
             catch (FormatException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("No se ha podido recuperar el detallado de la venta. No se pudo dar formato a una variable.", ex);
+                Clases.FuncionesGenerales.MensajeError("No se ha podido recuperar el detallado de la venta. No se pudo dar formato a una variable.", ex);
             }
             catch (OverflowException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("No se ha podido recuperar el detallado de la venta. Hubo un desbordamiento.", ex);
+                Clases.FuncionesGenerales.MensajeError("No se ha podido recuperar el detallado de la venta. Hubo un desbordamiento.", ex);
             }
             catch (ArgumentNullException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("No se ha podido recuperar el detallado de la venta. El argumento dado fue nulo.", ex);
+                Clases.FuncionesGenerales.MensajeError("No se ha podido recuperar el detallado de la venta. El argumento dado fue nulo.", ex);
             }
             catch (Exception ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("No se ha podido recuperar el detallado de la venta. Ha ocurrido un error genérico.", ex);
+                Clases.FuncionesGenerales.MensajeError("No se ha podido recuperar el detallado de la venta. Ha ocurrido un error genérico.", ex);
             }
         }
 
@@ -549,23 +689,23 @@ namespace GYM.Formularios.POS
             }
             catch (MySqlException ex)
             {
-                CFuncionesGenerales.MensajeError("No se pudo obtener la cantidad del producto del inventario. No se pudo conectar con la base de datos.", ex);
+                FuncionesGenerales.MensajeError("No se pudo obtener la cantidad del producto del inventario. No se pudo conectar con la base de datos.", ex);
             }
             catch (FormatException ex)
             {
-                CFuncionesGenerales.MensajeError("No se pudo obtener la cantidad del producto del inventario. No se pudo dar formato a una variable.", ex);
+                FuncionesGenerales.MensajeError("No se pudo obtener la cantidad del producto del inventario. No se pudo dar formato a una variable.", ex);
             }
             catch (OverflowException ex)
             {
-                CFuncionesGenerales.MensajeError("No se pudo obtener la cantidad del producto del inventario. Ocurrio un desbordamiento.", ex);
+                FuncionesGenerales.MensajeError("No se pudo obtener la cantidad del producto del inventario. Ocurrio un desbordamiento.", ex);
             }
             catch (ArgumentNullException ex)
             {
-                CFuncionesGenerales.MensajeError("No se pudo obtener la cantidad del producto del inventario. El argumento dado al método es nulo.", ex);
+                FuncionesGenerales.MensajeError("No se pudo obtener la cantidad del producto del inventario. El argumento dado al método es nulo.", ex);
             }
             catch (Exception ex)
             {
-                CFuncionesGenerales.MensajeError("No se pudo obtener la cantidad del producto del inventario. Ha ocurrido un error genérico.", ex);
+                FuncionesGenerales.MensajeError("No se pudo obtener la cantidad del producto del inventario. Ha ocurrido un error genérico.", ex);
             }
             return cant;
         }
@@ -586,27 +726,83 @@ namespace GYM.Formularios.POS
             }
             catch (FormatException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("No se ha podido Inventariar. Hubo un error al tratar de convertir una variable.", ex);
+                Clases.FuncionesGenerales.MensajeError("No se ha podido Inventariar. Hubo un error al tratar de convertir una variable.", ex);
             }
             catch (OverflowException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("No se ha podido Inventariar. Ha ocurrido un desbordamiento.", ex);
+                Clases.FuncionesGenerales.MensajeError("No se ha podido Inventariar. Ha ocurrido un desbordamiento.", ex);
             }
             catch (ArgumentNullException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("No se ha podido Inventariar. El argumento dado al método es nulo y éste no lo acepta.", ex);
+                Clases.FuncionesGenerales.MensajeError("No se ha podido Inventariar. El argumento dado al método es nulo y éste no lo acepta.", ex);
             }
             catch (Exception ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("No se ha podido Inventariar. Ocurrio un error genérico.", ex);
+                Clases.FuncionesGenerales.MensajeError("No se ha podido Inventariar. Ocurrio un error genérico.", ex);
             }
         }
         #endregion
 
+        /// <summary>
+        /// Control que cambia la propiedad Enable a false en determinados controles del formulario cuando se termina una venta
+        /// </summary>
+        private void ControlesInhabilitados()
+        {
+            dgvProductos.Enabled = false;
+            lblECliente.Enabled = false;
+            lblCliente.Enabled = false;
+            lblEFolio.Enabled = false;
+            lblFolio.Enabled = false;
+            lblEVendedor.Enabled = false;
+            lblVendedor.Enabled = false;
+            btnSocio.Enabled = false;
+            btnProductos.Enabled = false;
+            btnCobrar.Enabled = false;
+            txtBusqueda.Enabled = false;
+            grbTotales.Enabled = false;
+        }
+
+        /// <summary>
+        /// Control que cambia la propiedad Enable a true en determinados controles del formulario cuando se inicia una venta
+        /// </summary>
+        private void ControlesHabilitados()
+        {
+            while (!Instancia.Visible)
+            {
+                Application.DoEvents();
+            }
+            dgvProductos.Enabled = true;
+            lblECliente.Visible = true;
+            lblCliente.Visible = true;
+            lblEFolio.Visible = true;
+            lblFolio.Visible = true;
+            lblEVendedor.Visible = true;
+            lblVendedor.Visible = true;
+            btnSocio.Visible = true;
+            btnProductos.Visible = true;
+            btnCobrar.Visible = true;
+            txtBusqueda.Enabled = true;
+            grbTotales.Visible = true;
+            lblECliente.Enabled = true;
+            lblCliente.Enabled = true;
+            lblEFolio.Enabled = true;
+            lblFolio.Enabled = true;
+            lblEVendedor.Enabled = true;
+            lblVendedor.Enabled = true;
+            btnProductos.Enabled = true;
+            btnCobrar.Enabled = true;
+            txtBusqueda.Enabled = true;
+            grbTotales.Enabled = true;
+            numSocio = 0;
+            lblCliente.Text = "";
+        }
+
+
+
         private void frmPuntoVenta_Load(object sender, EventArgs e)
         {
-            Clases.CFuncionesGenerales.CargarInterfaz(this);
-            lblUsuario.Text = ObtenerNombreUsuario();
+            FuncionesGenerales.CargarInterfaz(this);
+            lblEVendedor.Text = ObtenerNombreUsuario();
         }
 
         private void btnNueva_Click(object sender, EventArgs e)
@@ -640,15 +836,15 @@ namespace GYM.Formularios.POS
             }
             catch (FormatException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Hubo un error al crear una venta nueva. Ocurrio un error al dar formato a una variable.", ex);
+                Clases.FuncionesGenerales.MensajeError("Hubo un error al crear una venta nueva. Ocurrio un error al dar formato a una variable.", ex);
             }
             catch (ArgumentNullException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Hubo un error al crear una venta nueva. El argumento dado al método es nulo y éste no lo acepta.", ex);
+                Clases.FuncionesGenerales.MensajeError("Hubo un error al crear una venta nueva. El argumento dado al método es nulo y éste no lo acepta.", ex);
             }
             catch (Exception ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Hubo un error al crear una venta nueva. Ocurrio un error genérico.", ex);
+                Clases.FuncionesGenerales.MensajeError("Hubo un error al crear una venta nueva. Ocurrio un error genérico.", ex);
             }
             txtCodigo.Focus();
         }
@@ -661,15 +857,15 @@ namespace GYM.Formularios.POS
             }
             catch (ArgumentNullException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Hubo un error al abrir la ventana de productos. El argumento dado al método es nulo y éste no lo acepta.", ex);
+                Clases.FuncionesGenerales.MensajeError("Hubo un error al abrir la ventana de productos. El argumento dado al método es nulo y éste no lo acepta.", ex);
             }
             catch (InvalidOperationException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Hubo un error al abrir la ventana de productos. La operación no se pudo completar porqué el estado actual del objeto no lo permite.", ex);
+                Clases.FuncionesGenerales.MensajeError("Hubo un error al abrir la ventana de productos. La operación no se pudo completar porqué el estado actual del objeto no lo permite.", ex);
             }
             catch (Exception ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Hubo un error al abrir la ventana de productos. Ha ocurrido un error genérico.", ex);
+                Clases.FuncionesGenerales.MensajeError("Hubo un error al abrir la ventana de productos. Ha ocurrido un error genérico.", ex);
             }
             txtCodigo.Focus();
         }
@@ -681,32 +877,32 @@ namespace GYM.Formularios.POS
                 if (dgvProductos.RowCount > 0)
                 {
                     Inventariar();
-                    (new frmCobrar(this, int.Parse(lblFolio.Text), decimal.Parse(lblTotal.Text, System.Globalization.NumberStyles.Currency), decimal.Parse(lblNumProductos.Text), idProds, cants)).ShowDialog(this);
+                    (new frmCobrar2(this, int.Parse(lblFolio.Text), decimal.Parse(lblTotal.Text, System.Globalization.NumberStyles.Currency), decimal.Parse(lblNumProductos.Text), idProds, cants)).ShowDialog(this);
                 }
             }
             catch (FormatException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("No se pudo cobrar la cuenta. No se pudo convertir una variable porqué el formato dado no es correcto.", ex);
+                Clases.FuncionesGenerales.MensajeError("No se pudo cobrar la cuenta. No se pudo convertir una variable porqué el formato dado no es correcto.", ex);
             }
             catch (OverflowException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("No se pudo cobrar la cuenta. Ocurrio un desbordamiento.", ex);
+                Clases.FuncionesGenerales.MensajeError("No se pudo cobrar la cuenta. Ocurrio un desbordamiento.", ex);
             }
             catch (InvalidOperationException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("No se pudo cobrar la cuenta. El método no se pudo realizar porqué el estado actual del objeto no lo permite.", ex);
+                Clases.FuncionesGenerales.MensajeError("No se pudo cobrar la cuenta. El método no se pudo realizar porqué el estado actual del objeto no lo permite.", ex);
             }
             catch (ArgumentNullException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("No se pudo cobrar la cuenta. El argumento dado al método es nulo y éste no lo admite.", ex);
+                Clases.FuncionesGenerales.MensajeError("No se pudo cobrar la cuenta. El argumento dado al método es nulo y éste no lo admite.", ex);
             }
             catch (ArgumentException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("No se pudo cobrar la cuenta. El argumento dado al método no es válido para éste.", ex);
+                Clases.FuncionesGenerales.MensajeError("No se pudo cobrar la cuenta. El argumento dado al método no es válido para éste.", ex);
             }
             catch (Exception ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("No se pudo cobrar la cuenta. Ocurrio un error genérico.", ex);
+                Clases.FuncionesGenerales.MensajeError("No se pudo cobrar la cuenta. Ocurrio un error genérico.", ex);
             }
             txtCodigo.Focus();
         }
@@ -754,19 +950,19 @@ namespace GYM.Formularios.POS
             }
             catch (FormatException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("No se pudo abrir la ventana de recuperar la venta. No se pudo convertir la variable porqué el formato dado no es válido.", ex);
+                Clases.FuncionesGenerales.MensajeError("No se pudo abrir la ventana de recuperar la venta. No se pudo convertir la variable porqué el formato dado no es válido.", ex);
             }
             catch (InvalidOperationException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("No se pudo abrir la ventana de recuperar la venta. La llamada al método no se pudo completar porqué el estado actual del objeto no lo permite.", ex);
+                Clases.FuncionesGenerales.MensajeError("No se pudo abrir la ventana de recuperar la venta. La llamada al método no se pudo completar porqué el estado actual del objeto no lo permite.", ex);
             }
             catch (ArgumentNullException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("No se pudo abrir la ventana de recuperar la venta. El argumento dado al método es nulo y éste no lo acepta.", ex);
+                Clases.FuncionesGenerales.MensajeError("No se pudo abrir la ventana de recuperar la venta. El argumento dado al método es nulo y éste no lo acepta.", ex);
             }
             catch (Exception ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("No se pudo abrir la ventana de recuperar la venta. Ha ocurrido un error genérico.", ex);
+                Clases.FuncionesGenerales.MensajeError("No se pudo abrir la ventana de recuperar la venta. Ha ocurrido un error genérico.", ex);
             }
             txtCodigo.Focus();
         }
@@ -822,23 +1018,23 @@ namespace GYM.Formularios.POS
             }
             catch (FormatException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("No se pudo abrir la ventana de devoluciones. Ha ocurrido un error al tratar de convertir una variable porqué el formato no es correcto.", ex);
+                Clases.FuncionesGenerales.MensajeError("No se pudo abrir la ventana de devoluciones. Ha ocurrido un error al tratar de convertir una variable porqué el formato no es correcto.", ex);
             }
             catch (OverflowException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("No se pudo abrir la ventana de devoluciones. Ocurrio un desbordamiento.", ex);
+                Clases.FuncionesGenerales.MensajeError("No se pudo abrir la ventana de devoluciones. Ocurrio un desbordamiento.", ex);
             }
             catch (InvalidOperationException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("No se pudo abrir la ventana de devoluciones. La operación no se pudo completar porqué el estado actual del objeto no lo permite.", ex);
+                Clases.FuncionesGenerales.MensajeError("No se pudo abrir la ventana de devoluciones. La operación no se pudo completar porqué el estado actual del objeto no lo permite.", ex);
             }
             catch (ArgumentNullException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("No se pudo abrir la ventana de devoluciones. El argumento dado al método es nulo y éste no lo acepta.", ex);
+                Clases.FuncionesGenerales.MensajeError("No se pudo abrir la ventana de devoluciones. El argumento dado al método es nulo y éste no lo acepta.", ex);
             }
             catch (Exception ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("No se pudo abrir la ventana de devoluciones. Ocurrio un error genérico.", ex);
+                Clases.FuncionesGenerales.MensajeError("No se pudo abrir la ventana de devoluciones. Ocurrio un error genérico.", ex);
             }
         }
 
@@ -861,23 +1057,23 @@ namespace GYM.Formularios.POS
             }
             catch (FormatException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("No se pudo abrir la ventana de cancelaciones. Ha ocurrido un error al tratar de convertir una variable porqué el formato no es correcto.", ex);
+                Clases.FuncionesGenerales.MensajeError("No se pudo abrir la ventana de cancelaciones. Ha ocurrido un error al tratar de convertir una variable porqué el formato no es correcto.", ex);
             }
             catch (OverflowException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("No se pudo abrir la ventana de cancelaciones. Ocurrio un desbordamiento.", ex);
+                Clases.FuncionesGenerales.MensajeError("No se pudo abrir la ventana de cancelaciones. Ocurrio un desbordamiento.", ex);
             }
             catch (InvalidOperationException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("No se pudo abrir la ventana de cancelaciones. La operación no se pudo completar porqué el estado actual del objeto no lo permite.", ex);
+                Clases.FuncionesGenerales.MensajeError("No se pudo abrir la ventana de cancelaciones. La operación no se pudo completar porqué el estado actual del objeto no lo permite.", ex);
             }
             catch (ArgumentNullException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("No se pudo abrir la ventana de cancelaciones. El argumento dado al método es nulo y éste no lo acepta.", ex);
+                Clases.FuncionesGenerales.MensajeError("No se pudo abrir la ventana de cancelaciones. El argumento dado al método es nulo y éste no lo acepta.", ex);
             }
             catch (Exception ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("No se pudo abrir la ventana de cancelaciones. Ocurrio un error genérico.", ex);
+                Clases.FuncionesGenerales.MensajeError("No se pudo abrir la ventana de cancelaciones. Ocurrio un error genérico.", ex);
             }
         }
 
@@ -934,23 +1130,23 @@ namespace GYM.Formularios.POS
             }
             catch (FormatException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("No se pudo modificar la cantidad del producto. Ocurrio un error al tratar de dar formato a una variable.", ex);
+                Clases.FuncionesGenerales.MensajeError("No se pudo modificar la cantidad del producto. Ocurrio un error al tratar de dar formato a una variable.", ex);
             }
             catch (OverflowException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("No se pudo modificar la cantidad del producto. Ocurrio un desbordamiento.", ex);
+                Clases.FuncionesGenerales.MensajeError("No se pudo modificar la cantidad del producto. Ocurrio un desbordamiento.", ex);
             }
             catch (ArgumentNullException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("No se pudo modificar la cantidad del producto. El argumento dado al método es nulo y éste no lo acepta.", ex);
+                Clases.FuncionesGenerales.MensajeError("No se pudo modificar la cantidad del producto. El argumento dado al método es nulo y éste no lo acepta.", ex);
             }
             catch (ArgumentException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("No se pudo modificar la cantidad del producto. El argumento dado al método no es válido para éste.", ex);
+                Clases.FuncionesGenerales.MensajeError("No se pudo modificar la cantidad del producto. El argumento dado al método no es válido para éste.", ex);
             }
             catch (Exception ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("No se pudo modificar la cantidad del producto. Ocurrio un error genérico.", ex);
+                Clases.FuncionesGenerales.MensajeError("No se pudo modificar la cantidad del producto. Ocurrio un error genérico.", ex);
             }
         }
 
@@ -974,24 +1170,28 @@ namespace GYM.Formularios.POS
             }
             catch (FormatException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("No se pudo abrir la ventana de re impresiones. Ha ocurrido un error al tratar de convertir una variable porqué el formato no es correcto.", ex);
+                Clases.FuncionesGenerales.MensajeError("No se pudo abrir la ventana de re impresiones. Ha ocurrido un error al tratar de convertir una variable porqué el formato no es correcto.", ex);
             }
             catch (OverflowException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("No se pudo abrir la ventana de re impresiones. Ocurrio un desbordamiento.", ex);
+                Clases.FuncionesGenerales.MensajeError("No se pudo abrir la ventana de re impresiones. Ocurrio un desbordamiento.", ex);
             }
             catch (InvalidOperationException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("No se pudo abrir la ventana de re impresiones. La operación no se pudo completar porqué el estado actual del objeto no lo permite.", ex);
+                Clases.FuncionesGenerales.MensajeError("No se pudo abrir la ventana de re impresiones. La operación no se pudo completar porqué el estado actual del objeto no lo permite.", ex);
             }
             catch (ArgumentNullException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("No se pudo abrir la ventana de re impresiones. El argumento dado al método es nulo y éste no lo acepta.", ex);
+                Clases.FuncionesGenerales.MensajeError("No se pudo abrir la ventana de re impresiones. El argumento dado al método es nulo y éste no lo acepta.", ex);
             }
             catch (Exception ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("No se pudo abrir la ventana de re impresiones. Ocurrio un error genérico.", ex);
+                Clases.FuncionesGenerales.MensajeError("No se pudo abrir la ventana de re impresiones. Ocurrio un error genérico.", ex);
             }
         }
+
+        private void txtCodigo_TextChanged(object sender, EventArgs e)
+        {
+                    }
     }
 }

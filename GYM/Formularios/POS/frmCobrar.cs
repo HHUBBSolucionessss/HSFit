@@ -1,141 +1,192 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using MySql.Data.MySqlClient;
-using System.Drawing;
-using System.Linq;
-using System.Text;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Threading.Tasks;
+using System.Data;
+using System.Collections.Generic;
+using System.Drawing;
 using System.Windows.Forms;
-using System.Globalization;
-using GYM.Formularios.POS;
 
 namespace GYM.Formularios.POS
 {
     public partial class frmCobrar : Form
     {
+        int id;
         frmPuntoVenta frm;
-        int idVenta;
-        decimal total, cant, tmpEf, totalTarjeta;
-        List<string> idProds;
-        List<int> cants;
+        decimal total, saldo;
+        decimal totalPorcentaje = 0;
+        decimal tarjeta = 0M;
+        TipoPago t;
 
-        public frmCobrar(IWin32Window frm, int idVenta, decimal total, decimal cant, List<string> idProds, List<int> cants)
+        List<int> idCuenta = new List<int>();
+        List<string> nombreBeneficiarios = new List<string>();
+        List<string> nombreBancos = new List<string>();
+
+
+        public frmCobrar(frmPuntoVenta frm, int id, decimal total)
         {
             InitializeComponent();
-
-            this.frm = (frmPuntoVenta)frm;
-            this.idVenta = idVenta;
+            this.frm = frm;
+            this.id = id;
             this.total = total;
-            this.cant = cant;
-            this.idProds = idProds;
-            this.cants = cants;
+            lblTotal.Text = total.ToString("C2");
+            cboTipoPago.SelectedIndex = 0;
+            CalcularCambio();
         }
 
-        private void CerrarCuenta()
+        private void DatosCuentas()
         {
-            decimal efectivo = 0, tarjeta = 0;
             try
-            {                 
-                if (txtEfectivo.Text != "")
-                    efectivo = decimal.Parse(lblTotal.Text, System.Globalization.NumberStyles.Currency);
-                if (txtTarjeta.Text != "")
-                    tarjeta = decimal.Parse(txtTarjeta.Text, System.Globalization.NumberStyles.Currency);
+            {
                 MySqlCommand sql = new MySqlCommand();
-                sql.CommandText = "UPDATE venta SET fecha=NOW(), total_efectivo=?,total_tarjeta, estado=?, abierta=?, tipo_pago=?, folio_ticket=?, terminacion=? WHERE id=?";
-                sql.Parameters.AddWithValue("@total_efectivo", efectivo);
-                sql.Parameters.AddWithValue("@estado", true);
-                sql.Parameters.AddWithValue("@abierta", false);
-                if (!chbTarjeta.Checked)
+                sql.CommandText = "SELECT id, clabe, banco, beneficiario FROM cuenta WHERE tipo=?tipo";
+                sql.Parameters.AddWithValue("?tipo", TipoCuenta.Sucursal);
+                DataTable dt = ConexionBD.EjecutarConsultaSelect(sql);
+                foreach (DataRow dr in dt.Rows)
                 {
-                    sql.Parameters.AddWithValue("@tipo_pago", 0);
-                    sql.Parameters.AddWithValue("@folio_ticket", DBNull.Value);
-                    sql.Parameters.AddWithValue("@terminacion", DBNull.Value);
+                    idCuenta.Add((int)dr["id"]);
+                    cboNumCuenta.Items.Add(dr["clabe"] + "/" + dr["banco"].ToString());
+                    nombreBeneficiarios.Add(dr["beneficiario"].ToString());
+                    nombreBancos.Add(dr["banco"].ToString());
                 }
-                else if (!chbMixto.Checked)
+                cboNumCuenta.SelectedIndex = 0;
+            }
+            catch (MySqlException ex)
+            {
+                FuncionesGenerales.Mensaje(this, Mensajes.Error, "Ocurrió un error al cargar los datos de las cuentas. No se ha podido conectar a la base de datos.", Config.shrug, ex);
+            }
+            catch (Exception ex)
+            {
+                FuncionesGenerales.Mensaje(this, Mensajes.Error, "Ocurrió un error al cargar los datos de las cuentas.", Config.shrug, ex);
+            }
+        }
+
+        private void CalcularCambio()
+        {
+            decimal efectivo, cambio = 0M;
+            decimal.TryParse(txtEfectivo.Text, out efectivo);
+            cambio = total - efectivo;
+            if (cambio > 0)
+            {
+                lblECambio.Text = "Falta:";
+                lblCambio.BackColor = Colores.Error;
+                lblCambio.Text = cambio.ToString("C2");
+            }
+            else
+            {
+                lblECambio.Text = "Cambio:";
+                lblCambio.BackColor = Colores.Exito;
+                lblCambio.Text = (cambio * -1).ToString("C2");
+            }
+        }
+
+        private void CalcularCambioMixto()
+        {
+            decimal efectivo, cambio = 0M, cargo = 0M;
+            decimal.TryParse(txtEfectivo.Text, out efectivo);
+            if (txtPorcentajeImpuesto.Text != "")
+            {
+                cargo = (total * (decimal.Parse(txtPorcentajeImpuesto.Text) / 100)); 
+                totalPorcentaje = total + cargo;
+            }
+            else
+            {
+                cargo = 0;
+                totalPorcentaje = total;
+            }
+
+            if (efectivo > (total + cargo))
+            {
+                txtEfectivo.Text = (total + cargo).ToString();
+                txtEfectivo.SelectionStart = txtEfectivo.Text.Length;
+                return;
+            }
+            tarjeta = (total + cargo) - efectivo;
+            cambio = (total + cargo) - tarjeta - efectivo;
+            lblTarjetaMixto.Text = tarjeta.ToString("C2");
+            if (cambio > 0)
+            {
+                lblECambio.Text = "Falta:";
+                lblCambio.BackColor = Colores.Error;
+                lblCambio.Text = cambio.ToString("C2");
+            }
+            else
+            {
+                lblECambio.Text = "Cambio:";
+                lblCambio.BackColor = Colores.Exito;
+                lblCambio.Text = (cambio * -1).ToString("C2");
+            }
+            lblCargo.Text = cargo.ToString("C2");
+            lblSubtotal.Text = total.ToString("C2");
+            lblTotal.Text = totalPorcentaje.ToString("C2");
+        }
+
+        private void QuitarEfectivo()
+        {
+            lblEEfectivo.Enabled = false;
+            txtEfectivo.Enabled = false;
+            txtEfectivo.Text = "0.00";
+            lblCambio.Text = "$0.00";
+            lblCambio.BackColor = Colores.Exito;
+            lblECambio.Text = "Cambio:";
+        }
+
+        private void MovimientoCaja()
+        {
+            try
+            {
+                Caja c = new Caja();
+                c.Descripcion = "VENTA MOSTRADOR CON FOLIO " + id.ToString();
+                if (cboTipoPago.SelectedIndex == 0)
                 {
-                    sql.Parameters.AddWithValue("@tipo_pago", 2);
-                    sql.Parameters.AddWithValue("@total_tarjeta", tarjeta);
-                    sql.Parameters.AddWithValue("@folio_ticket", txtFolioTicket.Text);
-                    sql.Parameters.AddWithValue("@terminacion", txtTerminacion.Text);
-                    
+                    c.Efectivo = total;
+                    c.Voucher = 0M;
                 }
+                else if (cboTipoPago.SelectedIndex == 1 || cboTipoPago.SelectedIndex == 2)
+                {
+                    c.Efectivo = 0M;
+                    c.Voucher = totalPorcentaje;
+                }
+                else if (cboTipoPago.SelectedIndex == 3)
+                {
+                    decimal efectivo;
+                    decimal.TryParse(txtEfectivo.Text, out efectivo);
+                    c.Efectivo = efectivo;
+                    c.Voucher = decimal.Parse(lblTarjetaMixto.Text, System.Globalization.NumberStyles.Currency);
+                }
+                else if(cboTipoPago.SelectedIndex == 4)
+                {
+                    c.Efectivo = 0M;
+                    c.Voucher = totalPorcentaje;
+                }
+                c.TipoMovimiento = EC_Admin.MovimientoCaja.Entrada;
+                c.Tipo_Pago = t;
+                c.IDSucursal = Config.idSucursal;
+                c.RegistrarMovimiento();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        private void MovimientoBanco()
+        {
+            try
+            {
+                Banco b = new Banco();
+                b.IDCuenta = idCuenta[cboNumCuenta.SelectedIndex];
+                b.Descripcion = "VENTA MOSTRADOR CON FOLIO " + id.ToString();
+                b.TipoMovimiento = EC_Admin.MovimientoCaja.Entrada;
+                if (t == TipoPago.Mixto)
+                    b.Total = tarjeta;
                 else
-                {
-                    sql.Parameters.AddWithValue("@tipo_pago", 1);
-                    sql.Parameters.AddWithValue("@folio_ticket", txtFolioTicket.Text);
-                    sql.Parameters.AddWithValue("@terminacion", txtTerminacion.Text);
-                }
-                sql.Parameters.AddWithValue("@id", idVenta);
-                Clases.ConexionBD.EjecutarConsulta(sql);
-            }
-            catch (MySqlException ex)
-            {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error al tratar de cerrar la cuenta.", ex);
+                    b.Total = totalPorcentaje;
+                b.Tipo_Pago = t;
+                b.RegistrarMovimiento();
             }
             catch (Exception ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error genérico.", ex);
-            }
-        }
-
-        private void AgregarMovimientoCaja()
-        {
-            decimal efectivo = 0, tarjeta = 0;
-            try
-            {
-                if (txtEfectivo.Text != "")
-                    efectivo = decimal.Parse(lblTotal.Text, System.Globalization.NumberStyles.Currency);
-                if (txtTarjeta.Text != "")
-                    tarjeta = decimal.Parse(txtTarjeta.Text, System.Globalization.NumberStyles.Currency);
-                MySqlCommand sql = new MySqlCommand();
-                sql.CommandText = "INSERT INTO caja (id_venta, efectivo, tarjeta, tipo_movimiento, fecha, descripcion, create_user_id, create_time) VALUES (?, ?, ?, ?, NOW(), ?, ?, NOW())";
-                sql.Parameters.AddWithValue("@id_venta", int.Parse(lblFolio.Text));
-                sql.Parameters.AddWithValue("@efectivo", efectivo.ToString("0.00"));
-                sql.Parameters.AddWithValue("@tarjeta", tarjeta.ToString("0.00"));
-                //Entrada = 0, Salida = 1
-                sql.Parameters.AddWithValue("@tipoMov", 0);
-                sql.Parameters.AddWithValue("@descripcion", "VENTA DE MOSTRADOR CON FOLIO "+int.Parse(lblFolio.Text));
-                sql.Parameters.AddWithValue("@create_user_id", frmMain.id);
-                Clases.ConexionBD.EjecutarConsulta(sql);
-            }
-            catch (MySqlException ex)
-            {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error al tratar de registrar el movimiento en caja.", ex);
-            }
-            catch (FormatException ex)
-            {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error al tratar de dar formato a una variable.", ex);
-            }
-            catch (OverflowException ex)
-            {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un desbordamiento.", ex);
-            }
-            catch (ArgumentNullException ex)
-            {
-                Clases.CFuncionesGenerales.MensajeError("Algún método invocado en AgregarMovimientoCaja no admite argumentos nulos.", ex);
-            }
-            catch (Exception ex)
-            {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error genérico.", ex);
-            }
-        }
-
-        private void DescontarInventario()
-        {
-            try
-            {
-                for (int i = 0; i < idProds.Count; i++)
-                    Clases.CProducto.DescontarInventario(idProds[i], cants[i]);
-            }
-            catch (MySqlException ex)
-            {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error al tratar de descontar productos del inventario.", ex);
-            }
-            catch (Exception ex)
-            {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error genérico.", ex);
+                throw ex;
             }
         }
 
@@ -143,330 +194,325 @@ namespace GYM.Formularios.POS
         {
             try
             {
-                if (Clases.CConfiguracionXML.ExisteConfiguracion("ticket", "imprimir"))
-                {
-                    if (bool.Parse(Clases.CConfiguracionXML.LeerConfiguración("ticket", "imprimir")))
-                    {
-                        if (Clases.CConfiguracionXML.ExisteConfiguracion("ticket", "preguntar"))
-                        {
-                            if (bool.Parse(Clases.CConfiguracionXML.LeerConfiguración("ticket", "preguntar")))
-                            {
-                                if (MessageBox.Show("¿Deseas imprimir el ticket de esta venta?", "HS FIT", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == System.Windows.Forms.DialogResult.Yes)
-                                {
-                                    (new Clases.CTicket()).ImprimirTicketVenta(int.Parse(lblFolio.Text));
-                                    (new Clases.CTicket()).ImprimirTicketVenta(int.Parse(lblFolio.Text));
-                                }
-                            }
-                            else
-                            {
-                                (new Clases.CTicket()).ImprimirTicketVenta(int.Parse(lblFolio.Text));
-                                (new Clases.CTicket()).ImprimirTicketVenta(int.Parse(lblFolio.Text));
-                            }
-                        }
-                        else
-                        {
-                            (new Clases.CTicket()).ImprimirTicketVenta(int.Parse(lblFolio.Text));
-                           (new Clases.CTicket()).ImprimirTicketVenta(int.Parse(lblFolio.Text));
-                        }
-                    }
-                }
+                Ticket t = new Ticket();
+                t.TicketVenta(id, this.t, decimal.Parse(lblCambio.Text, System.Globalization.NumberStyles.Currency));
             }
-            catch (System.Xml.XmlException ex)
+            catch (MySqlException ex)
             {
-                MessageBox.Show("Ha ocurrido un error al querer leer del archivo XML. Mensaje de error:" + ex.Message + "\nNúmero de linea y posición: " + ex.LineNumber + ", " + ex.LinePosition,
-                    "HS FIT", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-            catch (System.IO.PathTooLongException ex)
-            {
-                Clases.CFuncionesGenerales.MensajeError("La ruta del directorio es muy larga.", ex);
-            }
-            catch (System.IO.DirectoryNotFoundException ex)
-            {
-                Clases.CFuncionesGenerales.MensajeError("El directorio del archivo de configuración no se encontró.", ex);
-            }
-            catch (System.IO.FileNotFoundException ex)
-            {
-                Clases.CFuncionesGenerales.MensajeError("No se encontro el archivo de configuración.", ex);
-            }
-            catch (System.IO.IOException ex)
-            {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error de E/S.", ex);
-            }
-            catch (InvalidOperationException ex)
-            {
-                Clases.CFuncionesGenerales.MensajeError("La llamada al método no se pudo efectuar porque el estado actual del objeto no lo permite.", ex);
-            }
-            catch (NotSupportedException ex)
-            {
-                Clases.CFuncionesGenerales.MensajeError("No se pudo leer o modificar la secuencia de datos.", ex);
-            }
-            catch (UnauthorizedAccessException ex)
-            {
-                Clases.CFuncionesGenerales.MensajeError("El sistema ha negado el acceso al archivo de configuración.\nPuede deberse a un error de E/S o a un error de seguridad.", ex);
-            }
-            catch (System.Security.SecurityException ex)
-            {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error de seguridad.", ex);
-            }
-            catch (ArgumentNullException ex)
-            {
-                Clases.CFuncionesGenerales.MensajeError("El método no acepta referencias nulas.", ex);
-            }
-            catch (ArgumentException ex)
-            {
-                Clases.CFuncionesGenerales.MensajeError("El argumento que se pasó al método no es aceptado por este.", ex);
+                FuncionesGenerales.Mensaje(this, Mensajes.Error, "Ocurrió un error al imprimir el ticket. No se ha podido conectar con la base de datos.", "Admin CSY", ex);
             }
             catch (Exception ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error genérico.", ex);
+                FuncionesGenerales.Mensaje(this, Mensajes.Error, "Ocurrió un error al imprimir el ticket.", "Admin CSY", ex);
             }
         }
 
-        private void txtDinero_KeyPress(object sender, KeyPressEventArgs e)
+        private void frmCobrar_Load(object sender, EventArgs e)
         {
-            try
+            DatosCuentas();
+            txtEfectivo.Select();
+            cboTipoPago.SelectedIndex = 0;
+            if (total < 0)
             {
-                Clases.CFuncionesGenerales.VerificarEsNumero(ref sender, ref e, false);
-            }
-            catch (Exception ex)
-            {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error genérico.", ex);
+                cboTipoPago.Enabled = false;
             }
         }
 
-        private void CalcularCambio()
+        private void cboTipoPago_SelectedIndexChanged(object sender, EventArgs e)
         {
-            try
+            switch (cboTipoPago.SelectedIndex)
             {
-                if (!chbTarjeta.Checked)
-                {
-                    if (txtEfectivo.Text != "")
-                    {
-                        decimal cambio = (decimal.Parse(lblTotal.Text, NumberStyles.Currency) - decimal.Parse(txtEfectivo.Text, NumberStyles.Currency));
-                        if (cambio <= 0)
-                        {
-                            lblEtiquetaCambio.Text = "Cambio:";
-                            lblEtiquetaCambio.Left = lblCambio.Left - lblEtiquetaCambio.Width;
-                            lblCambio.Text = (cambio * -1).ToString("C2");
-                            lblCambio.BackColor = Color.Lime;
-                            lblCambio.ForeColor = Color.Black;
-                        }
-                        else
-                        {
-                            lblEtiquetaCambio.Text = "Falta:";
-                            lblEtiquetaCambio.Left = lblCambio.Left - lblEtiquetaCambio.Width;
-                            lblCambio.Text = cambio.ToString("C2");
-                            lblCambio.BackColor = Color.Red;
-                            lblCambio.ForeColor = Color.White;
-                        }
-                    }
-                    else
-                    {
-                        lblEtiquetaCambio.Text = "Falta:";
-                        lblEtiquetaCambio.Left = lblCambio.Left - lblEtiquetaCambio.Width;
-                        lblCambio.Text = lblTotal.Text;
-                        lblCambio.BackColor = Color.Red;
-                        lblCambio.ForeColor = Color.White;
-                    }
-                }
-                else
-                {
-                    if (txtTarjeta.Text != "")
-                    {
-                        decimal cambio = (decimal.Parse(lblTotal.Text, NumberStyles.Currency) - decimal.Parse(txtTarjeta.Text, NumberStyles.Currency));
-                        if (cambio <= 0)
-                        {
-                            lblEtiquetaCambio.Text = "Cambio:";
-                            lblEtiquetaCambio.Left = lblCambio.Left - lblEtiquetaCambio.Width;
-                            lblCambio.Text = (cambio * -1).ToString("C2");
-                            lblCambio.BackColor = Color.Lime;
-                            lblCambio.ForeColor = Color.Black;
-                        }
-                        else
-                        {
-                            lblEtiquetaCambio.Text = "Falta:";
-                            lblEtiquetaCambio.Left = lblCambio.Left - lblEtiquetaCambio.Width;
-                            lblCambio.Text = cambio.ToString("C2");
-                            lblCambio.BackColor = Color.Red;
-                            lblCambio.ForeColor = Color.White;
-                        }
-                    }
-                    else
-                    {
-                        lblEtiquetaCambio.Text = "Falta:";
-                        lblEtiquetaCambio.Left = lblCambio.Left - lblEtiquetaCambio.Width;
-                        lblCambio.Text = lblTotal.Text;
-                        lblCambio.BackColor = Color.Red;
-                        lblCambio.ForeColor = Color.White;
-                    }
-                }
-            }
-            catch (FormatException ex)
-            {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error al tratar de dar formato a una variable.", ex);
-            }
-            catch (OverflowException ex)
-            {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un desbordamiento.", ex);
-            }
-            catch (ArgumentNullException ex)
-            {
-                Clases.CFuncionesGenerales.MensajeError("Algún método invocado en CalcularCambio no admite argumentos nulos.", ex);
+                case 0:
+                    txtPorcentajeImpuesto.Text = "0.00";
+                    
+                    btnCredito.Visible = true;
+                    lblEEfectivo.Enabled = true;
+                    txtEfectivo.Enabled = true;
+                    lblESubtotal.Visible = lblSubtotal.Visible = lblECargo.Visible = lblCargo.Visible = false;
+                    lblTotal.Top = lblETotal.Top = lblEEfectivo.Top;
+                    lblETarjetaMixto.Visible = lblTarjetaMixto.Visible = txtDatos.Visible = lblEDatos.Visible = txtPorcentajeImpuesto.Visible = lblEPorcentajeImpuesto.Visible = lblEFolioTerminal.Visible = txtFolioTerminal.Visible = false;
+                    CalcularCambio();
+                    t = TipoPago.Efectivo;
+                    this.Size = new Size(682, 330);
+                    txtEfectivo.Select();
+                    grbCuentas.Visible = false;
+                    break;
+                //case 1:
+                //    QuitarEfectivo();
+                //    lblEDatos.Text = "Núm. de cheque";
+                //    txtDatos.Visible = lblEDatos.Visible = true;
+                //    break;
+                case 1:
+                    QuitarEfectivo();
+                    btnCredito.Visible = false;
+                    this.Size = new Size(682, 390);
+                    lblEDatos.Text = "Núm. de tarjeta";
+                    lblEFolioTerminal.Text = "Folio terminal";
+                    lblESubtotal.Visible = lblSubtotal.Visible = lblECargo.Visible = lblCargo.Visible = true;
+                    lblTotal.Top = 189;
+                    lblETotal.Top = 189;
+                    lblETarjetaMixto.Visible = lblTarjetaMixto.Visible = txtDatos.Visible = lblEDatos.Visible = txtPorcentajeImpuesto.Visible = lblEPorcentajeImpuesto.Visible = lblEFolioTerminal.Visible = txtFolioTerminal.Visible = true;
+                    txtPorcentajeImpuesto.Text = "0";
+                    t = TipoPago.Crédito;
+                    txtPorcentajeImpuesto_TextChanged(txtPorcentajeImpuesto, new EventArgs());
+                    grbCuentas.Visible = true;
+                    break;
+                case 2:
+                    QuitarEfectivo();
+                    btnCredito.Visible = false;
+                    this.Size = new Size(682, 390);
+                    lblEDatos.Text = "Núm. de tarjeta";
+                    lblEFolioTerminal.Text = "Folio terminal";
+                    lblESubtotal.Visible = lblSubtotal.Visible = lblECargo.Visible = lblCargo.Visible = true;
+                    lblTotal.Top = 189;
+                    lblETotal.Top = 189;
+                    lblETarjetaMixto.Visible = lblTarjetaMixto.Visible = txtDatos.Visible = lblEDatos.Visible = txtPorcentajeImpuesto.Visible = lblEPorcentajeImpuesto.Visible = lblEFolioTerminal.Visible = txtFolioTerminal.Visible = true;
+                    txtPorcentajeImpuesto.Text = "0";
+                    t = TipoPago.Débito;
+                    txtPorcentajeImpuesto_TextChanged(txtPorcentajeImpuesto, new EventArgs());
+                    grbCuentas.Visible = true;
+                    break;
+                //case 4:
+                //    QuitarEfectivo();
+                //    txtDatos.Visible = lblEDatos.Visible = false;
+                //    break;
+                case 3:
+                    CalcularCambioMixto();
+                    btnCredito.Visible = false;
+                    this.Size = new Size(682, 390);
+                    lblEDatos.Text = "Núm. de tarjeta";
+                    lblEFolioTerminal.Text = "Folio terminal";
+                    lblESubtotal.Visible = lblSubtotal.Visible = lblECargo.Visible = lblCargo.Visible = true;
+                    lblTotal.Top = 189;
+                    lblETotal.Top = 189;
+                    txtDatos.Visible = lblEDatos.Visible = txtPorcentajeImpuesto.Visible = lblEPorcentajeImpuesto.Visible = lblEFolioTerminal.Visible = txtFolioTerminal.Visible = lblETarjetaMixto.Visible = lblTarjetaMixto.Visible = true;
+                    txtEfectivo.Enabled = lblEEfectivo.Enabled = true;
+                    txtPorcentajeImpuesto.Text = "0";
+                    t = TipoPago.Mixto;
+                    txtPorcentajeImpuesto_TextChanged(txtPorcentajeImpuesto, new EventArgs());
+                    grbCuentas.Visible = true;
+                    break;
+                case 4:
+                    QuitarEfectivo();
+                    btnCredito.Visible = false;
+                    this.Size = new Size(682, 390);
+                    lblEDatos.Text = "Núm. de tarjeta";
+                    lblEFolioTerminal.Text = "Folio de depósito";
+                    lblESubtotal.Visible = lblSubtotal.Visible = lblECargo.Visible = lblCargo.Visible = true;
+                    lblTotal.Top = 189;
+                    lblETotal.Top = 189;
+                    lblETarjetaMixto.Visible = lblTarjetaMixto.Visible = txtDatos.Visible = lblEDatos.Visible = txtPorcentajeImpuesto.Visible = lblEPorcentajeImpuesto.Visible = lblEFolioTerminal.Visible = txtFolioTerminal.Visible = true;
+                    lblEDatos.Visible = txtDatos.Visible = false;
+                    txtPorcentajeImpuesto.Text = "0";
+                    t = TipoPago.Deposito;
+                    txtPorcentajeImpuesto_TextChanged(txtPorcentajeImpuesto, new EventArgs());
+                    grbCuentas.Visible = true;
+                    break;
             }
         }
 
         private void txtEfectivo_TextChanged(object sender, EventArgs e)
         {
-            CalcularCambio();
-        }
-
-        private void frmCobrar_Load(object sender, EventArgs e)
-        {
-            try
+            if (cboTipoPago.SelectedIndex < 3)
             {
-                lblTotal.Text = (total).ToString("C2");
-                lblFolio.Text = idVenta.ToString("00000000");
-                lblCantidad.Text = cant.ToString();
-                txtEfectivo.Select();
                 CalcularCambio();
             }
-            catch (FormatException ex)
+            else
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error al tratar de dar formato a una variable.", ex);
+                CalcularCambioMixto();
             }
-            catch (Exception ex)
-            {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error genérico.", ex);
-            }
+
+        }
+
+        private void txtEfectivo_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            Clases.FuncionesGenerales.VerificarEsNumero(ref sender, ref e, false);
         }
 
         private void btnCobrar_Click(object sender, EventArgs e)
         {
-            if (chbTarjeta.Checked||chbMixto.Checked)
+            if (lblCambio.BackColor == Colores.Exito)
             {
-                if (txtFolioTicket.Text.Trim() == "")
+                try
                 {
-                    MessageBox.Show("Se debe ingresar el folio del ticket de la tarjeta.", "HS FIT", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    return;
+                    btnCobrar.Enabled = false;
+                    switch (cboTipoPago.SelectedIndex)
+                    {
+                        case 0:
+                            frm.GuardarVenta(false, t, false);
+                            break;
+                        case 1:
+                        case 2:
+                        case 3:
+                            if (cboNumCuenta.SelectedIndex < 0)
+                            {
+                                FuncionesGenerales.Mensaje(this, Mensajes.Alerta, "Debes seleccionar una cuenta antes de cobrar la venta.", "Admin CSY");
+                                return;
+                            }
+                            decimal porcentajeImpuesto;
+                            decimal.TryParse(txtPorcentajeImpuesto.Text, out porcentajeImpuesto);
+                            if (porcentajeImpuesto < 0)
+                            {
+                                FuncionesGenerales.Mensaje(this, Mensajes.Alerta, "El porcentaje de impuesto debe ser mayor o igual a 0", "Admin CSY");
+                                return;
+                            }
+                            if (txtDatos.Text.Trim() == "")
+                            {
+                                FuncionesGenerales.Mensaje(this, Mensajes.Alerta, "Debes ingresar el número de la tarjeta", "Admin CSY");
+                                return;
+                            }
+                            if (txtFolioTerminal.Text == "")
+                            {
+                                FuncionesGenerales.Mensaje(this, Mensajes.Alerta, "Debes ingresar el folio de la terminal de tarjetas", "Admin CSY");
+                                return;
+                            }
+                            frm.GuardarVenta(false, t, false, txtDatos.Text, txtFolioTerminal.Text, total * (porcentajeImpuesto / 100));
+                            MovimientoBanco();
+                            break;
+                        case 4:
+                            decimal.TryParse(txtPorcentajeImpuesto.Text, out porcentajeImpuesto);
+                            if (txtFolioTerminal.Text == "")
+                            {
+                                FuncionesGenerales.Mensaje(this, Mensajes.Alerta, "Debes ingresar el folio del depósito", "Admin CSY");
+                                return;
+                            }
+                            frm.GuardarVenta(false, t, false, "", "", total * (porcentajeImpuesto / 100), txtFolioTerminal.Text);
+                            MovimientoBanco();
+                            break;
+
+                    }
+                    MovimientoCaja();
+                    if (FuncionesGenerales.ImprimirTicket(this, "¿Desea imprimir el ticket de ésta venta?"))
+                    {
+                        try
+                        {
+                            for (int i = 0; i < Config.cantImprimirTickets; i++)
+                            {
+                                ImprimirTicket();
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            FuncionesGenerales.Mensaje(this, Mensajes.Error, "Ocurrió un error al imprimir el ticket.", Config.shrug, ex);
+                        }
+                    }
+                    FuncionesGenerales.Mensaje(this, Mensajes.Exito, "¡Se ha guardado los datos de la venta correctamente!", "Admin CSY");
+                    this.Close();
                 }
-                if (txtTerminacion.Text.Trim() == "")
+                catch (MySqlException ex)
                 {
-                    MessageBox.Show("Se debe ingresar la terminación de la tarjeta.", "HS FIT", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    return;
+                    FuncionesGenerales.Mensaje(this, Mensajes.Error, "Ocurrió un error al guardar los datos de la venta. No se ha podido conectar con la base de datos.", "Admin CSY", ex);
+                }
+                catch (Exception ex)
+                {
+                    FuncionesGenerales.Mensaje(this, Mensajes.Error, "Ocurrió un error al guardar los datos de la venta.", "Admin CSY", ex);
                 }
             }
-            if (lblCambio.BackColor == Color.Red)
-                MessageBox.Show("Debes ingresar una cantidad mayor antes de poder cobrar la cuenta.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             else
             {
-                CerrarCuenta();
-                AgregarMovimientoCaja();
-                DescontarInventario();
-                ImprimirTicket();
-                frm.MostrarControlesRecuperada(total);
+                FuncionesGenerales.Mensaje(this, Mensajes.Alerta, "El efectivo debe ser mayor o igual al total", "Admin CSY");
+            }
+        }
+
+        private void txtPorcentajeImpuesto_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            FuncionesGenerales.VerificarEsNumero(ref sender, ref e, false);
+        }
+
+        private void txtPorcentajeImpuesto_TextChanged(object sender, EventArgs e)
+        {
+            if (cboTipoPago.SelectedIndex < 3)
+            {
+                decimal cargo = 0M;
+                if (txtPorcentajeImpuesto.Text != "")
+                {
+                    cargo = (total * (decimal.Parse(txtPorcentajeImpuesto.Text) / 100));
+                    totalPorcentaje = total + cargo;
+                }
+                else
+                {
+                    totalPorcentaje = total;
+                }
+                lblCargo.Text = cargo.ToString("C2");
+                lblSubtotal.Text = total.ToString("C2");
+                lblTotal.Text = totalPorcentaje.ToString("C2");
+            }
+            else
+            {
+                CalcularCambioMixto();
+            }
+        }
+
+        private void txtEfectivo_Enter(object sender, EventArgs e)
+        {
+            txtEfectivo.SelectAll();
+        }
+
+        private void txtEfectivo_Click(object sender, EventArgs e)
+        {
+            txtEfectivo.SelectAll();
+        }
+
+        private void frmCobrar_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Escape)
+            {
                 this.Close();
             }
         }
 
-        private void chbTarjeta_CheckedChanged(object sender, EventArgs e)
+        private void cboNumCuenta_SelectedIndexChanged(object sender, EventArgs e)
         {
-            try
-            {
-                //if (!(decimal.Parse(lblTotal.Text, System.Globalization.NumberStyles.Currency) >= 100))
-                //{
-                //    if (chbTarjeta.Checked)
-                //    {
-                //        chbTarjeta.Checked = false;
-                //        MessageBox.Show("La venta debe ser mayor a $100 para que se pueda efectuar con tarjeta", "HS FIT", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                //    }
-                //    return;
-                //}
-                if (chbTarjeta.Checked)
-                {
-                    this.Size = new System.Drawing.Size(441, 364);
-                    txtEfectivo.Enabled = false;
-                    pnlTarjeta.Visible = true;
-                    if (txtEfectivo.Text != "")
-                        tmpEf = decimal.Parse(txtEfectivo.Text);
-                    txtEfectivo.Text = "";
-                    txtTarjeta.Text = decimal.Parse(lblTotal.Text, System.Globalization.NumberStyles.Currency).ToString();
-                    txtTarjeta_TextChanged(txtTarjeta, new EventArgs());
-                }
-                else
-                {
-                    this.Size = new System.Drawing.Size(441, 300);
-                    pnlTarjeta.Visible = false;
-                    txtEfectivo.Enabled = true;
-                    txtEfectivo.Text = tmpEf.ToString();
-                    txtTarjeta.Text = "";
-                }
-                this.Location = new Point((Screen.PrimaryScreen.WorkingArea.Width - this.Width) / 2, (Screen.PrimaryScreen.WorkingArea.Height - this.Height) / 2);
-            }
-            catch (FormatException ex)
-            {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error al tratar de dar formato a una variable.", ex);
-            }
-            catch (OverflowException ex)
-            {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un desbordamiento.", ex);
-            }
-            catch (ArgumentNullException ex)
-            {
-                Clases.CFuncionesGenerales.MensajeError("Algún método llamado en el evento CheckedChanged del CheckBox Tarjeta no admite argumentos nulos.", ex);
-            }
-            catch (Exception ex)
-            {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error genérico.", ex);
-            }
+            lblBanco.Text = nombreBancos[cboNumCuenta.SelectedIndex];
+            lblBeneficiario.Text = nombreBeneficiarios[cboNumCuenta.SelectedIndex];
         }
 
-        private void txtTarjeta_TextChanged(object sender, EventArgs e)
+        async private void btnCredito_Click(object sender, EventArgs e)
         {
-            CalcularCambio();
-        }
-
-        private void checkBox1_CheckedChanged(object sender, EventArgs e)
-        {
-            try
+            if (frm.idCliente > 0)
             {
-                if (chbMixto.Checked)
+                try
                 {
-                    this.Size = new System.Drawing.Size(441, 364);
-                    //txtEfectivo.Enabled = false;
-                    pnlTarjeta.Visible = true;
-                    if (txtEfectivo.Text != "")
-                        tmpEf = decimal.Parse(txtEfectivo.Text);
-                    txtEfectivo.Text = "";
-                    txtTarjeta.Text = decimal.Parse(lblTotal.Text, System.Globalization.NumberStyles.Currency).ToString();
-                    txtTarjeta_TextChanged(txtTarjeta, new EventArgs());
+                    Task<decimal> ta = Cliente.LimiteCreditoCliente(frm.idCliente);
+                    await ta;
+                    if (ta.Result >= total)
+                    {
+                        if (FuncionesGenerales.Mensaje(this, Mensajes.Pregunta, "¿Deseas mandar ésta venta a pagos?", "Admin CSY") == System.Windows.Forms.DialogResult.Yes)
+                        {
+                            try
+                            {
+                                frm.GuardarVenta(false, t, true);
+                                Cliente.SumarCreditoCliente(frm.idCliente, decimal.Negate(total));
+                                this.Close();
+                            }
+                            catch (MySqlException ex)
+                            {
+                                FuncionesGenerales.Mensaje(this, Mensajes.Error, "Ocurrió un error al guardar la venta a crédito. No se ha podido conectar con la base de datos.", Config.shrug, ex);
+                            }
+                            catch (Exception ex)
+                            {
+                                FuncionesGenerales.Mensaje(this, Mensajes.Error, "Ocurrió un error al guardar la venta a crédito.", Config.shrug, ex);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        FuncionesGenerales.Mensaje(this, Mensajes.Informativo, "El limite de crédito del cliente es menor al total de ésta venta.", "Admin CSY");
+                    }
                 }
-                else
+                catch (MySqlException ex)
                 {
-                    this.Size = new System.Drawing.Size(441, 300);
-                    pnlTarjeta.Visible = false;
-                    txtEfectivo.Enabled = true;
-                    txtEfectivo.Text = tmpEf.ToString();
-                    txtTarjeta.Text = "";
+                    FuncionesGenerales.Mensaje(this, Mensajes.Error, "Ocurrió un error al cargar los datos de crédito del cliente. No se ha podido conectar a la base de datos.", Config.shrug, ex);
                 }
-                this.Location = new Point((Screen.PrimaryScreen.WorkingArea.Width - this.Width) / 2, (Screen.PrimaryScreen.WorkingArea.Height - this.Height) / 2);
+                catch (Exception ex)
+                {
+                    FuncionesGenerales.Mensaje(this, Mensajes.Error, "Ocurrió un error al cargar los datos de crédito del cliente.", Config.shrug, ex);
+                }
             }
-            catch (FormatException ex)
+            else
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error al tratar de dar formato a una variable.", ex);
-            }
-            catch (OverflowException ex)
-            {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un desbordamiento.", ex);
-            }
-            catch (ArgumentNullException ex)
-            {
-                Clases.CFuncionesGenerales.MensajeError("Algún método llamado en el evento CheckedChanged del CheckBox Tarjeta no admite argumentos nulos.", ex);
-            }
-            catch (Exception ex)
-            {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error genérico.", ex);
+                FuncionesGenerales.Mensaje(this, Mensajes.Informativo, "No se puede mandar una venta a pagos sin antes asignar un cliente diferente a público en general", "Admin CSY");
             }
         }
-
     }
 }

@@ -62,19 +62,19 @@ namespace GYM.Formularios.Membresia
             }
             catch (MySqlException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error al tratar de obtener las cortesías.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ha ocurrido un error al tratar de obtener las cortesías.", ex);
             }
             catch (InvalidOperationException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("No se ha podido agregar las cortesías a la tabla.", ex);
+                Clases.FuncionesGenerales.MensajeError("No se ha podido agregar las cortesías a la tabla.", ex);
             }
             catch (InvalidCastException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("La fecha de la cortesía no se pudo convertir.", ex);
+                Clases.FuncionesGenerales.MensajeError("La fecha de la cortesía no se pudo convertir.", ex);
             }
             catch (Exception ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error genérico.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ha ocurrido un error genérico.", ex);
             }
         }
 

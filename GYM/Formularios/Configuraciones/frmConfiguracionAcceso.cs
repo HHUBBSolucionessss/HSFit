@@ -52,7 +52,7 @@ namespace GYM.Formularios.Configuraciones
 
         private void CargarConfiguracion()
         {
-            puerto = Clases.CConfiguracionXML.LeerConfiguración("puerto", "nombre");
+            puerto = Clases.ConfiguracionXML.LeerConfiguración("puerto", "nombre");
         }
 
         private void chbSonidosMembresias_CheckedChanged(object sender, EventArgs e)
@@ -75,18 +75,18 @@ namespace GYM.Formularios.Configuraciones
         {
             try
             {
-                Clases.CConfiguracionXML.GuardarConfiguracion("puerto", "activar", chbConfigurarAcceso.Value.ToString());
+                Clases.ConfiguracionXML.GuardarConfiguracion("puerto", "activar", chbConfigurarAcceso.Value.ToString());
                 if (cboPuertos.Items.Count > 0)
                 {
-                    Clases.CConfiguracionXML.GuardarConfiguracion("puerto", "nombre", cboPuertos.Items[cboPuertos.SelectedIndex].ToString());
-                    Clases.CFuncionesGenerales.usarAcceso = chbConfigurarAcceso.Value;
-                    Clases.CFuncionesGenerales.puertoAcceso = cboPuertos.Items[cboPuertos.SelectedIndex].ToString();
+                    Clases.ConfiguracionXML.GuardarConfiguracion("puerto", "nombre", cboPuertos.Items[cboPuertos.SelectedIndex].ToString());
+                    Clases.FuncionesGenerales.usarAcceso = chbConfigurarAcceso.Value;
+                    Clases.FuncionesGenerales.puertoAcceso = cboPuertos.Items[cboPuertos.SelectedIndex].ToString();
                 }
                 else
                 {
-                    Clases.CConfiguracionXML.GuardarConfiguracion("puerto", "nombre", "");
-                    Clases.CFuncionesGenerales.usarAcceso = chbConfigurarAcceso.Value;
-                    Clases.CFuncionesGenerales.puertoAcceso = "";
+                    Clases.ConfiguracionXML.GuardarConfiguracion("puerto", "nombre", "");
+                    Clases.FuncionesGenerales.usarAcceso = chbConfigurarAcceso.Value;
+                    Clases.FuncionesGenerales.puertoAcceso = "";
                 }
                 this.Close();
             }
@@ -97,58 +97,58 @@ namespace GYM.Formularios.Configuraciones
             }
             catch (System.IO.PathTooLongException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("La ruta del directorio es muy larga.", ex);
+                Clases.FuncionesGenerales.MensajeError("La ruta del directorio es muy larga.", ex);
             }
             catch (System.IO.DirectoryNotFoundException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("El directorio del archivo de configuración no se encontró.", ex);
+                Clases.FuncionesGenerales.MensajeError("El directorio del archivo de configuración no se encontró.", ex);
             }
             catch (System.IO.FileNotFoundException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("No se encontro el archivo de configuración.", ex);
+                Clases.FuncionesGenerales.MensajeError("No se encontro el archivo de configuración.", ex);
             }
             catch (System.IO.IOException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error de E/S.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ha ocurrido un error de E/S.", ex);
             }
             catch (ObjectDisposedException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("No se pudo llamar al método porque el objeto ha sido desechado.", ex);
+                Clases.FuncionesGenerales.MensajeError("No se pudo llamar al método porque el objeto ha sido desechado.", ex);
             }
             catch (InvalidOperationException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("La llamada al método no se pudo efectuar porque el estado actual del objeto no lo permite.", ex);
+                Clases.FuncionesGenerales.MensajeError("La llamada al método no se pudo efectuar porque el estado actual del objeto no lo permite.", ex);
             }
             catch (NotSupportedException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("No se pudo leer o modificar la secuencia de datos.", ex);
+                Clases.FuncionesGenerales.MensajeError("No se pudo leer o modificar la secuencia de datos.", ex);
             }
             catch (UnauthorizedAccessException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("El sistema ha negado el acceso al archivo de configuración.\nPuede deberse a un error de E/S o a un error de seguridad.", ex);
+                Clases.FuncionesGenerales.MensajeError("El sistema ha negado el acceso al archivo de configuración.\nPuede deberse a un error de E/S o a un error de seguridad.", ex);
             }
             catch (System.Security.SecurityException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error de seguridad.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ha ocurrido un error de seguridad.", ex);
             }
             catch (ArgumentNullException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("El método no acepta referencias nulas.", ex);
+                Clases.FuncionesGenerales.MensajeError("El método no acepta referencias nulas.", ex);
             }
             catch (ArgumentException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("El argumento que se pasó al método no es aceptado por este.", ex);
+                Clases.FuncionesGenerales.MensajeError("El argumento que se pasó al método no es aceptado por este.", ex);
             }
             catch (Exception ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error genérico.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ha ocurrido un error genérico.", ex);
             }
         }
 
 
         private void frmConfiguracionAcceso_Load(object sender, EventArgs e)
         {
-            if (bool.Parse(Clases.CConfiguracionXML.LeerConfiguración("puerto", "activar")))
+            if (bool.Parse(Clases.ConfiguracionXML.LeerConfiguración("puerto", "activar")))
             {
                 cboPuertos.Enabled = chbConfigurarAcceso.Value = true;
             }

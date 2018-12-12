@@ -87,11 +87,11 @@ namespace GYM.Formularios.Reportes
             }
             catch (MySqlException ex)
             {
-                CFuncionesGenerales.MensajeError("Ha ocurrido un error al obtener el total de las membresías. No se pudo realizar la conexión con la base de datos.", ex);
+                FuncionesGenerales.MensajeError("Ha ocurrido un error al obtener el total de las membresías. No se pudo realizar la conexión con la base de datos.", ex);
             }
             catch (Exception ex)
             {
-                CFuncionesGenerales.MensajeError("Ha ocurrido un error al obtener el total de las membresías. Ocurrió un error genérico.", ex);
+                FuncionesGenerales.MensajeError("Ha ocurrido un error al obtener el total de las membresías. Ocurrió un error genérico.", ex);
             }
         }
 
@@ -109,11 +109,11 @@ namespace GYM.Formularios.Reportes
             }
             catch (MySqlException ex)
             {
-                CFuncionesGenerales.MensajeError("Ha ocurrido un error al conectar a la base de datos para obtener los datos de las membresías.", ex);
+                FuncionesGenerales.MensajeError("Ha ocurrido un error al conectar a la base de datos para obtener los datos de las membresías.", ex);
             }
             catch (Exception ex)
             {
-                CFuncionesGenerales.MensajeError("Ha ocurrido un error al obtener los datos de las membresías.", ex);
+                FuncionesGenerales.MensajeError("Ha ocurrido un error al obtener los datos de las membresías.", ex);
             }
         }
 
@@ -130,11 +130,11 @@ namespace GYM.Formularios.Reportes
             }
             catch (InvalidCastException ex)
             {
-                CFuncionesGenerales.MensajeError("Ha ocurrido un error al mostrar la información.", ex);
+                FuncionesGenerales.MensajeError("Ha ocurrido un error al mostrar la información.", ex);
             }
             catch (Exception ex)
             {
-                CFuncionesGenerales.MensajeError("Ha ocurrido un error al mostrar la información.", ex);
+                FuncionesGenerales.MensajeError("Ha ocurrido un error al mostrar la información.", ex);
             }
         }
 
@@ -150,7 +150,7 @@ namespace GYM.Formularios.Reportes
         {
             if (!bgwBusqueda.IsBusy)
             {
-                CFuncionesGenerales.DeshabilitarBotonCerrar(this);
+                FuncionesGenerales.DeshabilitarBotonCerrar(this);
                 btnBuscar.Enabled = false;
                 tmrEspera.Enabled = true;
                 ObtenerTotalVentasMembresias();
@@ -167,8 +167,8 @@ namespace GYM.Formularios.Reportes
         private void bgwBusqueda_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             tmrEspera.Enabled = false;
-            CFuncionesGenerales.frmEsperaClose();
-            CFuncionesGenerales.HabilitarBotonCerrar(this);
+            FuncionesGenerales.frmEsperaClose();
+            FuncionesGenerales.HabilitarBotonCerrar(this);
             btnBuscar.Enabled = true;
             LlenarDataGrid();
         }
@@ -176,7 +176,7 @@ namespace GYM.Formularios.Reportes
         private void tmrEspera_Tick(object sender, EventArgs e)
         {
             tmrEspera.Enabled = false;
-            CFuncionesGenerales.frmEspera("Espere, buscando los datos de membresías", this);
+            FuncionesGenerales.frmEspera("Espere, buscando los datos de membresías", this);
         }
     }
 }

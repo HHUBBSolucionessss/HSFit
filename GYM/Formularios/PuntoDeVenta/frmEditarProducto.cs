@@ -13,7 +13,7 @@ namespace GYM.Formularios.PuntoDeVenta
 {
     public partial class frmEditarProducto : Form
     {
-        CProducto p = new CProducto();
+        Producto p = new Producto();
         string idProducto;
         public frmEditarProducto(string id)
         {
@@ -21,7 +21,7 @@ namespace GYM.Formularios.PuntoDeVenta
 
             try
             {
-                p = CProducto.ObtenerProductoPorID(id);
+                p = Producto.ObtenerProductoPorID(id);
                 idProducto = id;
 
                 txbNombre.Text = p.Nombre;
@@ -38,26 +38,26 @@ namespace GYM.Formularios.PuntoDeVenta
             }
             catch (MySql.Data.MySqlClient.MySqlException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error al obtener los datos del producto. No se pudo conectar con la base de datos.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ha ocurrido un error al obtener los datos del producto. No se pudo conectar con la base de datos.", ex);
             }
             catch (FormatException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error al obtener los datos del producto. Ocurrio un error al tratar de dar formato a una variable.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ha ocurrido un error al obtener los datos del producto. Ocurrio un error al tratar de dar formato a una variable.", ex);
             }
             catch (OverflowException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error al obtener los datos del producto. Ocurrio un debordamiento.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ha ocurrido un error al obtener los datos del producto. Ocurrio un debordamiento.", ex);
             }
             catch (ArgumentNullException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error al obtener los datos del producto. El argumento dado al método es nulo y éste no lo acepta.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ha ocurrido un error al obtener los datos del producto. El argumento dado al método es nulo y éste no lo acepta.", ex);
             }
         }
 
         private void frmEditarProducto_Load(object sender, EventArgs e)
         {
-            Clases.CFuncionesGenerales.CargarInterfaz(this);
-            if (Clases.CFuncionesGenerales.AperturaUnicaFormulario(this.Name))
+            Clases.FuncionesGenerales.CargarInterfaz(this);
+            if (Clases.FuncionesGenerales.AperturaUnicaFormulario(this.Name))
                 this.Close();
         }
 
@@ -74,7 +74,7 @@ namespace GYM.Formularios.PuntoDeVenta
 
         private void frmEditarProducto_FormClosed(object sender, FormClosedEventArgs e)
         {
-            Clases.CFuncionesGenerales.EliminarFormularioLista(this.Name);
+            Clases.FuncionesGenerales.EliminarFormularioLista(this.Name);
         }
 
         private void btnCancelar_Click(object sender, EventArgs e)
@@ -105,11 +105,11 @@ namespace GYM.Formularios.PuntoDeVenta
             }
             catch (MySql.Data.MySqlClient.MySqlException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error al tratar de editar el producto. No se pudo conectar con la base de datos.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ha ocurrido un error al tratar de editar el producto. No se pudo conectar con la base de datos.", ex);
             }
             catch (Exception ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error al tratar de editar el producto. Ha ocurrido un error genérico.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ha ocurrido un error al tratar de editar el producto. Ha ocurrido un error genérico.", ex);
             }
         }
 
@@ -151,17 +151,17 @@ namespace GYM.Formularios.PuntoDeVenta
             }
             catch (FormatException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Hubo un error al verificar los campos. Ocurrio un error al tratar de dar formato a una variable.", ex);
+                Clases.FuncionesGenerales.MensajeError("Hubo un error al verificar los campos. Ocurrio un error al tratar de dar formato a una variable.", ex);
                 return false;
             }
             catch (OverflowException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Hubo un error al verificar los campos. Ocurrio un desbordamiento.", ex);
+                Clases.FuncionesGenerales.MensajeError("Hubo un error al verificar los campos. Ocurrio un desbordamiento.", ex);
                 return false;
             }
             catch (Exception ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Hubo un error al verificar los campos. Ocurrio un error genérico.", ex);
+                Clases.FuncionesGenerales.MensajeError("Hubo un error al verificar los campos. Ocurrio un error genérico.", ex);
                 return false;
             }
         }
@@ -181,7 +181,7 @@ namespace GYM.Formularios.PuntoDeVenta
 
         private void txtPrecioCosto_KeyPress(object sender, KeyPressEventArgs e)
         {
-            CFuncionesGenerales.VerificarEsNumero(ref sender, ref e, false);
+            FuncionesGenerales.VerificarEsNumero(ref sender, ref e, false);
         }
     }
 }

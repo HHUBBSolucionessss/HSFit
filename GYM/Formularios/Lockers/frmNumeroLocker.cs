@@ -1,34 +1,27 @@
 ﻿using GYM.Clases;
 using MySql.Data.MySqlClient;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace GYM.Formularios
 {
     public partial class frmNumeroLocker : Form
     {
-        frmLockers frm;
+        FrmLockers frm;
 
-        public frmNumeroLocker(frmLockers frm, int numLocker = 0)
+        public frmNumeroLocker(FrmLockers frm, string numLocker)
         {
             InitializeComponent();
 
-            this.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            DialogResult = DialogResult.Cancel;
             this.frm = frm;
-            if (numLocker > 0)
-                txtNumLocker.Text = numLocker.ToString();
+            txtNumLocker.Text = numLocker.ToString();
         }
 
         private void txtNumLocker_KeyPress(object sender, KeyPressEventArgs e)
         {
-            Clases.CFuncionesGenerales.VerificarEsNumero(ref sender, ref e, true);
+            
         }
 
         private bool ExisteLocker(string numLocker)
@@ -62,9 +55,9 @@ namespace GYM.Formularios
                 {
                     if (!ExisteLocker(txtNumLocker.Text))
                     {
-                        frm.NumeroLocker = int.Parse(txtNumLocker.Text);
-                        this.DialogResult = System.Windows.Forms.DialogResult.OK;
-                        this.Close();
+                        frm.NumeroLocker = txtNumLocker.Text;
+                        DialogResult = DialogResult.OK;
+                        Close();
                     }
                     else
                     {

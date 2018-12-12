@@ -69,12 +69,12 @@ namespace GYM.Formularios.Reportes
             }
             catch (MySqlException ex)
             {
-                CFuncionesGenerales.MensajeError("No se ha podido obtener la información de la venta. Ocurrió un error al conectar con la base de datos. La ventana se cerrará.", ex);
+                FuncionesGenerales.MensajeError("No se ha podido obtener la información de la venta. Ocurrió un error al conectar con la base de datos. La ventana se cerrará.", ex);
                 this.Close();
             }
             catch (Exception ex)
             {
-                CFuncionesGenerales.MensajeError("No se ha podido obtener la información de la venta. Ocurrió un error genérico. La ventana se cerrará.", ex);
+                FuncionesGenerales.MensajeError("No se ha podido obtener la información de la venta. Ocurrió un error genérico. La ventana se cerrará.", ex);
                 this.Close();
             }
         }
@@ -93,17 +93,17 @@ namespace GYM.Formularios.Reportes
             }
             catch (MySqlException ex)
             {
-                CFuncionesGenerales.MensajeError("No se ha podido obtener la información de la venta detallada. Ocurrió un error al conectar con la base de datos. La ventana se cerrará.", ex);
+                FuncionesGenerales.MensajeError("No se ha podido obtener la información de la venta detallada. Ocurrió un error al conectar con la base de datos. La ventana se cerrará.", ex);
                 this.Close();
             }
             catch (InvalidCastException ex)
             {
-                CFuncionesGenerales.MensajeError("No se ha podido obtener la información de la venta detallada. Ocurrió un error al convertir una variable. La ventana se cerrará.", ex);
+                FuncionesGenerales.MensajeError("No se ha podido obtener la información de la venta detallada. Ocurrió un error al convertir una variable. La ventana se cerrará.", ex);
                 this.Close();
             }
             catch (Exception ex)
             {
-                CFuncionesGenerales.MensajeError("No se ha podido obtener la información de la venta detallada. Ocurrió un error genérico. La ventana se cerrará.", ex);
+                FuncionesGenerales.MensajeError("No se ha podido obtener la información de la venta detallada. Ocurrió un error genérico. La ventana se cerrará.", ex);
                 this.Close();
             }
         }
@@ -124,11 +124,11 @@ namespace GYM.Formularios.Reportes
             }
             catch (MySqlException ex)
             {
-                CFuncionesGenerales.MensajeError("No se ha podido obtener el nombre del usuario. Ocurrió un error al conectar con la base de datos.", ex);
+                FuncionesGenerales.MensajeError("No se ha podido obtener el nombre del usuario. Ocurrió un error al conectar con la base de datos.", ex);
             }
             catch (Exception ex)
             {
-                CFuncionesGenerales.MensajeError("No se ha podido obtener el nombre del usuario. Ocurrió un error genérico.", ex);
+                FuncionesGenerales.MensajeError("No se ha podido obtener el nombre del usuario. Ocurrió un error genérico.", ex);
             }
             return nom;
         }

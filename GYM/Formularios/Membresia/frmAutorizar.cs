@@ -84,7 +84,7 @@ namespace GYM.Formularios
                 MySqlCommand sql = new MySqlCommand();
                 sql.CommandText = "SELECT l.id, MAX(r.id), r.nom_persona, s.numSocio, s.nombre, s.apellidos, l.num, l.fecha_ini, l.fecha_fin, r.descripcion, r.create_time, r.create_user_id, r.folio_remision, r.precio " +
                     "FROM locker AS l LEFT JOIN registro_locker AS r ON (l.id=r.locker_id) LEFT JOIN miembros AS s ON (l.numSocio=s.numSocio) WHERE l.estado=?estado GROUP BY l.id ORDER BY r.create_time";
-                sql.Parameters.AddWithValue("?estado", frmLockers.EstadoLocker.Pendiente);
+                sql.Parameters.AddWithValue("?estado", FrmLockers.EstadoLocker.Pendiente);
                 dt = ConexionBD.EjecutarConsultaSelect(sql);
             }
             catch (MySqlException ex)
@@ -110,7 +110,7 @@ namespace GYM.Formularios
                         if (!numSocios.Contains((int)dr["numSocio"]))
                         {
                             numSocios.Add((int)dr["numSocio"]);
-                            dgvPendientes.Rows.Add(new object[] { dr["id"], (int)dr["numSocio"], dr["nombre"].ToString() + " " + dr["apellidos"].ToString(), "", dr["descripcion"].ToString(), fechaIni, fechaFin, fechaPago, dr["folio_remision"].ToString(), ((decimal)dr["precio"]), CFuncionesGenerales.NombreUsuario(dr["create_user_id"].ToString()) });
+                            dgvPendientes.Rows.Add(new object[] { dr["id"], (int)dr["numSocio"], dr["nombre"].ToString() + " " + dr["apellidos"].ToString(), "", dr["descripcion"].ToString(), fechaIni, fechaFin, fechaPago, dr["folio_remision"].ToString(), ((decimal)dr["precio"]), FuncionesGenerales.NombreUsuario(dr["create_user_id"].ToString()) });
                         }
                     }
                     else
@@ -123,7 +123,7 @@ namespace GYM.Formularios
                             nom = dr["nombre"].ToString() + " " + dr["apellidos"].ToString();
                         if (dr["numSocio"] != DBNull.Value)
                             numSocio = dr["numSocio"].ToString();
-                        dgvPendientes.Rows.Add(new object[] { dr["id"], numSocio, nom, dr["num"], dr["descripcion"].ToString(), fechaIni, fechaFin, fechaPago, dr["folio_remision"], ((decimal)dr["precio"]), CFuncionesGenerales.NombreUsuario(dr["create_user_id"].ToString()) });
+                        dgvPendientes.Rows.Add(new object[] { dr["id"], numSocio, nom, dr["num"], dr["descripcion"].ToString(), fechaIni, fechaFin, fechaPago, dr["folio_remision"], ((decimal)dr["precio"]), FuncionesGenerales.NombreUsuario(dr["create_user_id"].ToString()) });
                         
                     }
                 }
@@ -152,15 +152,15 @@ namespace GYM.Formularios
             }
             catch (MySqlException ex)
             {
-                CFuncionesGenerales.MensajeError("No se ha podido cambiar el estado de la membresía. Hubo un error al tratar de conectar con la base de datos.", ex);
+                FuncionesGenerales.MensajeError("No se ha podido cambiar el estado de la membresía. Hubo un error al tratar de conectar con la base de datos.", ex);
             }
             catch (Exception ex)
             {
-                CFuncionesGenerales.MensajeError("No se ha podido cambiar el estado de la membresía. Ha ocurrido un error genérico.", ex);
+                FuncionesGenerales.MensajeError("No se ha podido cambiar el estado de la membresía. Ha ocurrido un error genérico.", ex);
             }
         }
 
-        private void EstadoLocker(int id, frmLockers.EstadoLocker e)
+        private void EstadoLocker(int id, FrmLockers.EstadoLocker e)
         {
             try
             {
@@ -178,11 +178,11 @@ namespace GYM.Formularios
             }
             catch (MySqlException ex)
             {
-                CFuncionesGenerales.MensajeError("No se ha podido cambiar el estado del locker. Hubo un error al tratar de conectar con la base de datos.", ex);
+                FuncionesGenerales.MensajeError("No se ha podido cambiar el estado del locker. Hubo un error al tratar de conectar con la base de datos.", ex);
             }
             catch (Exception ex)
             {
-                CFuncionesGenerales.MensajeError("No se ha podido cambiar el estado del locker. Ha ocurrido un error genérico.", ex);
+                FuncionesGenerales.MensajeError("No se ha podido cambiar el estado del locker. Ha ocurrido un error genérico.", ex);
             }
         }
 
@@ -217,11 +217,11 @@ namespace GYM.Formularios
             }
             catch (MySqlException ex)
             {
-                CFuncionesGenerales.MensajeError("No se ha registrado el movimiento en caja. Ocurrió un error al conectar con la base de datos.", ex);
+                FuncionesGenerales.MensajeError("No se ha registrado el movimiento en caja. Ocurrió un error al conectar con la base de datos.", ex);
             }
             catch (Exception ex)
             {
-                CFuncionesGenerales.MensajeError("No se ha registrado el movimiento en caja. Ocurrió un error genérico.", ex);
+                FuncionesGenerales.MensajeError("No se ha registrado el movimiento en caja. Ocurrió un error genérico.", ex);
             }
         }
 
@@ -256,11 +256,11 @@ namespace GYM.Formularios
             }
             catch (MySqlException ex)
             {
-                CFuncionesGenerales.MensajeError("No se ha registrado el movimiento en caja. Ocurrió un error al conectar con la base de datos.", ex);
+                FuncionesGenerales.MensajeError("No se ha registrado el movimiento en caja. Ocurrió un error al conectar con la base de datos.", ex);
             }
             catch (Exception ex)
             {
-                CFuncionesGenerales.MensajeError("No se ha registrado el movimiento en caja. Ocurrió un error genérico.", ex);
+                FuncionesGenerales.MensajeError("No se ha registrado el movimiento en caja. Ocurrió un error genérico.", ex);
             }
         }
 
@@ -281,7 +281,7 @@ namespace GYM.Formularios
                 tmrEspera.Enabled = true;
                 bgwBusqueda.RunWorkerAsync(cboPendientes.SelectedIndex);
                 cboPendientes.Enabled = false;
-                CFuncionesGenerales.DeshabilitarBotonCerrar(this);
+                FuncionesGenerales.DeshabilitarBotonCerrar(this);
             }
         }
 
@@ -300,16 +300,16 @@ namespace GYM.Formularios
         private void bgwBusqueda_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             tmrEspera.Enabled = false;
-            CFuncionesGenerales.frmEsperaClose();
+            FuncionesGenerales.frmEsperaClose();
             LlenarDataGrid();
             cboPendientes.Enabled = true;
-            CFuncionesGenerales.HabilitarBotonCerrar(this);
+            FuncionesGenerales.HabilitarBotonCerrar(this);
         }
 
         private void tmrEspera_Tick(object sender, EventArgs e)
         {
             tmrEspera.Enabled = false;
-            CFuncionesGenerales.frmEspera("Espere, búscando pendientes", this);
+            FuncionesGenerales.frmEspera("Espere, búscando pendientes", this);
         }
 
         private void dgvPendientes_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -339,14 +339,14 @@ namespace GYM.Formularios
                     {
                         if (e.ColumnIndex == 11)
                         {
-                            EstadoLocker(id, frmLockers.EstadoLocker.Ocupado);
+                            EstadoLocker(id, FrmLockers.EstadoLocker.Ocupado);
                         }
                         else if (e.ColumnIndex == 12)
                         {
                             DialogResult r = MessageBox.Show("¿Realmente desea rechazar la renta de locker a " + dgvPendientes[2, e.RowIndex].Value.ToString() + "?", "HS FIT", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
                             if (r == System.Windows.Forms.DialogResult.Yes)
                             {
-                                EstadoLocker(id, frmLockers.EstadoLocker.Rechazado);
+                                EstadoLocker(id, FrmLockers.EstadoLocker.Rechazado);
                                 RegresarLocker();
                             }
                         }

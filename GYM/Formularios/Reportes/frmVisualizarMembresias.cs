@@ -70,15 +70,15 @@ namespace GYM.Formularios.Reportes
             }
             catch (InvalidCastException ex)
             {
-                CFuncionesGenerales.MensajeError("No se puede cargar los detalles de membresía. Ocurrió un error al realizar el Unboxing de una variable.", ex);
+                FuncionesGenerales.MensajeError("No se puede cargar los detalles de membresía. Ocurrió un error al realizar el Unboxing de una variable.", ex);
             }
             catch (MySqlException ex)
             {
-                CFuncionesGenerales.MensajeError("No se puede cargar los detalles de membresía. No se pudo conectar con la base de datos.", ex);
+                FuncionesGenerales.MensajeError("No se puede cargar los detalles de membresía. No se pudo conectar con la base de datos.", ex);
             }
             catch (Exception ex)
             {
-                CFuncionesGenerales.MensajeError("No se puede cargar los detalles de membresía. Ocurrió un error genérico.", ex);
+                FuncionesGenerales.MensajeError("No se puede cargar los detalles de membresía. Ocurrió un error genérico.", ex);
             }
         }
 
@@ -96,11 +96,11 @@ namespace GYM.Formularios.Reportes
             }
             catch (MySqlException ex)
             {
-                CFuncionesGenerales.MensajeError("No se ha podido cargar el nombre de usuario. Ocurrió un error al conectar con la base de datos.", ex);
+                FuncionesGenerales.MensajeError("No se ha podido cargar el nombre de usuario. Ocurrió un error al conectar con la base de datos.", ex);
             }
             catch (Exception ex)
             {
-                CFuncionesGenerales.MensajeError("No se ha podido cargar el nombre de usuario. Ocurrió un error genérico.", ex);
+                FuncionesGenerales.MensajeError("No se ha podido cargar el nombre de usuario. Ocurrió un error genérico.", ex);
             }
             return nomUsu;
         }
@@ -177,7 +177,7 @@ namespace GYM.Formularios.Reportes
             }
             catch (Exception ex)
             {
-                CFuncionesGenerales.MensajeError("No se ha podido mostrar la información. Ocurrió un error genérico.", ex);
+                FuncionesGenerales.MensajeError("No se ha podido mostrar la información. Ocurrió un error genérico.", ex);
             }
         }
 

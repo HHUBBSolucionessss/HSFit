@@ -36,11 +36,11 @@ namespace GYM.Formularios.Membresia
             }
             catch (MySql.Data.MySqlClient.MySqlException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error al tratar de buscar los miembros.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ha ocurrido un error al tratar de buscar los miembros.", ex);
             }
             catch (Exception ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error genérico.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ha ocurrido un error genérico.", ex);
             }
         }
 
@@ -66,15 +66,15 @@ namespace GYM.Formularios.Membresia
             }
             catch (InvalidOperationException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("La operación no pudo ser completada. El estado actual del objeto no lo permite.", ex);
+                Clases.FuncionesGenerales.MensajeError("La operación no pudo ser completada. El estado actual del objeto no lo permite.", ex);
             }
             catch (ArgumentNullException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("El método invocado no admite argumentos nulos.", ex);
+                Clases.FuncionesGenerales.MensajeError("El método invocado no admite argumentos nulos.", ex);
             }
             catch (Exception ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error genérico.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ha ocurrido un error genérico.", ex);
             }
         }
 
@@ -84,7 +84,7 @@ namespace GYM.Formularios.Membresia
             {
                 tmrEspera.Enabled = true;
                 txtBusqueda.Enabled = false;
-                CFuncionesGenerales.DeshabilitarBotonCerrar(this);
+                FuncionesGenerales.DeshabilitarBotonCerrar(this);
                 bgwConsulta.RunWorkerAsync(txtBusqueda.Text);
             }
         }
@@ -97,11 +97,11 @@ namespace GYM.Formularios.Membresia
         private void bgwConsulta_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             tmrEspera.Enabled = false;
-            Clases.CFuncionesGenerales.frmEsperaClose();
+            Clases.FuncionesGenerales.frmEsperaClose();
             System.Threading.Thread.Sleep(300);
             LlenarDataTable();
             txtBusqueda.Enabled = true;
-            CFuncionesGenerales.HabilitarBotonCerrar(this);
+            FuncionesGenerales.HabilitarBotonCerrar(this);
         }
 
         private void btnAceptar_Click(object sender, EventArgs e)
@@ -114,7 +114,7 @@ namespace GYM.Formularios.Membresia
         private void tmrEspera_Tick(object sender, EventArgs e)
         {
             tmrEspera.Enabled = false;
-            Clases.CFuncionesGenerales.frmEspera("Espere, búscando los miembros sin membresías.", this);
+            Clases.FuncionesGenerales.frmEspera("Espere, búscando los miembros sin membresías.", this);
         }
 
         private void dgvPersonas_RowEnter(object sender, DataGridViewCellEventArgs e)

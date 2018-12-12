@@ -53,7 +53,7 @@ namespace GYM.Formularios.Reportes
             {
                 tmrConteo.Enabled = true;
                 btnBuscar.Enabled = false;
-                CFuncionesGenerales.DeshabilitarBotonCerrar(this);
+                FuncionesGenerales.DeshabilitarBotonCerrar(this);
                 bgwBusqueda.RunWorkerAsync(new object[] { dtpFechaInicio.Value, dtpFechaFin.Value });
             }
 
@@ -62,15 +62,15 @@ namespace GYM.Formularios.Reportes
         private void tmrConteo_Tick(object sender, EventArgs e)
         {
             tmrConteo.Enabled = false;
-            CFuncionesGenerales.frmEspera("Espere, búscando socios...", this);
+            FuncionesGenerales.frmEspera("Espere, búscando socios...", this);
         }
 
         private void bgwBusqueda_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             tmrConteo.Enabled = false;
-            CFuncionesGenerales.frmEsperaClose();
+            FuncionesGenerales.frmEsperaClose();
             LlenarDataGrid();
-            CFuncionesGenerales.HabilitarBotonCerrar(this);
+            FuncionesGenerales.HabilitarBotonCerrar(this);
             btnBuscar.Enabled = true;
         }
 
@@ -87,13 +87,13 @@ namespace GYM.Formularios.Reportes
                 dgvPersonas.Rows.Clear();
                 foreach (DataRow dr in dt.Rows)
                 {
-                    dgvPersonas.Rows.Add(new object[] { dr["numSocio"], dr["descripcion"].ToString(), (decimal)dr["precio"], (DateTime)dr["create_time"], (DateTime)dr["fecha_ini"], (DateTime)dr["fecha_fin"], CFuncionesGenerales.NombreUsuario(dr["create_user_id"].ToString())});
+                    dgvPersonas.Rows.Add(new object[] { dr["numSocio"], dr["descripcion"].ToString(), (decimal)dr["precio"], (DateTime)dr["create_time"], (DateTime)dr["fecha_ini"], (DateTime)dr["fecha_fin"], FuncionesGenerales.NombreUsuario(dr["create_user_id"].ToString())});
                     Application.DoEvents();
                 }
             }
             catch (Exception ex)
             {
-                CFuncionesGenerales.MensajeError("No se ha podido mostrar la información. ", ex);
+                FuncionesGenerales.MensajeError("No se ha podido mostrar la información. ", ex);
             }
         }
         private void BuscarMembresias(DateTime fechaIni, DateTime fechaFin)
@@ -117,12 +117,12 @@ namespace GYM.Formularios.Reportes
             catch (MySqlException)
             {
                 tmrConteo.Enabled = false;
-                CFuncionesGenerales.frmEsperaClose();
+                FuncionesGenerales.frmEsperaClose();
             }
             catch (Exception)
             {
                 tmrConteo.Enabled = false;
-                CFuncionesGenerales.frmEsperaClose();
+                FuncionesGenerales.frmEsperaClose();
             }
         }
     }

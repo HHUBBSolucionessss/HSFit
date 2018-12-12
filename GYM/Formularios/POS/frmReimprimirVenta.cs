@@ -33,11 +33,11 @@ namespace GYM.Formularios.POS
             }
             catch (MySql.Data.MySqlClient.MySqlException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error al tratar de buscar la venta.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ha ocurrido un error al tratar de buscar la venta.", ex);
             }
             catch (Exception ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error genérico.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ha ocurrido un error genérico.", ex);
             }
         }
 
@@ -55,11 +55,11 @@ namespace GYM.Formularios.POS
             }
             catch (MySql.Data.MySqlClient.MySqlException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error al tratar de buscar la venta.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ha ocurrido un error al tratar de buscar la venta.", ex);
             }
             catch (Exception ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error genérico.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ha ocurrido un error genérico.", ex);
             }
         }
 
@@ -89,19 +89,19 @@ namespace GYM.Formularios.POS
             }
             catch (FormatException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error al tratar de dar formato a una variable.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ha ocurrido un error al tratar de dar formato a una variable.", ex);
             }
             catch (OverflowException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un desbordamiento.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ha ocurrido un desbordamiento.", ex);
             }
             catch (ArgumentNullException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Algún método invocado en LlenarDataGrid no admite argumentos nulos.", ex);
+                Clases.FuncionesGenerales.MensajeError("Algún método invocado en LlenarDataGrid no admite argumentos nulos.", ex);
             }
             catch (Exception ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error genérico.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ha ocurrido un error genérico.", ex);
             }
         }
 
@@ -110,13 +110,13 @@ namespace GYM.Formularios.POS
         {
             try
             {
-                if (Clases.CConfiguracionXML.ExisteConfiguracion("ticket", "imprimir"))
+                if (Clases.ConfiguracionXML.ExisteConfiguracion("ticket", "imprimir"))
                 {
-                    if (bool.Parse(Clases.CConfiguracionXML.LeerConfiguración("ticket", "imprimir")))
+                    if (bool.Parse(Clases.ConfiguracionXML.LeerConfiguración("ticket", "imprimir")))
                     {
-                        if (Clases.CConfiguracionXML.ExisteConfiguracion("ticket", "preguntar"))
+                        if (Clases.ConfiguracionXML.ExisteConfiguracion("ticket", "preguntar"))
                         {
-                            if (bool.Parse(Clases.CConfiguracionXML.LeerConfiguración("ticket", "preguntar")))
+                            if (bool.Parse(Clases.ConfiguracionXML.LeerConfiguración("ticket", "preguntar")))
                             {
                                 if (MessageBox.Show("¿Deseas imprimir el ticket de esta venta?", "HS FIT", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == System.Windows.Forms.DialogResult.Yes)
                                 {
@@ -142,47 +142,47 @@ namespace GYM.Formularios.POS
             }
             catch (System.IO.PathTooLongException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("La ruta del directorio es muy larga.", ex);
+                Clases.FuncionesGenerales.MensajeError("La ruta del directorio es muy larga.", ex);
             }
             catch (System.IO.DirectoryNotFoundException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("El directorio del archivo de configuración no se encontró.", ex);
+                Clases.FuncionesGenerales.MensajeError("El directorio del archivo de configuración no se encontró.", ex);
             }
             catch (System.IO.FileNotFoundException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("No se encontro el archivo de configuración.", ex);
+                Clases.FuncionesGenerales.MensajeError("No se encontro el archivo de configuración.", ex);
             }
             catch (System.IO.IOException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error de E/S.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ha ocurrido un error de E/S.", ex);
             }
             catch (InvalidOperationException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("La llamada al método no se pudo efectuar porque el estado actual del objeto no lo permite.", ex);
+                Clases.FuncionesGenerales.MensajeError("La llamada al método no se pudo efectuar porque el estado actual del objeto no lo permite.", ex);
             }
             catch (NotSupportedException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("No se pudo leer o modificar la secuencia de datos.", ex);
+                Clases.FuncionesGenerales.MensajeError("No se pudo leer o modificar la secuencia de datos.", ex);
             }
             catch (UnauthorizedAccessException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("El sistema ha negado el acceso al archivo de configuración.\nPuede deberse a un error de E/S o a un error de seguridad.", ex);
+                Clases.FuncionesGenerales.MensajeError("El sistema ha negado el acceso al archivo de configuración.\nPuede deberse a un error de E/S o a un error de seguridad.", ex);
             }
             catch (System.Security.SecurityException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error de seguridad.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ha ocurrido un error de seguridad.", ex);
             }
             catch (ArgumentNullException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("El método no acepta referencias nulas.", ex);
+                Clases.FuncionesGenerales.MensajeError("El método no acepta referencias nulas.", ex);
             }
             catch (ArgumentException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("El argumento que se pasó al método no es aceptado por este.", ex);
+                Clases.FuncionesGenerales.MensajeError("El argumento que se pasó al método no es aceptado por este.", ex);
             }
             catch (Exception ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error genérico.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ha ocurrido un error genérico.", ex);
             }
         }
 
@@ -195,7 +195,7 @@ namespace GYM.Formularios.POS
                     tmrEspera.Enabled = true;
                     txtFolio.Enabled = false;
                     btnBuscar.Enabled = false;
-                    GYM.Clases.CFuncionesGenerales.DeshabilitarBotonCerrar(this);
+                    GYM.Clases.FuncionesGenerales.DeshabilitarBotonCerrar(this);
                     bgwBusqueda.RunWorkerAsync(new object[] { txtFolio.Text });
                 }
             }
@@ -217,18 +217,18 @@ namespace GYM.Formularios.POS
 
         private void bgwBusqueda_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            GYM.Clases.CFuncionesGenerales.HabilitarBotonCerrar(this);
+            GYM.Clases.FuncionesGenerales.HabilitarBotonCerrar(this);
             btnBuscar.Enabled = true;
             txtFolio.Enabled = true;
             tmrEspera.Enabled = false;
-            GYM.Clases.CFuncionesGenerales.frmEsperaClose();
+            GYM.Clases.FuncionesGenerales.frmEsperaClose();
             LlenarDataGrid();
         }
 
         private void tmrEspera_Tick(object sender, EventArgs e)
         {
             tmrEspera.Enabled = false;
-            GYM.Clases.CFuncionesGenerales.frmEspera("Espere, buscando ventas", this);
+            GYM.Clases.FuncionesGenerales.frmEspera("Espere, buscando ventas", this);
         }
 
         private void dgvVentas_RowEnter(object sender, DataGridViewCellEventArgs e)
@@ -239,19 +239,19 @@ namespace GYM.Formularios.POS
             }
             catch (FormatException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("No se pudo convertir el valor del folio a int. El formato no es correcto.", ex);
+                Clases.FuncionesGenerales.MensajeError("No se pudo convertir el valor del folio a int. El formato no es correcto.", ex);
             }
             catch (OverflowException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("No se pudo convertir el valor del folio a int. Ha ocurrido un desbordamiento.", ex);
+                Clases.FuncionesGenerales.MensajeError("No se pudo convertir el valor del folio a int. Ha ocurrido un desbordamiento.", ex);
             }
             catch (ArgumentNullException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("No se pudo convertir el valor del folio a int. El argumento dado es nulo.", ex);
+                Clases.FuncionesGenerales.MensajeError("No se pudo convertir el valor del folio a int. El argumento dado es nulo.", ex);
             }
             catch (Exception ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("No se pudo convertir el valor del folio a int. Ha ocurrido un error genérico.", ex);
+                Clases.FuncionesGenerales.MensajeError("No se pudo convertir el valor del folio a int. Ha ocurrido un error genérico.", ex);
             }
         }
 
@@ -266,7 +266,7 @@ namespace GYM.Formularios.POS
             }
             catch (ArgumentOutOfRangeException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("La fecha ingresada se ha salido del rango admitido.", ex);
+                Clases.FuncionesGenerales.MensajeError("La fecha ingresada se ha salido del rango admitido.", ex);
             }
         }
 
@@ -288,7 +288,7 @@ namespace GYM.Formularios.POS
                 tmrEspera.Enabled = true;
                 btnBuscar.Enabled = false;
                 txtFolio.Enabled = false;
-                GYM.Clases.CFuncionesGenerales.DeshabilitarBotonCerrar(this);
+                GYM.Clases.FuncionesGenerales.DeshabilitarBotonCerrar(this);
                 bgwBusqueda.RunWorkerAsync(new object[] { dtpFechaInicio.Value, dtpFechaFin.Value });
             }
         }
@@ -297,12 +297,12 @@ namespace GYM.Formularios.POS
         {
             try
             {
-                Clases.CFuncionesGenerales.CargarInterfaz(this);
+                Clases.FuncionesGenerales.CargarInterfaz(this);
                 BuscarVentaFechas(DateTime.Now, DateTime.Now);
             }
             catch (Exception ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error genérico.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ha ocurrido un error genérico.", ex);
             }
         }
 

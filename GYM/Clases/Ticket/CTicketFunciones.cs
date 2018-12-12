@@ -33,20 +33,20 @@ namespace GYM.Clases
         {
             try
             {
-                lineaSup01 = Clases.CConfiguracionXML.LeerConfiguración("ticket", "lineaSup01");
-                lineaSup02 = Clases.CConfiguracionXML.LeerConfiguración("ticket", "lineaSup02");
-                lineaSup03 = Clases.CConfiguracionXML.LeerConfiguración("ticket", "lineaSup03");
-                lineaSup04 = Clases.CConfiguracionXML.LeerConfiguración("ticket", "lineaSup04");
-                lineaSup05 = Clases.CConfiguracionXML.LeerConfiguración("ticket", "lineaSup05");
-                lineaSup06 = Clases.CConfiguracionXML.LeerConfiguración("ticket", "lineaSup06");
-                lineaSup07 = Clases.CConfiguracionXML.LeerConfiguración("ticket", "lineaSup07");
-                lineaInf01 = Clases.CConfiguracionXML.LeerConfiguración("ticket", "lineaInf01");
-                lineaInf02 = Clases.CConfiguracionXML.LeerConfiguración("ticket", "lineaInf02");
-                lineaInf03 = Clases.CConfiguracionXML.LeerConfiguración("ticket", "lineaInf03");
-                impresora = Clases.CConfiguracionXML.LeerConfiguración("ticket", "impresora");
-                tamPapel = int.Parse(Clases.CConfiguracionXML.LeerConfiguración("ticket", "tamPapel"));
-                turnoMat = TimeSpan.Parse(Clases.CConfiguracionXML.LeerConfiguración("ticket", "turnoMat"));
-                turnoVes = TimeSpan.Parse(Clases.CConfiguracionXML.LeerConfiguración("ticket", "turnoVes"));
+                lineaSup01 = Clases.ConfiguracionXML.LeerConfiguración("ticket", "lineaSup01");
+                lineaSup02 = Clases.ConfiguracionXML.LeerConfiguración("ticket", "lineaSup02");
+                lineaSup03 = Clases.ConfiguracionXML.LeerConfiguración("ticket", "lineaSup03");
+                lineaSup04 = Clases.ConfiguracionXML.LeerConfiguración("ticket", "lineaSup04");
+                lineaSup05 = Clases.ConfiguracionXML.LeerConfiguración("ticket", "lineaSup05");
+                lineaSup06 = Clases.ConfiguracionXML.LeerConfiguración("ticket", "lineaSup06");
+                lineaSup07 = Clases.ConfiguracionXML.LeerConfiguración("ticket", "lineaSup07");
+                lineaInf01 = Clases.ConfiguracionXML.LeerConfiguración("ticket", "lineaInf01");
+                lineaInf02 = Clases.ConfiguracionXML.LeerConfiguración("ticket", "lineaInf02");
+                lineaInf03 = Clases.ConfiguracionXML.LeerConfiguración("ticket", "lineaInf03");
+                impresora = Clases.ConfiguracionXML.LeerConfiguración("ticket", "impresora");
+                tamPapel = int.Parse(Clases.ConfiguracionXML.LeerConfiguración("ticket", "tamPapel"));
+                turnoMat = TimeSpan.Parse(Clases.ConfiguracionXML.LeerConfiguración("ticket", "turnoMat"));
+                turnoVes = TimeSpan.Parse(Clases.ConfiguracionXML.LeerConfiguración("ticket", "turnoVes"));
             }
             catch (FormatException ex)
             {
@@ -231,10 +231,11 @@ namespace GYM.Clases
                 }
                 else
                 {
+                    //fecha = DateTime.Now.ToString("dd/MM/yyyy hh:mm:ss tt");
                     e.Graphics.DrawString("SERVICIO: CIERRE DE CAJA", fuenteNormal, Brushes.Black, 0, y+=saltoLineaPeque);
                     y += saltoLinea;
                    
-                    e.Graphics.DrawString("FECHA: "+fecha, fuenteNormal, Brushes.Black, 0, y);
+                    e.Graphics.DrawString("FECHA: "+ fecha, fuenteNormal, Brushes.Black, 0, y);
                 }
                 
                 y += saltoLinea + 5;
@@ -409,7 +410,7 @@ namespace GYM.Clases
                 e.Graphics.DrawString(total.ToString("C2"), fuenteNormal, Brushes.Black, (e.PageBounds.Width / 4) * 3 - 20, y);
                 y += saltoLinea * 3 / 2;
 
-                string tot = Clases.CFuncionesGenerales.ConvertirNumeroLetra(total.ToString());
+                string tot = Clases.FuncionesGenerales.ConvertirNumeroLetra(total.ToString());
                 CentrarTexto(ref e, tot, fuentePequeña, Brushes.Black);
                 y += saltoLinea;
             }

@@ -57,6 +57,8 @@
             this.btnCancelar = new System.Windows.Forms.Button();
             this.btnHuella = new System.Windows.Forms.Button();
             this.btnTomarFoto = new System.Windows.Forms.Button();
+            this.tbxCredito = new System.Windows.Forms.TextBox();
+            this.lblCredito = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pbxImagenPerfil)).BeginInit();
             this.SuspendLayout();
             // 
@@ -334,9 +336,9 @@
             // 
             // btnAceptar
             // 
-            this.btnAceptar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(162)))), ((int)(((byte)(184)))));
+            this.btnAceptar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(167)))), ((int)(((byte)(69)))));
             this.btnAceptar.FlatAppearance.BorderSize = 0;
-            this.btnAceptar.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(19)))), ((int)(((byte)(136)))), ((int)(((byte)(150)))));
+            this.btnAceptar.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(136)))), ((int)(((byte)(56)))));
             this.btnAceptar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnAceptar.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnAceptar.ForeColor = System.Drawing.Color.White;
@@ -401,6 +403,25 @@
             this.btnTomarFoto.UseVisualStyleBackColor = false;
             this.btnTomarFoto.Click += new System.EventHandler(this.btnTomarFoto_Click);
             // 
+            // tbxCredito
+            // 
+            this.tbxCredito.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.tbxCredito.Font = new System.Drawing.Font("Segoe UI", 10.5F);
+            this.tbxCredito.Location = new System.Drawing.Point(393, 307);
+            this.tbxCredito.Name = "tbxCredito";
+            this.tbxCredito.Size = new System.Drawing.Size(149, 26);
+            this.tbxCredito.TabIndex = 42;
+            // 
+            // lblCredito
+            // 
+            this.lblCredito.AutoSize = true;
+            this.lblCredito.Font = new System.Drawing.Font("Segoe UI", 10.5F);
+            this.lblCredito.Location = new System.Drawing.Point(288, 314);
+            this.lblCredito.Name = "lblCredito";
+            this.lblCredito.Size = new System.Drawing.Size(98, 19);
+            this.lblCredito.TabIndex = 43;
+            this.lblCredito.Text = "Limite Crédito:";
+            // 
             // frmEditarSocio
             // 
             this.AcceptButton = this.btnAceptar;
@@ -409,6 +430,8 @@
             this.BackColor = System.Drawing.Color.WhiteSmoke;
             this.CancelButton = this.btnCancelar;
             this.ClientSize = new System.Drawing.Size(706, 411);
+            this.Controls.Add(this.tbxCredito);
+            this.Controls.Add(this.lblCredito);
             this.Controls.Add(this.btnHuella);
             this.Controls.Add(this.btnTomarFoto);
             this.Controls.Add(this.txtNumSocio);
@@ -483,5 +506,7 @@
         private System.Windows.Forms.Button btnCancelar;
         private System.Windows.Forms.Button btnHuella;
         private System.Windows.Forms.Button btnTomarFoto;
+        private System.Windows.Forms.TextBox tbxCredito;
+        private System.Windows.Forms.Label lblCredito;
     }
 }

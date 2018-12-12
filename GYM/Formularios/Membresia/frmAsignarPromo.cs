@@ -27,7 +27,7 @@ namespace GYM.Formularios.Membresia
             cboTipoPromo.SelectedIndex = 0;
             this.genero = genero;
             this.frmN = frm;
-            CFuncionesGenerales.CargarInterfaz(this);
+            FuncionesGenerales.CargarInterfaz(this);
         }
 
         public frmAsignarPromo(frmEditarMembresia frm, int genero)
@@ -36,7 +36,7 @@ namespace GYM.Formularios.Membresia
             cboTipoPromo.SelectedIndex = 0;
             this.genero = genero;
             this.frmE = frm;
-            CFuncionesGenerales.CargarInterfaz(this);
+            FuncionesGenerales.CargarInterfaz(this);
         }
 
         private void BuscarPromociones()
@@ -105,11 +105,11 @@ namespace GYM.Formularios.Membresia
             }
             catch (MySqlException ex)
             {
-                CFuncionesGenerales.MensajeError("No se ha podido buscar las promociones. No se pudo conectar con la base de datos.", ex);
+                FuncionesGenerales.MensajeError("No se ha podido buscar las promociones. No se pudo conectar con la base de datos.", ex);
             }
             catch (Exception ex)
             {
-                CFuncionesGenerales.MensajeError("No se ha podido buscar las promociones. Ocurrió un error genérico.", ex);
+                FuncionesGenerales.MensajeError("No se ha podido buscar las promociones. Ocurrió un error genérico.", ex);
             }
         }
 
@@ -179,11 +179,11 @@ namespace GYM.Formularios.Membresia
             }
             catch (MySqlException ex)
             {
-                CFuncionesGenerales.MensajeError("No se ha podido buscar las promociones. No se pudo conectar con la base de datos.", ex);
+                FuncionesGenerales.MensajeError("No se ha podido buscar las promociones. No se pudo conectar con la base de datos.", ex);
             }
             catch (Exception ex)
             {
-                CFuncionesGenerales.MensajeError("No se ha podido buscar las promociones. Ocurrió un error genérico.", ex);
+                FuncionesGenerales.MensajeError("No se ha podido buscar las promociones. Ocurrió un error genérico.", ex);
             }
         }
 

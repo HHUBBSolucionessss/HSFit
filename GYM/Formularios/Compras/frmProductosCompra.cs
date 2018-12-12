@@ -26,7 +26,7 @@ namespace GYM.Formularios.Compras
 
         private void BuscarProductos(string p)
         {
-            MensajeError m = new MensajeError(CFuncionesGenerales.MensajeError);
+            MensajeError m = new MensajeError(FuncionesGenerales.MensajeError);
             try
             {
                 string sql = "SELECT id, nombre,cant,cant_alm, costo FROM producto WHERE (id='" + p + "' OR nombre LIKE '%" + p + "%') AND control_stock=1";
@@ -56,19 +56,19 @@ namespace GYM.Formularios.Compras
             }
             catch (FormatException ex)
             {
-                CFuncionesGenerales.MensajeError("Ocurrio un error al mostrar la información. No se pudo dar formato a una variable.", ex);
+                FuncionesGenerales.MensajeError("Ocurrio un error al mostrar la información. No se pudo dar formato a una variable.", ex);
             }
             catch (OverflowException ex)
             {
-                CFuncionesGenerales.MensajeError("Ocurrio un error al mostrar la información. Ocurrio un desbordamiento.", ex);
+                FuncionesGenerales.MensajeError("Ocurrio un error al mostrar la información. Ocurrio un desbordamiento.", ex);
             }
             catch (ArgumentNullException ex)
             {
-                CFuncionesGenerales.MensajeError("Ocurrio un error al mostrar la información. El argumento dado es nulo.", ex);
+                FuncionesGenerales.MensajeError("Ocurrio un error al mostrar la información. El argumento dado es nulo.", ex);
             }
             catch (Exception ex)
             {
-                CFuncionesGenerales.MensajeError("Ocurrio un error al mostrar la información. Ocurrió un error genérico.", ex);
+                FuncionesGenerales.MensajeError("Ocurrio un error al mostrar la información. Ocurrió un error genérico.", ex);
             }
         }
 
@@ -83,25 +83,25 @@ namespace GYM.Formularios.Compras
             }
             catch (FormatException ex)
             {
-                CFuncionesGenerales.MensajeError("No se pudo calcular el total. No se pudo convertir la variable.", ex);
+                FuncionesGenerales.MensajeError("No se pudo calcular el total. No se pudo convertir la variable.", ex);
             }
             catch (OverflowException ex)
             {
-                CFuncionesGenerales.MensajeError("No se pudo calcular el total. Ocurrió un desbordamiento.", ex);
+                FuncionesGenerales.MensajeError("No se pudo calcular el total. Ocurrió un desbordamiento.", ex);
             }
             catch (ArgumentNullException ex)
             {
-                CFuncionesGenerales.MensajeError("No se pudo calcular el total. El argumento dado es nulo.", ex);
+                FuncionesGenerales.MensajeError("No se pudo calcular el total. El argumento dado es nulo.", ex);
             }
             catch (Exception ex)
             {
-                CFuncionesGenerales.MensajeError("No se pudo calcular el total. Ocurrió un error genérico.", ex);
+                FuncionesGenerales.MensajeError("No se pudo calcular el total. Ocurrió un error genérico.", ex);
             }
         }
 
         private void txtDescuento_KeyPress(object sender, KeyPressEventArgs e)
         {
-            CFuncionesGenerales.VerificarEsNumero(ref sender, ref e, false);
+            FuncionesGenerales.VerificarEsNumero(ref sender, ref e, false);
         }
 
         private void txtCodigo_KeyDown(object sender, KeyEventArgs e)
@@ -111,7 +111,7 @@ namespace GYM.Formularios.Compras
                 if (!bgwBusqueda.IsBusy)
                 {
                     txtCodigo.Enabled = false;
-                    CFuncionesGenerales.DeshabilitarBotonCerrar(this);
+                    FuncionesGenerales.DeshabilitarBotonCerrar(this);
                     tmrEspera.Enabled = true;
                     bgwBusqueda.RunWorkerAsync(txtCodigo.Text);
                 }
@@ -126,11 +126,11 @@ namespace GYM.Formularios.Compras
         private void bgwBusqueda_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             tmrEspera.Enabled = false;
-            CFuncionesGenerales.frmEsperaClose();
+            FuncionesGenerales.frmEsperaClose();
             System.Threading.Thread.Sleep(300);
             LlenarDataGrid();
             txtCodigo.Enabled = true;
-            CFuncionesGenerales.HabilitarBotonCerrar(this);
+            FuncionesGenerales.HabilitarBotonCerrar(this);
         }
 
         private void btnAceptar_Click(object sender, EventArgs e)
@@ -147,19 +147,19 @@ namespace GYM.Formularios.Compras
                 }
                 catch (InvalidCastException ex)
                 {
-                    CFuncionesGenerales.MensajeError("No se ha podido agregar el producto. No se pudo realizar una conversión.", ex);
+                    FuncionesGenerales.MensajeError("No se ha podido agregar el producto. No se pudo realizar una conversión.", ex);
                 }
                 catch (InvalidOperationException ex)
                 {
-                    CFuncionesGenerales.MensajeError("No se ha podido agregar el producto. La operación no se pudo efectuar porqué el estado actual del objeto no lo permite.", ex);
+                    FuncionesGenerales.MensajeError("No se ha podido agregar el producto. La operación no se pudo efectuar porqué el estado actual del objeto no lo permite.", ex);
                 }
                 catch (ArgumentOutOfRangeException ex)
                 {
-                    CFuncionesGenerales.MensajeError("No se ha podido agregar el producto. El argumento dado se salió de rango.", ex);
+                    FuncionesGenerales.MensajeError("No se ha podido agregar el producto. El argumento dado se salió de rango.", ex);
                 }
                 catch (Exception ex)
                 {
-                    CFuncionesGenerales.MensajeError("No se ha podido agregar el producto. Ha ocurrido un error genérico.", ex);
+                    FuncionesGenerales.MensajeError("No se ha podido agregar el producto. Ha ocurrido un error genérico.", ex);
                 }
             }
             else
@@ -171,7 +171,7 @@ namespace GYM.Formularios.Compras
         private void tmrEspera_Tick(object sender, EventArgs e)
         {
             tmrEspera.Enabled = false;
-            CFuncionesGenerales.frmEspera("Espere mientras se efectua la búsqueda", this);
+            FuncionesGenerales.frmEspera("Espere mientras se efectua la búsqueda", this);
         }
 
         private void nudCantidad_ValueChanged(object sender, EventArgs e)

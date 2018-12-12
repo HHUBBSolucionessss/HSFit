@@ -692,7 +692,7 @@
             this.btnPreciosHombres.ForeColor = System.Drawing.Color.White;
             this.btnPreciosHombres.Location = new System.Drawing.Point(474, 254);
             this.btnPreciosHombres.Name = "btnPreciosHombres";
-            this.btnPreciosHombres.Size = new System.Drawing.Size(132, 34);
+            this.btnPreciosHombres.Size = new System.Drawing.Size(132, 45);
             this.btnPreciosHombres.TabIndex = 4;
             this.btnPreciosHombres.Text = "Asignar precios hombres";
             this.btnPreciosHombres.UseVisualStyleBackColor = false;
@@ -708,7 +708,7 @@
             this.btnPreciosMujeres.ForeColor = System.Drawing.Color.White;
             this.btnPreciosMujeres.Location = new System.Drawing.Point(336, 254);
             this.btnPreciosMujeres.Name = "btnPreciosMujeres";
-            this.btnPreciosMujeres.Size = new System.Drawing.Size(132, 34);
+            this.btnPreciosMujeres.Size = new System.Drawing.Size(132, 45);
             this.btnPreciosMujeres.TabIndex = 3;
             this.btnPreciosMujeres.Text = "Asignar precios mujeres";
             this.btnPreciosMujeres.UseVisualStyleBackColor = false;
@@ -718,7 +718,7 @@
             // 
             this.chbFolio.AutoSize = true;
             this.chbFolio.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.chbFolio.Location = new System.Drawing.Point(12, 224);
+            this.chbFolio.Location = new System.Drawing.Point(12, 246);
             this.chbFolio.Name = "chbFolio";
             this.chbFolio.Size = new System.Drawing.Size(219, 42);
             this.chbFolio.TabIndex = 2;
@@ -730,7 +730,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(618, 300);
+            this.ClientSize = new System.Drawing.Size(619, 322);
             this.Controls.Add(this.chbFolio);
             this.Controls.Add(this.btnPreciosMujeres);
             this.Controls.Add(this.btnPreciosHombres);

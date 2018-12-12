@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace GYM.Formularios
@@ -78,63 +72,17 @@ namespace GYM.Formularios
 
         private void btnEditar_Click(object sender, EventArgs e)
         {
-            if (frmMain.nivelUsuario == 3)
                 (new frmEditarUsuario(this, id)).ShowDialog(this);
-            else if (frmMain.nivelUsuario == 2)
-            {
-                if (dgvUsuarios[2, dgvUsuarios.CurrentRow.Index].Value.ToString() != "Administrador")
-                    (new frmEditarUsuario(this, id)).ShowDialog(this);
-                else
-                    MessageBox.Show("No tienes permisos de editar a este usuario", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            else if (frmMain.nivelUsuario == 1)
-            {
-                if (dgvUsuarios[2, dgvUsuarios.CurrentRow.Index].Value.ToString() == "Asistente")
-                    (new frmEditarUsuario(this, id)).ShowDialog(this);
-                else
-                    MessageBox.Show("No tienes permisos de editar a este usuario", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            else
-                MessageBox.Show("No tienes permisos de editar a este usuario", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
         private void btnEliminar_Click(object sender, EventArgs e)
         {
             if (dgvUsuarios.CurrentRow != null)
             {
-                if (frmMain.nivelUsuario == 3 && frmMain.id.ToString() != id)
+                if (frmMain.id.ToString() != id)
                 {
-                    if (MessageBox.Show("¿Realmente desea eliminar a " + dgvUsuarios[1, dgvUsuarios.CurrentRow.Index].Value.ToString() + "?", "Advertencia", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == System.Windows.Forms.DialogResult.Yes)
                         EliminarUsuario(id);
-                }
-                else if (frmMain.nivelUsuario == 2 && frmMain.id.ToString() != id)
-                {
-                    if (dgvUsuarios[2, dgvUsuarios.CurrentRow.Index].Value.ToString() != "Administrador")
-                    {
-                        if (MessageBox.Show("¿Realmente desea eliminar a " + dgvUsuarios[1, dgvUsuarios.CurrentRow.Index].Value.ToString() + "?", "Advertencia", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == System.Windows.Forms.DialogResult.Yes)
-                            EliminarUsuario(id);
-                    }
-                    else
-                    {
-                        MessageBox.Show("No tienes permisos para eliminar a este usuario", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
-                }
-                else if (frmMain.nivelUsuario == 1 && frmMain.id.ToString() != id)
-                {
-                    if (dgvUsuarios[2, dgvUsuarios.CurrentRow.Index].Value.ToString() == "Asistente")
-                    {
-                        if (MessageBox.Show("¿Realmente desea eliminar a " + dgvUsuarios[1, dgvUsuarios.CurrentRow.Index].Value.ToString() + "?", "Advertencia", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == System.Windows.Forms.DialogResult.Yes)
-                        {
-                            EliminarUsuario(id);
-                        }
-                    }
-                    else
-                    {
-                        MessageBox.Show("No tienes permisos para eliminar a este usuario", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
-                }
-                else
-                    MessageBox.Show("No tienes permisos para eliminar a este usuario", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }  
             }
         }
 

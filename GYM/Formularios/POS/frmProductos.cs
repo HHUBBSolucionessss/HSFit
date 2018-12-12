@@ -31,7 +31,7 @@ namespace GYM.Formularios.POS
         {
             if (e.KeyCode == Keys.Enter)
             {
-                CFuncionesGenerales.DeshabilitarBotonCerrar(this);
+                FuncionesGenerales.DeshabilitarBotonCerrar(this);
                 tmrEspera.Enabled = true;
                 txtCodigo.Enabled = false;
                 bgwBusqueda.RunWorkerAsync(txtCodigo.Text);
@@ -49,27 +49,27 @@ namespace GYM.Formularios.POS
             }
             catch (MySql.Data.MySqlClient.MySqlException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error al buscar los productos.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ha ocurrido un error al buscar los productos.", ex);
             }
             catch (FormatException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error al tratar de dar formato a una variable.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ha ocurrido un error al tratar de dar formato a una variable.", ex);
             }
             catch (InvalidCastException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error al tratar de convertir una variable a otro tipo.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ha ocurrido un error al tratar de convertir una variable a otro tipo.", ex);
             }
             catch (OverflowException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un desbordamiento.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ha ocurrido un desbordamiento.", ex);
             }
             catch (ArgumentNullException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Algún método invocado en BuscarProducto no admite argumentos nulos.", ex);
+                Clases.FuncionesGenerales.MensajeError("Algún método invocado en BuscarProducto no admite argumentos nulos.", ex);
             }
             catch (Exception ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error genérico.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ha ocurrido un error genérico.", ex);
             }
         }
 
@@ -87,7 +87,7 @@ namespace GYM.Formularios.POS
             }
             catch (Exception ex)
             {
-                CFuncionesGenerales.MensajeError("Ha ocurrido un error al mostrar la información.", ex);
+                FuncionesGenerales.MensajeError("Ha ocurrido un error al mostrar la información.", ex);
             }
         }
 
@@ -107,11 +107,11 @@ namespace GYM.Formularios.POS
             }
             catch (InvalidOperationException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("La llamada al método no se ha podido realizar porque el estado actual del objeto no lo permite.", ex);
+                Clases.FuncionesGenerales.MensajeError("La llamada al método no se ha podido realizar porque el estado actual del objeto no lo permite.", ex);
             }
             catch (ArgumentOutOfRangeException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("El argumento dado se sale de rango.", ex);
+                Clases.FuncionesGenerales.MensajeError("El argumento dado se sale de rango.", ex);
             }
         }
 
@@ -123,7 +123,7 @@ namespace GYM.Formularios.POS
             }
             catch (OverflowException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un desbordamiento.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ha ocurrido un desbordamiento.", ex);
             }
             this.Close();
         }
@@ -147,7 +147,7 @@ namespace GYM.Formularios.POS
 
         private void frmProductos_Load(object sender, EventArgs e)
         {
-            Clases.CFuncionesGenerales.CargarInterfaz(this);
+            Clases.FuncionesGenerales.CargarInterfaz(this);
             txtCodigo.Focus();
         }
 
@@ -157,39 +157,42 @@ namespace GYM.Formularios.POS
             {
                 if (dgvProductos.CurrentRow != null)
                 {
+                    id = dgvProductos[0, dgvProductos.CurrentRow.Index].Value.ToString();
                     nudCantidad.Value = 1;
                     for (int i = 0; i < cant.Count; i++)
                     {
                         dgvProductos[2, i].Value = cant[i];
                     }
-                    id = dgvProductos[0, dgvProductos.CurrentRow.Index].Value.ToString();
+                    //id = dgvProductos[0, dgvProductos.CurrentRow.Index].Value.ToString();
                     precio = decimal.Parse(dgvProductos[3, e.RowIndex].Value.ToString(), System.Globalization.NumberStyles.Currency);
                     lblTotal.Text = (precio * nudCantidad.Value).ToString("C2");
                 }
                 else
                 {
-                    
+                    id = "0";
+                    lblTotal.Text = "";
+              
                 }
             }
             catch (InvalidOperationException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("El estado actual del objeto no permite ejecutar operaciones en él.", ex);
+                Clases.FuncionesGenerales.MensajeError("El estado actual del objeto no permite ejecutar operaciones en él.", ex);
             }
             catch (FormatException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error al tratar de dar formato una variable.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ha ocurrido un error al tratar de dar formato una variable.", ex);
             }
             catch (OverflowException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un desbordamiento.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ha ocurrido un desbordamiento.", ex);
             }
             catch (ArgumentNullException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Algún método invocado en el evento CellClick del DataGridView no admite argumentos nulos.", ex);
+                Clases.FuncionesGenerales.MensajeError("Algún método invocado en el evento CellClick del DataGridView no admite argumentos nulos.", ex);
             }
             catch (ArgumentException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error genérico.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ha ocurrido un error genérico.", ex);
             }
         }
 
@@ -201,8 +204,8 @@ namespace GYM.Formularios.POS
         private void bgwBusqueda_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             tmrEspera.Enabled = false;
-            CFuncionesGenerales.frmEsperaClose();
-            CFuncionesGenerales.HabilitarBotonCerrar(this);
+            FuncionesGenerales.frmEsperaClose();
+            FuncionesGenerales.HabilitarBotonCerrar(this);
             txtCodigo.Enabled = true;
             LlenarDataGrid();
         }
@@ -210,7 +213,12 @@ namespace GYM.Formularios.POS
         private void tmrEspera_Tick(object sender, EventArgs e)
         {
             tmrEspera.Enabled = false;
-            CFuncionesGenerales.frmEspera("Espere, buscando productos", this);
+            FuncionesGenerales.frmEspera("Espere, buscando productos", this);
+        }
+
+        private void dgvProductos_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            id = dgvProductos[0, dgvProductos.CurrentRow.Index].Value.ToString();
         }
     }
 }

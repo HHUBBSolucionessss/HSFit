@@ -20,7 +20,7 @@ namespace GYM.Clases
 
 
         #region Propiedades
-        private Enumeraciones.TipoReporte tipo;
+        private TipoReporte tipo;
         private string titulo;
         private int idS;
         private string sucursal;
@@ -30,7 +30,7 @@ namespace GYM.Clases
         int idApertura;
         int idCierre;
 
-        public Enumeraciones.TipoReporte Tipo_Reporte
+        public TipoReporte Tipo_Reporte
         {
             get { return tipo; }
             set { tipo = value; }

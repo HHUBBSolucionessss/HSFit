@@ -39,7 +39,7 @@ namespace GYM.Formularios.Membresia
         public frmPromociones()
         {
             InitializeComponent();
-            CFuncionesGenerales.CargarInterfaz(this);
+            FuncionesGenerales.CargarInterfaz(this);
             cboTipoPromo.SelectedIndex = 0;
         }
 
@@ -107,11 +107,11 @@ namespace GYM.Formularios.Membresia
             }
             catch (MySqlException ex)
             {
-                CFuncionesGenerales.MensajeError("No se ha podido obtener las promociones. No se pudo conectar con la base de datos.", ex);
+                FuncionesGenerales.MensajeError("No se ha podido obtener las promociones. No se pudo conectar con la base de datos.", ex);
             }
             catch (Exception ex)
             {
-                CFuncionesGenerales.MensajeError("No se ha podido obtener las promociones. Ha ocurrido un error genérico.", ex);
+                FuncionesGenerales.MensajeError("No se ha podido obtener las promociones. Ha ocurrido un error genérico.", ex);
             }
         }
 
@@ -179,11 +179,11 @@ namespace GYM.Formularios.Membresia
             }
             catch (MySqlException ex)
             {
-                CFuncionesGenerales.MensajeError("No se ha podido obtener las promociones. No se pudo conectar con la base de datos.", ex);
+                FuncionesGenerales.MensajeError("No se ha podido obtener las promociones. No se pudo conectar con la base de datos.", ex);
             }
             catch (Exception ex)
             {
-                CFuncionesGenerales.MensajeError("No se ha podido obtener las promociones. Ha ocurrido un error genérico.", ex);
+                FuncionesGenerales.MensajeError("No se ha podido obtener las promociones. Ha ocurrido un error genérico.", ex);
             }
         }
 
@@ -196,11 +196,11 @@ namespace GYM.Formularios.Membresia
             }
             catch (MySqlException ex)
             {
-                CFuncionesGenerales.MensajeError("No se ha podido eliminar la promoción. No se pudo conectar con la base de datos.", ex);
+                FuncionesGenerales.MensajeError("No se ha podido eliminar la promoción. No se pudo conectar con la base de datos.", ex);
             }
             catch (Exception ex)
             {
-                CFuncionesGenerales.MensajeError("No se ha podido eliminar la promoción. Ha ocurrido un error genérico.", ex);
+                FuncionesGenerales.MensajeError("No se ha podido eliminar la promoción. Ha ocurrido un error genérico.", ex);
             }
         }
 
@@ -213,11 +213,11 @@ namespace GYM.Formularios.Membresia
             }
             catch (MySqlException ex)
             {
-                CFuncionesGenerales.MensajeError("No se ha podido eliminar la promoción. No se pudo conectar con la base de datos.", ex);
+                FuncionesGenerales.MensajeError("No se ha podido eliminar la promoción. No se pudo conectar con la base de datos.", ex);
             }
             catch (Exception ex)
             {
-                CFuncionesGenerales.MensajeError("No se ha podido eliminar la promoción. Ha ocurrido un error genérico.", ex);
+                FuncionesGenerales.MensajeError("No se ha podido eliminar la promoción. Ha ocurrido un error genérico.", ex);
             }
         }
 

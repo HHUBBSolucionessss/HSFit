@@ -57,23 +57,23 @@ namespace GYM.Formularios.Compras
             }
             catch (MySqlException ex)
             {
-                CFuncionesGenerales.MensajeError("Ocurrio un error al agregar el producto a la venta. No se pudo conectar con la base de datos.", ex);
+                FuncionesGenerales.MensajeError("Ocurrio un error al agregar el producto a la venta. No se pudo conectar con la base de datos.", ex);
             }
             catch (FormatException ex)
             {
-                CFuncionesGenerales.MensajeError("Ocurrio un error al agregar el producto a la venta. No se pudo dar formato a una variable.", ex);
+                FuncionesGenerales.MensajeError("Ocurrio un error al agregar el producto a la venta. No se pudo dar formato a una variable.", ex);
             }
             catch (OverflowException ex)
             {
-                CFuncionesGenerales.MensajeError("Ocurrio un error al agregar el producto a la venta. Ocurrio un desbordamiento.", ex);
+                FuncionesGenerales.MensajeError("Ocurrio un error al agregar el producto a la venta. Ocurrio un desbordamiento.", ex);
             }
             catch (ArgumentNullException ex)
             {
-                CFuncionesGenerales.MensajeError("Ocurrio un error al agregar el producto a la venta. El argumento dado al método es nulo.", ex);
+                FuncionesGenerales.MensajeError("Ocurrio un error al agregar el producto a la venta. El argumento dado al método es nulo.", ex);
             }
             catch (Exception ex)
             {
-                CFuncionesGenerales.MensajeError("Ocurrio un error al agregar el producto a la venta. Ha ocurrido un error genérico.", ex);
+                FuncionesGenerales.MensajeError("Ocurrio un error al agregar el producto a la venta. Ha ocurrido un error genérico.", ex);
             }
         }
 
@@ -101,11 +101,11 @@ namespace GYM.Formularios.Compras
             }
             catch (InvalidCastException ex)
             {
-                CFuncionesGenerales.MensajeError("No se ha podido verificar la existencia del producto. No se ha podido convertir una variable.", ex);
+                FuncionesGenerales.MensajeError("No se ha podido verificar la existencia del producto. No se ha podido convertir una variable.", ex);
             }
             catch (Exception ex)
             {
-                CFuncionesGenerales.MensajeError("No se ha podido verificar la existencia del producto. Ha ocurrido un error genérico.", ex);
+                FuncionesGenerales.MensajeError("No se ha podido verificar la existencia del producto. Ha ocurrido un error genérico.", ex);
             }
             return false;
         }
@@ -133,11 +133,11 @@ namespace GYM.Formularios.Compras
             }
             catch (InvalidCastException ex)
             {
-                CFuncionesGenerales.MensajeError("No se ha podido verificar la existencia del producto. No se ha podido convertir una variable.", ex);
+                FuncionesGenerales.MensajeError("No se ha podido verificar la existencia del producto. No se ha podido convertir una variable.", ex);
             }
             catch (Exception ex)
             {
-                CFuncionesGenerales.MensajeError("No se ha podido verificar la existencia del producto. Ha ocurrido un error genérico.", ex);
+                FuncionesGenerales.MensajeError("No se ha podido verificar la existencia del producto. Ha ocurrido un error genérico.", ex);
             }
         }
 
@@ -161,7 +161,7 @@ namespace GYM.Formularios.Compras
             }
             catch (Exception ex)
             {
-                CFuncionesGenerales.MensajeError("No se ha podido eliminar el producto. Ha ocurrido un error genérico.", ex);
+                FuncionesGenerales.MensajeError("No se ha podido eliminar el producto. Ha ocurrido un error genérico.", ex);
             }
         }
 
@@ -190,23 +190,23 @@ namespace GYM.Formularios.Compras
             }
             catch (InvalidCastException ex)
             {
-                CFuncionesGenerales.MensajeError("Ha ocurrido un error al sumar los totales. La conversión no pudo ser realizada.", ex);
+                FuncionesGenerales.MensajeError("Ha ocurrido un error al sumar los totales. La conversión no pudo ser realizada.", ex);
             }
             catch (FormatException ex)
             {
-                CFuncionesGenerales.MensajeError("Ha ocurrido un error al sumar los totales. La conversión no pudo ser realizada.", ex);
+                FuncionesGenerales.MensajeError("Ha ocurrido un error al sumar los totales. La conversión no pudo ser realizada.", ex);
             }
             catch (OverflowException ex)
             {
-                CFuncionesGenerales.MensajeError("Ha ocurrido un error al sumar los totales. Ocurrió un desbordamiento.", ex);
+                FuncionesGenerales.MensajeError("Ha ocurrido un error al sumar los totales. Ocurrió un desbordamiento.", ex);
             }
             catch (ArgumentNullException ex)
             {
-                CFuncionesGenerales.MensajeError("Ha ocurrido un error al sumar los totales. El argumento dado al método es nulo.", ex);
+                FuncionesGenerales.MensajeError("Ha ocurrido un error al sumar los totales. El argumento dado al método es nulo.", ex);
             }
             catch (Exception ex)
             {
-                CFuncionesGenerales.MensajeError("Ha ocurrido un error al sumar los totales. Ha ocurrido un error genérico.", ex);
+                FuncionesGenerales.MensajeError("Ha ocurrido un error al sumar los totales. Ha ocurrido un error genérico.", ex);
             }
         }
 
@@ -314,7 +314,7 @@ namespace GYM.Formularios.Compras
                     sql.Parameters.AddWithValue("?precio", decimal.Parse(dr.Cells[2].Value.ToString(), System.Globalization.NumberStyles.Currency));
                     sql.Parameters.AddWithValue("?descuento", decimal.Parse(dr.Cells[4].Value.ToString(), System.Globalization.NumberStyles.Currency));
                     ConexionBD.EjecutarConsulta(sql);
-                    CProducto.AgregarInventario(dr.Cells[0].Value.ToString(), (int)dr.Cells[3].Value);
+                    Producto.AgregarInventario(dr.Cells[0].Value.ToString(), (int)dr.Cells[3].Value);
                 }
             }
             catch (MySqlException ex)
@@ -406,27 +406,27 @@ namespace GYM.Formularios.Compras
                     }
                     catch (MySqlException ex)
                     {
-                        CFuncionesGenerales.MensajeError("Ha ocurrido un error al ingresar la compra. No se pudo conectar con la base de datos.", ex);
+                        FuncionesGenerales.MensajeError("Ha ocurrido un error al ingresar la compra. No se pudo conectar con la base de datos.", ex);
                     }
                     catch (FormatException ex)
                     {
-                        CFuncionesGenerales.MensajeError("Ha ocurrido un error al ingresar la compra. Ocurrió un error al dar formato a una variable.", ex);
+                        FuncionesGenerales.MensajeError("Ha ocurrido un error al ingresar la compra. Ocurrió un error al dar formato a una variable.", ex);
                     }
                     catch (OverflowException ex)
                     {
-                        CFuncionesGenerales.MensajeError("Ha ocurrido un error al ingresar la compra. Ocurrió un desbordamiento.", ex);
+                        FuncionesGenerales.MensajeError("Ha ocurrido un error al ingresar la compra. Ocurrió un desbordamiento.", ex);
                     }
                     catch (ArgumentNullException ex)
                     {
-                        CFuncionesGenerales.MensajeError("Ha ocurrido un error al ingresar la compra. El argumento dado al método es nulo.", ex);
+                        FuncionesGenerales.MensajeError("Ha ocurrido un error al ingresar la compra. El argumento dado al método es nulo.", ex);
                     }
                     catch (ArgumentException ex)
                     {
-                        CFuncionesGenerales.MensajeError("Ha ocurrido un error al ingresar la compra. El argumento dado al método no es admitido por éste.", ex);
+                        FuncionesGenerales.MensajeError("Ha ocurrido un error al ingresar la compra. El argumento dado al método no es admitido por éste.", ex);
                     }
                     catch (Exception ex)
                     {
-                        CFuncionesGenerales.MensajeError("Ha ocurrido un error al ingresar la compra. Ocurrió un error genérico.", ex);
+                        FuncionesGenerales.MensajeError("Ha ocurrido un error al ingresar la compra. Ocurrió un error genérico.", ex);
                     }
                 }
             }

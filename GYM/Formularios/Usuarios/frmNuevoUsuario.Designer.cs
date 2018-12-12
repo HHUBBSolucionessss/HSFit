@@ -35,8 +35,6 @@
             this.txtContra = new System.Windows.Forms.TextBox();
             this.lblRepContra = new System.Windows.Forms.Label();
             this.txtRepContra = new System.Windows.Forms.TextBox();
-            this.cboNivel = new System.Windows.Forms.ComboBox();
-            this.lblNivel = new System.Windows.Forms.Label();
             this.btnAceptar = new System.Windows.Forms.Button();
             this.pcbImagenUsuario = new System.Windows.Forms.PictureBox();
             this.lblInstrucciones = new System.Windows.Forms.Label();
@@ -102,28 +100,6 @@
             this.txtRepContra.PasswordChar = '•';
             this.txtRepContra.Size = new System.Drawing.Size(215, 29);
             this.txtRepContra.TabIndex = 7;
-            // 
-            // cboNivel
-            // 
-            this.cboNivel.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cboNivel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cboNivel.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this.cboNivel.FormattingEnabled = true;
-            this.cboNivel.Location = new System.Drawing.Point(233, 32);
-            this.cboNivel.Name = "cboNivel";
-            this.cboNivel.Size = new System.Drawing.Size(215, 29);
-            this.cboNivel.TabIndex = 3;
-            this.cboNivel.SelectedIndexChanged += new System.EventHandler(this.cboNivel_SelectedIndexChanged);
-            // 
-            // lblNivel
-            // 
-            this.lblNivel.AutoSize = true;
-            this.lblNivel.Font = new System.Drawing.Font("Segoe UI", 11F);
-            this.lblNivel.Location = new System.Drawing.Point(229, 9);
-            this.lblNivel.Name = "lblNivel";
-            this.lblNivel.Size = new System.Drawing.Size(46, 20);
-            this.lblNivel.TabIndex = 2;
-            this.lblNivel.Text = "Nivel:";
             // 
             // btnAceptar
             // 
@@ -224,8 +200,6 @@
             this.Controls.Add(this.lblInstrucciones);
             this.Controls.Add(this.pcbImagenUsuario);
             this.Controls.Add(this.btnAceptar);
-            this.Controls.Add(this.lblNivel);
-            this.Controls.Add(this.cboNivel);
             this.Controls.Add(this.lblRepContra);
             this.Controls.Add(this.txtRepContra);
             this.Controls.Add(this.lblContra);
@@ -254,8 +228,6 @@
         private System.Windows.Forms.TextBox txtContra;
         private System.Windows.Forms.Label lblRepContra;
         private System.Windows.Forms.TextBox txtRepContra;
-        private System.Windows.Forms.ComboBox cboNivel;
-        private System.Windows.Forms.Label lblNivel;
         private System.Windows.Forms.Button btnAceptar;
         private System.Windows.Forms.PictureBox pcbImagenUsuario;
         private System.Windows.Forms.Label lblInstrucciones;

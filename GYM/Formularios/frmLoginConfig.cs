@@ -23,7 +23,7 @@ namespace GYM.Formularios
             bool existe = false;
             try
             {
-                string sql = "SELECT id FROM usuarios WHERE userName='" + nom + "' AND password='" + Clases.CFuncionesGenerales.GetHashString(pass) + "' AND nivel=3";
+                string sql = "SELECT id FROM usuarios WHERE userName='" + nom + "' AND password='" + Clases.FuncionesGenerales.GetHashString(pass) + "' AND nivel=3";
                 DataTable dt = Clases.ConexionBD.EjecutarConsultaSelect(sql);
                 if (dt.Rows.Count > 0)
                     existe = true;

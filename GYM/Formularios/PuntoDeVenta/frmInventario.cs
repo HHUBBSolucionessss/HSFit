@@ -50,11 +50,11 @@ namespace GYM.Formularios.PuntoDeVenta
             }
             catch (MySql.Data.MySqlClient.MySqlException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error al buscar un producto. No se pudo conectar a la base de datos.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ha ocurrido un error al buscar un producto. No se pudo conectar a la base de datos.", ex);
             }
             catch (Exception ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error al buscar un producto. Ha ocurrido un error genérico.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ha ocurrido un error al buscar un producto. Ha ocurrido un error genérico.", ex);
             }
         }
 
@@ -68,11 +68,11 @@ namespace GYM.Formularios.PuntoDeVenta
             }
             catch (MySql.Data.MySqlClient.MySqlException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error al buscar un producto. No se pudo conectar a la base de datos.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ha ocurrido un error al buscar un producto. No se pudo conectar a la base de datos.", ex);
             }
             catch (Exception ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("Ha ocurrido un error al buscar un producto. Ha ocurrido un error genérico.", ex);
+                Clases.FuncionesGenerales.MensajeError("Ha ocurrido un error al buscar un producto. Ha ocurrido un error genérico.", ex);
             }
         }
 
@@ -107,19 +107,19 @@ namespace GYM.Formularios.PuntoDeVenta
             }
             catch (FormatException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("No se pudo mostrar la información. No se pudo convertir una variable porqué el formato dado no es correcto.", ex);
+                Clases.FuncionesGenerales.MensajeError("No se pudo mostrar la información. No se pudo convertir una variable porqué el formato dado no es correcto.", ex);
             }
             catch (OverflowException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("No se pudo mostrar la información. Ocurrio un desbordamiento.", ex);
+                Clases.FuncionesGenerales.MensajeError("No se pudo mostrar la información. Ocurrio un desbordamiento.", ex);
             }
             catch (InvalidOperationException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("No se pudo mostrar la información. El estado actual del objeto no lo permitió.", ex);
+                Clases.FuncionesGenerales.MensajeError("No se pudo mostrar la información. El estado actual del objeto no lo permitió.", ex);
             }
             catch (ArgumentNullException ex)
             {
-                Clases.CFuncionesGenerales.MensajeError("No se pudo mostrar la información. Ha ocurrido un error genérico.", ex);
+                Clases.FuncionesGenerales.MensajeError("No se pudo mostrar la información. Ha ocurrido un error genérico.", ex);
             }
         }
 
